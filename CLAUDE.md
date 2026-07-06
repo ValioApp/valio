@@ -75,8 +75,23 @@ a `MANIFIESTO-REPOS.md` y excluir la carpeta en el `.gitignore` del paraguas.
 de ejecutarlo. Autonomía para iterar dentro de `app/` y `supabase/` cuando exista el
 scaffold, sugiriendo tests en funciones nuevas. Pasará a Fase 2 al acercarse a producción.
 
-## Estado (2026-07-06)
+## Estado (2026-07-07)
 
-Diseño aprobado (spec en docs/). Pendiente: plan de implementación → scaffold de la app.
-**Fase 0 de Alex (en paralelo):** pedir al socio claves de APIs + su CSV; pedir
-presupuesto a idealista/data, DataVenues, CASAFARI y Brainsre.
+**Plan 1 (fundación + motor) COMPLETADO en código** — 2 revisiones consolidadas APPROVED:
+- Motor de valoración puro en `app/src/engine/` (21 tests Vitest verdes): homogeneización
+  con 7 ajustes trazables, similitud, mediana ponderada + FSD, regla <6 testigos.
+- Migraciones `supabase/migrations/0001-0003` (multi-tenant RLS + PostGIS + RPC radio)
+  y `supabase/scripts/seed-dev.sql` — **AÚN SIN APLICAR** (Task 11 manual de Alex).
+- App: login magic link, página `/valorar` con testigos/ajustes/disclaimer, persistencia.
+  `npm run build` limpio. Deuda registrada en `docs/plans/plan-1-followups.md`.
+
+**Bloqueado esperando a Alex:**
+1. Task 11: crear proyecto Supabase + aplicar migraciones/seed + plantilla email
+   Magic Link (checklist en el plan) + `.env.local` → luego smoke test.
+2. Nombre definitivo (candidato ganador: VALMETRA, valmetra.com libre) → registrar
+   dominio, crear email + cuenta GitHub del proyecto, añadirla a `gh`, crear repo remoto.
+3. Fase 0 comercial: claves APIs del socio + su CSV; presupuestos idealista/data,
+   DataVenues, CASAFARI, Brainsre.
+
+**Siguiente:** Plan 2 — ingesta de datos reales (importador CSV socio, ETLs INE/SERPAVI/
+Registradores/MIVAU/OpenDataBCN, shapefiles secciones censales, Catastro OVC, geocoding).

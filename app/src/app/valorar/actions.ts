@@ -53,9 +53,15 @@ export async function runValuation(
     const outcome = valuate(subject, candidates, zones, new Date())
 
     // Persistencia (snapshot reproducible). El workspace lo resuelve la RLS.
-    const { data: member } = await supabase.from('members').select('workspace_id').limit(1).single()
+    // Si falla, la valoración se muestra igual pero queda rastro en el log del servidor.
+    const { data: member, error: memberError } = await supabase
+      .from('members')
+      .select('workspace_id')
+      .limit(1)
+      .single()
+    if (memberError) console.error('valorar/persistencia members:', memberError.message)
     if (member) {
-      const { data: property } = await supabase
+      const { data: property, error: propertyError } = await supabase
         .from('properties')
         .insert({
           workspace_id: member.workspace_id,
@@ -74,13 +80,15 @@ export async function runValuation(
         })
         .select('id')
         .single()
+      if (propertyError) console.error('valorar/persistencia properties:', propertyError.message)
       if (property) {
-        await supabase.from('valuations').insert({
+        const { error: valuationError } = await supabase.from('valuations').insert({
           workspace_id: member.workspace_id,
           property_id: property.id,
           outcome,
           engine_version: 'v0-comparables',
         })
+        if (valuationError) console.error('valorar/persistencia valuations:', valuationError.message)
       }
     }
 

@@ -22,6 +22,21 @@ Plan 2 (capa de ingesta) salvo indicación.
 5. `weightedMedian` (export público) crashea con array vacío; añadir guard o
    hacerla privada.
 
+## Pendientes de la revisión de la capa app (2026-07-07)
+
+6. **`proxy.ts` (middleware de Next 16) inexistente**: hoy todo el código con sesión
+   corre en server actions/route handlers, pero un Server Component futuro con
+   Supabase no refrescará sesiones expiradas. Añadir antes de producción real.
+7. Persistencia no atómica (property sin valuation si falla el 2º insert) →
+   mover a RPC/transacción en Plan 2. (El logging ya se añadió 2026-07-07.)
+8. Mensajes de error Zod en inglés y sin nombre de campo → mensajes custom es-ES.
+9. `e.message` de Supabase llega al usuario (nombres de RPC/tabla) → sanitizar en
+   Plan 3 antes de exponer públicamente.
+10. `lat: min(35)` excluye Canarias (~27.6-29.5) → ampliar al expandir cobertura.
+11. `yearBuilt: max(2026)` hardcodeado → usar año actual.
+12. `fetchZoneStats` carga la tabla entera — OK con seeds, inviable con ~36k
+    secciones censales → fetch por secciones implicadas en Plan 2.
+
 ## Gaps de cobertura de tests (añadir en Plan 2)
 
 - Ajuste `estado` (condition) sin ningún test directo, incluido default `null → buen_estado`.

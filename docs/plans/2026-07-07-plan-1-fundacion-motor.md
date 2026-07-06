@@ -1386,6 +1386,11 @@ Sin código: checklist para Alex. El ejecutor PARA aquí y se lo pide.
 2. Database → Extensions → activar **postgis**.
 3. SQL Editor → pegar y ejecutar **en orden**: `0001_extensions_workspaces.sql`, `0002_core_valuation.sql`, `0003_fn_comparables_within.sql`, y después `seed-dev.sql`.
 4. Authentication → Providers → Email → activar (con magic link).
+5. **OBLIGATORIO** — Authentication → Email Templates → **Magic Link**: sustituir el
+   enlace por defecto (`{{ .ConfirmationURL }}`) por:
+   `{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=email`
+   (la ruta `/auth/confirm` usa el flujo `token_hash` de Supabase SSR; con la
+   plantilla por defecto el login NO funcionaría).
 
 - [ ] **Step 2: Credenciales en local**
 
