@@ -452,7 +452,9 @@ describe('homogenize', () => {
     const comp = { ...baseComp, isClosingPrice: false }
     const r = homogenize(subject, comp, zone('S-SUBJECT', 1), zone('S-SUBJECT', 1, 0.1))
     expect(r.adjustedPricePerM2).toBeCloseTo(4000 * 0.9, 6)
-    expect(r.adjustments).toContainEqual({ concept: 'oferta_a_cierre', pct: -0.1 })
+    // tolerancia: (1-0.1)-1 !== -0.1 exacto en IEEE-754
+    const closeAdj = r.adjustments.find((a) => a.concept === 'oferta_a_cierre')
+    expect(closeAdj?.pct).toBeCloseTo(-0.1, 6)
   })
 
   it('subject ocupado vs testigo libre → aplica el descuento de ocupación', () => {
