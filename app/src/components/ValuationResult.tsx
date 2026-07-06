@@ -133,22 +133,22 @@ export function ValuationResult({
     <section className="space-y-6">
       {/* Chips de características */}
       {subject && (
-        <div className="flex flex-wrap gap-2">
-          <span className="label-caps rounded-full border border-hairline bg-white px-4 py-1.5 text-ink">
+        <div className="flex flex-wrap gap-2 font-display text-xs font-semibold tracking-wide">
+          <span className="rounded-full border border-hairline bg-white px-4 py-1.5 text-ink">
             {subject.kind === 'piso' ? 'Piso' : 'Casa'}
           </span>
           {subject.builtAreaM2 !== null && (
-            <span className="label-caps rounded-full border border-hairline bg-white px-4 py-1.5 text-ink tabular-nums">
+            <span className="rounded-full border border-hairline bg-white px-4 py-1.5 text-ink tabular-nums">
               {subject.builtAreaM2} m²
             </span>
           )}
           {subject.bedrooms !== null && (
-            <span className="label-caps rounded-full border border-hairline bg-white px-4 py-1.5 text-ink tabular-nums">
+            <span className="rounded-full border border-hairline bg-white px-4 py-1.5 text-ink tabular-nums">
               {subject.bedrooms} hab
             </span>
           )}
           <span
-            className={`label-caps rounded-full px-4 py-1.5 ${
+            className={`rounded-full px-4 py-1.5 ${
               subject.occupancy === 'ocupado'
                 ? 'bg-petrol text-white'
                 : 'border border-hairline bg-white text-ink'

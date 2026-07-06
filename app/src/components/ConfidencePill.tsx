@@ -13,7 +13,7 @@ const LABELS: Record<ConfidenceLevel, string> = { alta: 'Alta', media: 'Media', 
 export function ConfidencePill({ level, withPrefix = false }: { level: ConfidenceLevel; withPrefix?: boolean }) {
   return (
     <span
-      className={`label-caps inline-flex items-center gap-1.5 rounded-full border px-3 py-1 whitespace-nowrap ${STYLES[level]}`}
+      className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 font-display text-xs font-semibold tracking-wide whitespace-nowrap ${STYLES[level]}`}
     >
       <ShieldCheck size={14} aria-hidden="true" />
       {withPrefix ? `Confianza: ${LABELS[level]}` : LABELS[level]}

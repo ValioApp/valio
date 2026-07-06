@@ -1,6 +1,15 @@
-/** Formato moneda es-ES sin decimales: '196.000 €'. */
+/**
+ * Formato moneda es-ES sin decimales: '196.000 €'.
+ * useGrouping 'always': CLDR es-ES no agrupa miles en cifras de 4 dígitos
+ * (2613 → '2613 €') y el design system exige '2.613 €'.
+ */
 export function formatEur(n: number): string {
-  return n.toLocaleString('es-ES', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 })
+  return n.toLocaleString('es-ES', {
+    style: 'currency',
+    currency: 'EUR',
+    maximumFractionDigits: 0,
+    useGrouping: 'always',
+  })
 }
 
 /** Porcentaje con signo y coma decimal es-ES: '+12,3%' / '−4,0%' / '0%'. */
