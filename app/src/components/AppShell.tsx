@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Calculator, FolderOpen, LayoutDashboard, type LucideIcon } from 'lucide-react'
+import { ValioWordmark } from '@/components/ValioWordmark'
 
 interface NavItem {
   href: string
@@ -15,43 +16,6 @@ const NAV_ITEMS: NavItem[] = [
   { href: '/valorar', label: 'Valorar', icon: Calculator },
   { href: '/cartera', label: 'Cartera', icon: FolderOpen },
 ]
-
-/** Marca VALIO: isotipo (V petrol + punto dorado) + wordmark en Geist. */
-function ValioWordmark({ compact = false }: { compact?: boolean }) {
-  return (
-    <span className="flex items-center gap-2.5">
-      <svg
-        width={compact ? 22 : 26}
-        height={compact ? 22 : 26}
-        viewBox="0 0 200 200"
-        fill="none"
-        aria-hidden="true"
-      >
-        <path
-          d="M40 60L100 160L160 60"
-          stroke="var(--color-petrol)"
-          strokeWidth="24"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-        <circle cx="100" cy="160" r="14" fill="var(--color-gold)" />
-        <path
-          d="M70 40H130"
-          stroke="var(--color-petrol)"
-          strokeWidth="12"
-          strokeLinecap="round"
-        />
-      </svg>
-      <span
-        className={`font-display font-bold tracking-tight text-petrol-deep ${
-          compact ? 'text-lg' : 'text-xl'
-        }`}
-      >
-        VALIO
-      </span>
-    </span>
-  )
-}
 
 function isActive(pathname: string, href: string): boolean {
   return pathname === href || pathname.startsWith(`${href}/`)
@@ -102,7 +66,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       <header className="sticky top-0 z-40 border-b border-hairline bg-white/80 backdrop-blur md:hidden">
         <div className="flex items-center px-4 py-3">
           <Link href="/dashboard" aria-label="VALIO — inicio">
-            <ValioWordmark compact />
+            <ValioWordmark size="sm" />
           </Link>
         </div>
       </header>
