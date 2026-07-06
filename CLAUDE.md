@@ -85,13 +85,21 @@ scaffold, sugiriendo tests en funciones nuevas. Pasará a Fase 2 al acercarse a 
 - App: login magic link, página `/valorar` con testigos/ajustes/disclaimer, persistencia.
   `npm run build` limpio. Deuda registrada en `docs/plans/plan-1-followups.md`.
 
+**Diseño integrado (2026-07-07):** export de Google Stitch en `docs/design/` (sistema
+de diseño + 7 pantallas). App restyleada y APPROVED en revisión: tokens Tailwind v4
+(paper/petrol/gold, Geist+Inter, tabular-nums), shell sidebar/bottom-nav, login,
+formulario de valoración, pantalla de resultado (valor dorado + desglose de ajustes +
+testigos), dashboard y cartera con datos reales. Dorado SOLO en cifras de dinero;
+texto de dinero en gold-deep #795900 por contraste AA.
+
 **Bloqueado esperando a Alex:**
 1. Task 11: crear proyecto Supabase + aplicar migraciones/seed + plantilla email
    Magic Link (checklist en el plan) + `.env.local` → luego smoke test.
-2. Nombre definitivo (candidato ganador: VALMETRA, valmetra.com libre) → registrar
-   dominio, crear email + cuenta GitHub del proyecto, añadirla a `gh`, crear repo remoto.
-3. Fase 0 comercial: claves APIs del socio + su CSV; presupuestos idealista/data,
-   DataVenues, CASAFARI, Brainsre.
+2. Nombre: **VALMETRA aceptado como provisional** (2026-07-07), pendiente del OK del
+   socio → entonces registrar dominios, crear email + cuenta GitHub, añadirla a `gh`,
+   crear repo remoto y renombrar el mundo.
+3. Fase 0 comercial: claves APIs del socio (pendientes de que se las pase) + su CSV;
+   presupuestos idealista/data, DataVenues, CASAFARI, Brainsre.
 
 **Siguiente:** Plan 2 — ingesta de datos reales (importador CSV socio, ETLs INE/SERPAVI/
 Registradores/MIVAU/OpenDataBCN, shapefiles secciones censales, Catastro OVC, geocoding).

@@ -37,6 +37,16 @@ Plan 2 (capa de ingesta) salvo indicación.
 12. `fetchZoneStats` carga la tabla entera — OK con seeds, inviable con ~36k
     secciones censales → fetch por secciones implicadas en Plan 2.
 
+## Pendientes de la revisión de la integración de diseño (2026-07-07)
+
+13. `login/page.tsx`: éxito detectado por prefijo del copy (`startsWith('Revisa tu correo')`)
+    — frágil; migrar el action a estado discriminado `{status}` cuando se pueda tocar.
+14. `lib/valuations.ts`: doble cast sin tipos generados de Supabase → generar tipos
+    `Database` (supabase gen types) en Plan 2.
+15. Piezas de diseño diferidas a propósito: buscador dirección+mapa+Catastro (Plan 2),
+    botones "Descargar PDF"/"Guardar en cartera" (Plan 3), item "Más" del bottom-nav.
+16. `cartera/page.tsx`: `<th>` sin `scope="col"` (accesibilidad, cosmético).
+
 ## Gaps de cobertura de tests (añadir en Plan 2)
 
 - Ajuste `estado` (condition) sin ningún test directo, incluido default `null → buen_estado`.
