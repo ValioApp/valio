@@ -1,0 +1,19 @@
+# deps y builds
+node_modules/
+.next/
+dist/
+coverage/
+
+# secretos — NUNCA commitear
+.env
+.env.local
+.env*.local
+
+# datos fuente (personales / licencias) — solo docs/README dentro de data/
+data/*
+!data/README.md
+
+# SO / editor
+._*
+.DS_Store
+Thumbs.db
