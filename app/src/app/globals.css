@@ -1,26 +1,70 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/*
+ * VALIO Design System — tokens Tailwind v4.
+ * Fuente: docs/design/valio_design_system/DESIGN.md
+ * - Fondo "paper" cálido, cards blancas con borde hairline, sombras casi nulas.
+ * - Petrol para acción/navegación; dorado SOLO para cifras de dinero
+ *   (gold = acento decorativo; gold-deep = texto de dinero, accesible AA).
+ */
+@theme {
+  /* Marca */
+  --color-paper: #fafaf7;
+  --color-ink: #101828;
+  --color-petrol: #0f4c5c;
+  --color-petrol-deep: #003441;
+  --color-gold: #d4a017;
+  --color-gold-deep: #795900;
+  --color-hairline: #e5e5e0;
+  --color-muted: #40484b;
+
+  /* Semánticos desaturados */
+  --color-success: #047857;
+  --color-error: #ba1a1a;
+
+  /* Tipografía: Geist (títulos, labels, datos) + Inter (cuerpo) */
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+
+  /* Radios: 12px estándar, 6px tags, 24px sheets */
+  --radius-card: 0.75rem;
+  --radius-tag: 0.375rem;
+  --radius-sheet: 1.5rem;
+
+  /* Única sombra permitida: "ambient" muy difusa */
+  --shadow-ambient: 0px 4px 20px rgba(16, 24, 40, 0.05);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* Labels de formulario y cabeceras de tabla (Geist 12/16, 600, tracking 5%) */
+@utility label-caps {
+  font-family: var(--font-display);
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
   }
-}
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  /* Toda cifra alinea en columna (moneda, m², distancias) */
+  [data-numeric],
+  input[type="number"] {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Focus del sistema: borde petrol + glow suave al 10% */
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible {
+    outline: none;
+    border-color: var(--color-petrol);
+    box-shadow: 0 0 0 2px rgba(15, 76, 92, 0.1);
+  }
 }
