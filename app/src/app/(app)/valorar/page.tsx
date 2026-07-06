@@ -2,11 +2,8 @@
 
 import { useActionState, useState } from 'react'
 import { AlertCircle, ArrowRight, CircleHelp, Info, TriangleAlert } from 'lucide-react'
-import { Disclaimer } from '@/components/Disclaimer'
+import { ValuationResult, type SubjectSummary } from '@/components/ValuationResult'
 import { runValuation, type ValuationFormState } from './actions'
-
-const eur = (n: number) => n.toLocaleString('es-ES', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 })
-const pct = (n: number) => `${n >= 0 ? '+' : ''}${(n * 100).toFixed(1)}%`
 
 const INPUT_CLS =
   'w-full rounded-card border border-hairline bg-white px-4 py-2.5 text-base text-ink placeholder:text-muted/50'
@@ -26,6 +23,21 @@ function FieldLabel({ htmlFor, children }: { htmlFor?: string; children: React.R
 export default function ValorarPage() {
   const [state, action, pending] = useActionState<ValuationFormState, FormData>(runValuation, { status: 'idle' })
   const [occupancy, setOccupancy] = useState('libre')
+  const [subject, setSubject] = useState<SubjectSummary | null>(null)
+
+  /** Captura presentacional de los datos enviados (chips del resultado). */
+  function captureSubject(e: React.FormEvent<HTMLFormElement>) {
+    const fd = new FormData(e.currentTarget)
+    const area = Number(fd.get('builtAreaM2'))
+    const beds = Number(fd.get('bedrooms'))
+    const occ = fd.get('occupancy')
+    setSubject({
+      kind: fd.get('kind') === 'casa' ? 'casa' : 'piso',
+      builtAreaM2: Number.isFinite(area) && area > 0 ? area : null,
+      bedrooms: Number.isFinite(beds) && beds >= 0 ? beds : null,
+      occupancy: occ === 'alquilado' || occ === 'ocupado' ? occ : 'libre',
+    })
+  }
 
   return (
     <main className="mx-auto w-full max-w-2xl space-y-6 px-4 py-8 md:px-6 md:py-10">
@@ -39,7 +51,7 @@ export default function ValorarPage() {
         </p>
       </header>
 
-      <form action={action} className="space-y-6">
+      <form action={action} onSubmit={captureSubject} className="space-y-6">
         {/* Localización (demo — Plan 2 lo sustituye por geocoding) */}
         <section className="rounded-card border border-hairline bg-white p-6 shadow-ambient">
           <h2 className="mb-5 font-display text-lg font-semibold text-ink">Localización</h2>
@@ -208,54 +220,7 @@ export default function ValorarPage() {
         </div>
       )}
 
-      {state.status === 'done' && state.outcome.status === 'rejected' && (
-        <div className="rounded-md border border-red-200 bg-red-50 p-4">
-          <p className="font-medium text-red-800">No podemos valorar este inmueble con rigor.</p>
-          <p className="text-sm text-red-700">
-            {state.outcome.reason === 'insufficient_comparables'
-              ? `Solo hay ${state.outcome.found} testigos comparables (mínimo ${state.outcome.required}). Mejor no valorar que valorar mal.`
-              : 'No tenemos estadísticas de esta zona todavía.'}
-          </p>
-        </div>
-      )}
-
-      {state.status === 'done' && state.outcome.status === 'ok' && (
-        <section className="space-y-4">
-          <div className="rounded-lg border p-5">
-            <p className="text-sm text-gray-500">Valor estimado</p>
-            <p className="text-4xl font-semibold">{eur(state.outcome.value)}</p>
-            <p className="text-sm text-gray-600">
-              Horquilla {eur(state.outcome.low)} – {eur(state.outcome.high)} · {eur(state.outcome.pricePerM2)}/m² ·
-              Confianza <strong>{state.outcome.confidence}</strong>
-            </p>
-            <p className="mt-2 text-sm">
-              Ajuste por renta de la zona: <strong>{pct(state.outcome.zoneAdjustmentPct)}</strong>
-            </p>
-          </div>
-
-          <details className="rounded-lg border p-4">
-            <summary className="cursor-pointer font-medium">
-              {state.outcome.comparables.length} testigos utilizados
-            </summary>
-            <ul className="mt-3 space-y-2 text-sm">
-              {state.outcome.comparables.map((c) => (
-                <li key={c.comparable.id} className="rounded border p-2">
-                  <span className="font-medium">{eur(Math.round(c.adjustedPricePerM2))}/m² ajustado</span>
-                  {' · '}{c.comparable.builtAreaM2} m² · a {Math.round(c.comparable.distanceM)} m ·{' '}
-                  {c.comparable.isClosingPrice ? 'cierre' : 'anuncio'} · fuente {c.comparable.source}
-                  {c.adjustments.length > 0 && (
-                    <span className="block text-xs text-gray-500">
-                      {c.adjustments.map((a) => `${a.concept} ${pct(a.pct)}`).join(' · ')}
-                    </span>
-                  )}
-                </li>
-              ))}
-            </ul>
-          </details>
-
-          <Disclaimer />
-        </section>
-      )}
+      {state.status === 'done' && <ValuationResult outcome={state.outcome} subject={subject} />}
     </main>
   )
 }
