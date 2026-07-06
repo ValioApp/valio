@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+
+<html lang="es-ES"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>VALIO - Valoración Inmobiliaria de Precisión</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Geist:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .valuation-accent {
+            border-left: 4px solid #D4A017;
+        }
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 24px;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface": "#f9f9ff",
+                      "primary-fixed-dim": "#9acee1",
+                      "secondary-fixed": "#ffdfa0",
+                      "tertiary-fixed-dim": "#c6c7c2",
+                      "inverse-primary": "#9acee1",
+                      "on-error": "#ffffff",
+                      "primary-container": "#0f4c5c",
+                      "on-secondary-container": "#715300",
+                      "surface-dim": "#d2daf0",
+                      "on-primary-fixed": "#001f28",
+                      "error": "#ba1a1a",
+                      "on-tertiary": "#ffffff",
+                      "outline": "#70787c",
+                      "secondary-fixed-dim": "#f6be39",
+                      "on-secondary": "#ffffff",
+                      "on-background": "#141b2c",
+                      "on-secondary-fixed-variant": "#5c4300",
+                      "surface-variant": "#dbe2f9",
+                      "on-primary-container": "#87bbce",
+                      "surface-container-low": "#f1f3ff",
+                      "on-tertiary-container": "#b3b4af",
+                      "on-primary-fixed-variant": "#114d5d",
+                      "inverse-on-surface": "#edf0ff",
+                      "surface-bright": "#f9f9ff",
+                      "error-container": "#ffdad6",
+                      "background": "#f9f9ff",
+                      "surface-container": "#e9edff",
+                      "inverse-surface": "#293041",
+                      "tertiary": "#2e302d",
+                      "tertiary-container": "#454643",
+                      "on-surface-variant": "#40484b",
+                      "on-tertiary-fixed": "#1a1c19",
+                      "tertiary-fixed": "#e3e3de",
+                      "surface-tint": "#306576",
+                      "secondary-container": "#ffc641",
+                      "on-primary": "#ffffff",
+                      "primary-fixed": "#b6ebfe",
+                      "surface-container-high": "#e0e8ff",
+                      "on-tertiary-fixed-variant": "#464744",
+                      "primary": "#003441",
+                      "secondary": "#795900",
+                      "surface-container-lowest": "#ffffff",
+                      "outline-variant": "#c0c8cb",
+                      "surface-container-highest": "#dbe2f9",
+                      "on-secondary-fixed": "#261a00",
+                      "on-surface": "#141b2c",
+                      "on-error-container": "#93000a"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "12px",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "sm": "12px",
+                      "base": "4px",
+                      "xs": "8px",
+                      "sidebar-width": "260px",
+                      "md": "16px",
+                      "lg": "24px",
+                      "xl": "32px",
+                      "container-max": "1280px"
+              },
+              "fontFamily": {
+                      "body-sm": ["Inter"],
+                      "headline-lg-mobile": ["Geist"],
+                      "display-lg": ["Geist"],
+                      "body-md": ["Inter"],
+                      "headline-lg": ["Geist"],
+                      "body-lg": ["Inter"],
+                      "data-mono": ["Geist"],
+                      "label-caps": ["Geist"],
+                      "headline-md": ["Geist"]
+              },
+              "fontSize": {
+                      "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                      "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                      "data-mono": ["14px", {"lineHeight": "20px", "fontWeight": "500"}],
+                      "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                      "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "500"}]
+              }
+            },
+          },
+        }
+    </script>
+</head>
+<body class="bg-[#FAFAF7] text-on-surface font-body-md overflow-x-hidden">
+<!-- Navigation Shell (JSON Defined) -->
+<nav class="w-full top-0 sticky z-50 bg-surface-container-lowest border-b border-outline-variant/30 flex justify-between items-center px-lg py-md w-full max-w-container-max mx-auto h-20">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary text-3xl" data-icon="business_center">business_center</span>
+<span class="font-headline-lg text-headline-lg font-bold text-primary">VALIO</span>
+</div>
+<div class="hidden md:flex gap-lg items-center">
+<a class="text-primary font-bold font-label-caps transition-colors" href="#">Producto</a>
+<a class="text-on-surface-variant font-label-caps hover:bg-surface-container transition-colors px-base py-xs rounded-lg" href="#">Precios</a>
+<a class="text-on-surface-variant font-label-caps hover:bg-surface-container transition-colors px-base py-xs rounded-lg" href="#">Comunidad</a>
+<button class="bg-primary-container text-white px-lg py-md rounded-xl font-label-caps hover:opacity-90 transition-all active:scale-95">Prueba 14 días gratis</button>
+</div>
+<div class="md:hidden">
+<span class="material-symbols-outlined text-on-surface" data-icon="menu">menu</span>
+</div>
+</nav>
+<main class="max-w-container-max mx-auto px-lg">
+<!-- Hero Section -->
+<section class="py-xl md:py-32 flex flex-col items-center text-center relative overflow-hidden">
+<!-- Animated Background Shader (Placeholder) -->
+<div class="absolute inset-0 -z-10 opacity-40">
+
+</div>
+<div class="max-w-3xl">
+<h1 class="font-display-lg text-display-lg md:text-6xl text-primary mb-lg leading-tight">
+                    El precio real de cualquier inmueble. <span class="text-secondary">Con el porqué.</span>
+</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-xl max-w-2xl mx-auto">
+                    Valoración orientativa con testigos reales, ajuste por zona y ocupación. La herramienta definitiva para profesionales del sector inmobiliario.
+                </p>
+<div class="flex flex-col sm:flex-row gap-md justify-center mb-24">
+<button class="bg-primary-container text-white px-xl py-md rounded-xl font-headline-md shadow-lg hover:shadow-xl hover:translate-y-[-2px] transition-all">
+                        Prueba 14 días gratis
+                    </button>
+<button class="bg-white border border-outline-variant text-primary px-xl py-md rounded-xl font-headline-md hover:bg-surface-container transition-all">
+                        Ver demostración
+                    </button>
+</div>
+</div>
+<!-- Floating Screenshot -->
+<div class="relative w-full max-w-5xl mx-auto px-md">
+<div class="animate-float relative z-10 rounded-2xl overflow-hidden shadow-2xl border border-white/50 bg-white">
+<img class="w-full h-auto" data-alt="A sophisticated mobile app interface showing a detailed real estate valuation report. The UI features a clean, high-precision layout with Petrol blue accents, Amber currency badges, and professional data visualizations. The screen displays property metrics, local market witnesses, and adjustment factors in a minimalist, modern corporate aesthetic inspired by Stripe and Linear." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCAku1VdMdCstqccHE-9auMyaXPUzY77yNzQdkNdTKkhFb86QH7hsxVMxJ5j1B6Zx_sMrCGA65y7nHw17N1bypgegnd_UEZuzPjg7FGZ2fXj4f7hU6VRrLiPvJb1Wxm95qKX-Tbbkhb_ukTO9b6QJvyowknojsVyz5_oQpXdqvoNWSKs_ff9pddxYDRRXOeK13U6XUVFLTzCFix5VHU8QvTdVxdHqAMci4C3MdgMorupnoHaemlwsLU"/>
+</div>
+<!-- Decorative background shapes -->
+<div class="absolute -top-12 -left-12 w-64 h-64 bg-primary/5 rounded-full blur-3xl"></div>
+<div class="absolute -bottom-20 -right-20 w-80 h-80 bg-secondary/10 rounded-full blur-3xl"></div>
+</div>
+</section>
+<!-- Features Bento Grid -->
+<section class="py-xl">
+<div class="text-center mb-24">
+<h2 class="font-headline-lg text-headline-lg text-primary mb-md">Diseñado para la precisión</h2>
+<p class="text-on-surface-variant font-body-md">Tres pilares que transforman datos brutos en inteligencia de mercado.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-lg">
+<!-- Feature 1 -->
+<div class="bg-white p-xl rounded-xl border border-outline-variant hover:border-primary-container/20 transition-all valuation-accent group">
+<div class="w-12 h-12 bg-surface-container rounded-lg flex items-center justify-center mb-lg group-hover:bg-primary-container/10 transition-colors">
+<span class="material-symbols-outlined text-primary" data-icon="explore">explore</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-primary mb-sm">Factor zona explicable</h3>
+<p class="text-on-surface-variant font-body-sm">Analizamos el micro-mercado calle a calle. No más promedios genéricos: entiende por qué un código postal varía un 15% entre manzanas.</p>
+</div>
+<!-- Feature 2 -->
+<div class="bg-white p-xl rounded-xl border border-outline-variant hover:border-primary-container/20 transition-all valuation-accent group">
+<div class="w-12 h-12 bg-surface-container rounded-lg flex items-center justify-center mb-lg group-hover:bg-primary-container/10 transition-colors">
+<span class="material-symbols-outlined text-primary" data-icon="key">key</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-primary mb-sm">Descuento por ocupación</h3>
+<p class="text-on-surface-variant font-body-sm">Ajustes automáticos basados en el estado legal del inmueble. Algoritmos especializados para activos con inquilinos o situaciones especiales.</p>
+</div>
+<!-- Feature 3 -->
+<div class="bg-white p-xl rounded-xl border border-outline-variant hover:border-primary-container/20 transition-all valuation-accent group">
+<div class="w-12 h-12 bg-surface-container rounded-lg flex items-center justify-center mb-lg group-hover:bg-primary-container/10 transition-colors">
+<span class="material-symbols-outlined text-primary" data-icon="inventory_2">inventory_2</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-primary mb-sm">Tus propios cierres</h3>
+<p class="text-on-surface-variant font-body-sm">Enriquece la base de datos global con tus propias transacciones privadas para obtener valoraciones que nadie más puede replicar.</p>
+</div>
+</div>
+</section>
+<!-- Pricing Tiers -->
+<section class="py-xl mb-32">
+<div class="text-center mb-24">
+<h2 class="font-headline-lg text-headline-lg text-primary mb-md">Planes que escalan contigo</h2>
+<p class="text-on-surface-variant font-body-md">Empieza gratis y paga solo por lo que necesitas.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-xl max-w-5xl mx-auto items-end">
+<!-- Starter -->
+<div class="bg-white border border-outline-variant p-xl rounded-xl flex flex-col h-full">
+<span class="font-label-caps text-on-surface-variant mb-md">STARTER</span>
+<div class="flex items-baseline gap-xs mb-lg">
+<span class="text-4xl font-bold font-display-lg text-primary">49 €</span>
+<span class="text-on-surface-variant">/mes</span>
+</div>
+<ul class="space-y-md mb-xl flex-grow">
+<li class="flex gap-sm items-center font-body-sm"><span class="material-symbols-outlined text-primary-container text-lg" data-icon="check_circle">check_circle</span> 10 Valoraciones / mes</li>
+<li class="flex gap-sm items-center font-body-sm"><span class="material-symbols-outlined text-primary-container text-lg" data-icon="check_circle">check_circle</span> Testigos básicos</li>
+<li class="flex gap-sm items-center font-body-sm"><span class="material-symbols-outlined text-primary-container text-lg" data-icon="check_circle">check_circle</span> Exportar PDF</li>
+</ul>
+<button class="w-full py-md border border-outline-variant rounded-xl font-label-caps hover:bg-surface-container transition-all">Elegir Starter</button>
+</div>
+<!-- Professional - Highlighted -->
+<div class="bg-primary-container text-white p-xl rounded-xl flex flex-col h-full transform scale-105 shadow-2xl relative">
+<div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-secondary text-primary-container font-bold px-lg py-base rounded-full text-xs font-label-caps">MÁS POPULAR</div>
+<span class="font-label-caps text-primary-fixed-dim mb-md">PROFESSIONAL</span>
+<div class="flex items-baseline gap-xs mb-lg">
+<span class="text-5xl font-bold font-display-lg">99 €</span>
+<span class="text-primary-fixed-dim">/mes</span>
+</div>
+<ul class="space-y-md mb-xl flex-grow">
+<li class="flex gap-sm items-center font-body-sm"><span class="material-symbols-outlined text-secondary-fixed text-lg" data-icon="check_circle">check_circle</span> 50 Valoraciones / mes</li>
+<li class="flex gap-sm items-center font-body-sm"><span class="material-symbols-outlined text-secondary-fixed text-lg" data-icon="check_circle">check_circle</span> Análisis de zona avanzado</li>
+<li class="flex gap-sm items-center font-body-sm"><span class="material-symbols-outlined text-secondary-fixed text-lg" data-icon="check_circle">check_circle</span> Ajuste por ocupación</li>
+<li class="flex gap-sm items-center font-body-sm"><span class="material-symbols-outlined text-secondary-fixed text-lg" data-icon="check_circle">check_circle</span> Soporte prioritario</li>
+</ul>
+<button class="w-full py-md bg-secondary text-primary-container rounded-xl font-bold font-label-caps hover:opacity-90 transition-all">Empezar ahora</button>
+</div>
+<!-- Agencia -->
+<div class="bg-white border border-outline-variant p-xl rounded-xl flex flex-col h-full">
+<span class="font-label-caps text-on-surface-variant mb-md">AGENCIA</span>
+<div class="flex items-baseline gap-xs mb-lg">
+<span class="text-4xl font-bold font-display-lg text-primary">199 €</span>
+<span class="text-on-surface-variant">/mes</span>
+</div>
+<ul class="space-y-md mb-xl flex-grow">
+<li class="flex gap-sm items-center font-body-sm"><span class="material-symbols-outlined text-primary-container text-lg" data-icon="check_circle">check_circle</span> Valoraciones ilimitadas</li>
+<li class="flex gap-sm items-center font-body-sm"><span class="material-symbols-outlined text-primary-container text-lg" data-icon="check_circle">check_circle</span> Multi-usuario (5 asientos)</li>
+<li class="flex gap-sm items-center font-body-sm"><span class="material-symbols-outlined text-primary-container text-lg" data-icon="check_circle">check_circle</span> API Access</li>
+<li class="flex gap-sm items-center font-body-sm"><span class="material-symbols-outlined text-primary-container text-lg" data-icon="check_circle">check_circle</span> Formación personalizada</li>
+</ul>
+<button class="w-full py-md border border-outline-variant rounded-xl font-label-caps hover:bg-surface-container transition-all">Contactar ventas</button>
+</div>
+</div>
+</section>
+<!-- FAQ Section -->
+<section class="py-xl max-w-3xl mx-auto">
+<h2 class="font-headline-lg text-headline-lg text-primary mb-xl text-center">Preguntas Frecuentes</h2>
+<div class="space-y-md">
+<details class="group bg-white rounded-xl border border-outline-variant p-md">
+<summary class="flex justify-between items-center cursor-pointer list-none font-bold text-primary">
+<span>¿De dónde salen los datos de los testigos?</span>
+<span class="material-symbols-outlined transition-transform group-open:rotate-180" data-icon="expand_more">expand_more</span>
+</summary>
+<p class="mt-md text-on-surface-variant font-body-sm">
+                        Recopilamos datos de más de 20 fuentes públicas y privadas, incluyendo portales inmobiliarios, registros de transacciones reales y cierres aportados por nuestra comunidad de profesionales.
+                    </p>
+</details>
+<details class="group bg-white rounded-xl border border-outline-variant p-md">
+<summary class="flex justify-between items-center cursor-pointer list-none font-bold text-primary">
+<span>¿Es vinculante la valoración de VALIO?</span>
+<span class="material-symbols-outlined transition-transform group-open:rotate-180" data-icon="expand_more">expand_more</span>
+</summary>
+<p class="mt-md text-on-surface-variant font-body-sm">
+                        Nuestras valoraciones son orientativas y de carácter técnico. Son una herramienta de ayuda a la toma de decisiones, no sustituyen a una tasación hipotecaria oficial reglada por el Banco de España.
+                    </p>
+</details>
+<details class="group bg-white rounded-xl border border-outline-variant p-md">
+<summary class="flex justify-between items-center cursor-pointer list-none font-bold text-primary">
+<span>¿Cómo funciona el ajuste por ocupación?</span>
+<span class="material-symbols-outlined transition-transform group-open:rotate-180" data-icon="expand_more">expand_more</span>
+</summary>
+<p class="mt-md text-on-surface-variant font-body-sm">
+                        Nuestro algoritmo aplica coeficientes de descuento basados en el tipo de contrato, renta actual y tiempo de ocupación restante, modelando el Valor de Mercado frente al Valor por Comparación.
+                    </p>
+</details>
+</div>
+</section>
+</main>
+<!-- Amber Legal Strip -->
+<aside class="bg-secondary text-primary-container py-xs px-xl text-center font-label-caps text-[10px] tracking-widest mt-32">
+        INFORMACIÓN LEGAL: VALIO ES UNA HERRAMIENTA SAAS DE ANÁLISIS DE DATOS. LOS RESULTADOS SON ESTIMACIONES BASADAS EN MODELOS MATEMÁTICOS.
+    </aside>
+<!-- Footer Shell -->
+<footer class="bg-surface-container-lowest border-t border-secondary-container/30 w-full mt-auto py-lg px-xl text-center flex flex-col items-center gap-base">
+<div class="flex items-center gap-sm mb-md opacity-80">
+<span class="material-symbols-outlined text-primary text-xl" data-icon="business_center">business_center</span>
+<span class="font-label-caps text-primary">VALIO PROPTECH</span>
+</div>
+<div class="flex gap-lg mb-md">
+<a class="text-on-surface-variant font-body-sm hover:text-secondary-container transition-colors" href="#">Aviso Legal</a>
+<a class="text-on-surface-variant font-body-sm hover:text-secondary-container transition-colors" href="#">Privacidad</a>
+<a class="text-on-surface-variant font-body-sm hover:text-secondary-container transition-colors" href="#">Cookies</a>
+</div>
+<p class="text-on-surface-variant font-body-sm">© 2024 VALIO Proptech. Todos los derechos reservados.</p>
+</footer>
+<!-- Bottom Nav (Mobile Only Filter Logic Applied) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-md pb-md pt-sm border-t border-outline-variant dark:border-outline bg-surface-container-lowest shadow-sm">
+<div class="flex flex-col items-center justify-center text-primary bg-primary-container/10 rounded-xl px-base py-xs">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-label-caps text-[10px]">Dashboard</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant px-base py-xs">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span class="font-label-caps text-[10px]">Valorar</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant px-base py-xs">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span class="font-label-caps text-[10px]">Cartera</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant px-base py-xs">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+<span class="font-label-caps text-[10px]">Más</span>
+</div>
+</nav>
+<script>
+        // Micro-interactions
+        document.querySelectorAll('details').forEach((el) => {
+            el.addEventListener('click', (e) => {
+                if (el.open) return;
+                document.querySelectorAll('details').forEach((other) => {
+                    if (other !== el) other.removeAttribute('open');
+                });
+            });
+        });
+
+        // Sticky header transition
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 50) {
+                nav.classList.add('shadow-sm');
+                nav.classList.add('bg-white/90');
+                nav.classList.add('backdrop-blur-md');
+            } else {
+                nav.classList.remove('shadow-sm');
+                nav.classList.remove('bg-white/90');
+                nav.classList.remove('backdrop-blur-md');
+            }
+        });
+    </script>
+</body></html>

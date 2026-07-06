@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es-ES"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Geist:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface": "#f9f9ff",
+                    "primary-fixed-dim": "#9acee1",
+                    "secondary-fixed": "#ffdfa0",
+                    "tertiary-fixed-dim": "#c6c7c2",
+                    "inverse-primary": "#9acee1",
+                    "on-error": "#ffffff",
+                    "primary-container": "#0f4c5c",
+                    "on-secondary-container": "#715300",
+                    "surface-dim": "#d2daf0",
+                    "on-primary-fixed": "#001f28",
+                    "error": "#ba1a1a",
+                    "on-tertiary": "#ffffff",
+                    "outline": "#70787c",
+                    "secondary-fixed-dim": "#f6be39",
+                    "on-secondary": "#ffffff",
+                    "on-background": "#141b2c",
+                    "on-secondary-fixed-variant": "#5c4300",
+                    "surface-variant": "#dbe2f9",
+                    "on-primary-container": "#87bbce",
+                    "surface-container-low": "#f1f3ff",
+                    "on-tertiary-container": "#b3b4af",
+                    "on-primary-fixed-variant": "#114d5d",
+                    "inverse-on-surface": "#edf0ff",
+                    "surface-bright": "#f9f9ff",
+                    "error-container": "#ffdad6",
+                    "background": "#f9f9ff",
+                    "surface-container": "#e9edff",
+                    "inverse-surface": "#293041",
+                    "tertiary": "#2e302d",
+                    "tertiary-container": "#454643",
+                    "on-surface-variant": "#40484b",
+                    "on-tertiary-fixed": "#1a1c19",
+                    "tertiary-fixed": "#e3e3de",
+                    "surface-tint": "#306576",
+                    "secondary-container": "#ffc641",
+                    "on-primary": "#ffffff",
+                    "primary-fixed": "#b6ebfe",
+                    "surface-container-high": "#e0e8ff",
+                    "on-tertiary-fixed-variant": "#464744",
+                    "primary": "#003441",
+                    "secondary": "#795900",
+                    "surface-container-lowest": "#ffffff",
+                    "outline-variant": "#c0c8cb",
+                    "surface-container-highest": "#dbe2f9",
+                    "on-secondary-fixed": "#261a00",
+                    "on-surface": "#141b2c",
+                    "on-error-container": "#93000a"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "sm": "12px",
+                    "base": "4px",
+                    "xs": "8px",
+                    "sidebar-width": "260px",
+                    "md": "16px",
+                    "lg": "24px",
+                    "xl": "32px",
+                    "container-max": "1280px"
+            },
+            "fontFamily": {
+                    "body-sm": ["Inter"],
+                    "headline-lg-mobile": ["Geist"],
+                    "display-lg": ["Geist"],
+                    "body-md": ["Inter"],
+                    "headline-lg": ["Geist"],
+                    "body-lg": ["Inter"],
+                    "data-mono": ["Geist"],
+                    "label-caps": ["Geist"],
+                    "headline-md": ["Geist"]
+            },
+            "fontSize": {
+                    "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "data-mono": ["14px", {"lineHeight": "20px", "fontWeight": "500"}],
+                    "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+        }
+        
+        /* Premium hide scrollbar */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        .valuation-card {
+            border-left: 4px solid #D4A017;
+        }
+        
+        .active-nav-scale {
+            transform: scale(0.95);
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body-md min-h-screen flex flex-col">
+<!-- Top App Bar -->
+<header class="w-full top-0 sticky z-40 bg-surface-container-lowest border-b border-outline-variant">
+<div class="flex justify-between items-center px-lg py-md w-full max-w-container-max mx-auto">
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-primary" data-icon="business_center">business_center</span>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-primary">VALIO</h1>
+</div>
+<div class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Close-up portrait of a professional real estate analyst in a bright, modern office setting. The lighting is soft and warm, reflecting a premium light-mode UI aesthetic. The person has a friendly, trustworthy expression. The overall style is clean, corporate, and sophisticated with a focused shallow depth of field." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCcdQyT8CT3jI9URV2t5MtVySCHj1VBZ7Sl45GrsIq-eseZdaLIHNfO8Csqi7Wvr2nB76RKwSI0IUmG7GIs5zUqE08Eq-6-XoZRvpM1FXyalRBs9JVo4gtofhFFDs4cZ6erjqT3X5kRHrqMKrhQBHWGBGZn_CcR70KzaRFMTYHNNVmecEXn4-obGra-3PXCLVjYKXO-3xhmPZB9vAocz-JMBMzAKoJCRCdva6C87cBNA5uAvB26jnh1"/>
+</div>
+</div>
+</header>
+<!-- Main Canvas -->
+<main class="flex-1 pb-32">
+<!-- Filter Bar -->
+<section class="sticky top-[64px] z-30 bg-surface/95 backdrop-blur-sm px-md py-sm flex gap-xs overflow-x-auto no-scrollbar border-b border-outline-variant/50">
+<button class="flex items-center gap-xs px-md py-xs bg-surface-container-lowest border border-outline-variant rounded-full whitespace-nowrap hover:bg-surface-container transition-colors">
+<span class="font-label-caps text-label-caps text-on-surface-variant">MUNICIPIO</span>
+<span class="material-symbols-outlined text-[18px] text-on-surface-variant" data-icon="expand_more">expand_more</span>
+</button>
+<button class="flex items-center gap-xs px-md py-xs bg-surface-container-lowest border border-outline-variant rounded-full whitespace-nowrap hover:bg-surface-container transition-colors">
+<span class="font-label-caps text-label-caps text-on-surface-variant">TIPO</span>
+<span class="material-symbols-outlined text-[18px] text-on-surface-variant" data-icon="expand_more">expand_more</span>
+</button>
+<button class="flex items-center gap-xs px-md py-xs bg-surface-container-lowest border border-outline-variant rounded-full whitespace-nowrap hover:bg-surface-container transition-colors">
+<span class="font-label-caps text-label-caps text-on-surface-variant">CONFIANZA</span>
+<span class="material-symbols-outlined text-[18px] text-on-surface-variant" data-icon="tune">tune</span>
+</button>
+</section>
+<!-- Stats Overview (Subtle) -->
+<div class="px-md mt-md grid grid-cols-2 gap-sm">
+<div class="p-md bg-surface-container-lowest border border-outline-variant rounded-xl">
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-xs">VALOR TOTAL</p>
+<p class="font-headline-md text-headline-md font-bold text-primary">2.48M €</p>
+</div>
+<div class="p-md bg-surface-container-lowest border border-outline-variant rounded-xl">
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-xs">PROPIEDADES</p>
+<p class="font-headline-md text-headline-md font-bold text-primary">12</p>
+</div>
+</div>
+<!-- Property List -->
+<div class="px-md mt-lg space-y-md">
+<!-- Card 1 -->
+<div class="valuation-card bg-surface-container-lowest rounded-xl p-md border border-outline-variant shadow-sm transition-transform active:scale-[0.98] duration-150">
+<div class="flex justify-between items-start mb-sm">
+<div>
+<h3 class="font-body-lg text-body-lg font-semibold text-primary">Calle de Serrano, 45</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Salamanca, Madrid</p>
+</div>
+<div class="bg-secondary/10 px-xs py-[2px] rounded border border-secondary/20 flex items-center gap-base">
+<span class="material-symbols-outlined text-[14px] text-secondary" data-icon="verified" style="font-variation-settings: 'FILL' 1;">verified</span>
+<span class="font-label-caps text-label-caps text-secondary">ALTA</span>
+</div>
+</div>
+<div class="flex items-end justify-between">
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant">VALOR ESTIMADO</p>
+<p class="font-headline-md text-headline-md font-bold text-secondary">1.240.000 €</p>
+</div>
+<div class="text-right">
+<p class="font-label-caps text-label-caps text-on-surface-variant">VS ANUNCIO</p>
+<div class="flex items-center gap-xs text-emerald-600">
+<span class="material-symbols-outlined text-[18px]" data-icon="trending_down">trending_down</span>
+<span class="font-data-mono text-data-mono font-bold">−12.4%</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="valuation-card bg-surface-container-lowest rounded-xl p-md border border-outline-variant shadow-sm transition-transform active:scale-[0.98] duration-150">
+<div class="flex justify-between items-start mb-sm">
+<div>
+<h3 class="font-body-lg text-body-lg font-semibold text-primary">Paseo de Gracia, 92</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Eixample, Barcelona</p>
+</div>
+<div class="bg-on-surface-variant/10 px-xs py-[2px] rounded border border-on-surface-variant/20 flex items-center gap-base">
+<span class="material-symbols-outlined text-[14px] text-on-surface-variant" data-icon="info">info</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">MEDIA</span>
+</div>
+</div>
+<div class="flex items-end justify-between">
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant">VALOR ESTIMADO</p>
+<p class="font-headline-md text-headline-md font-bold text-secondary">895.000 €</p>
+</div>
+<div class="text-right">
+<p class="font-label-caps text-label-caps text-on-surface-variant">VS ANUNCIO</p>
+<div class="flex items-center gap-xs text-emerald-600">
+<span class="material-symbols-outlined text-[18px]" data-icon="trending_down">trending_down</span>
+<span class="font-data-mono text-data-mono font-bold">−8.2%</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="valuation-card bg-surface-container-lowest rounded-xl p-md border border-outline-variant shadow-sm transition-transform active:scale-[0.98] duration-150">
+<div class="flex justify-between items-start mb-sm">
+<div>
+<h3 class="font-body-lg text-body-lg font-semibold text-primary">Avenida de la Libertad, 12</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Centro, San Sebastián</p>
+</div>
+<div class="bg-secondary/10 px-xs py-[2px] rounded border border-secondary/20 flex items-center gap-base">
+<span class="material-symbols-outlined text-[14px] text-secondary" data-icon="verified" style="font-variation-settings: 'FILL' 1;">verified</span>
+<span class="font-label-caps text-label-caps text-secondary">ALTA</span>
+</div>
+</div>
+<div class="flex items-end justify-between">
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant">VALOR ESTIMADO</p>
+<p class="font-headline-md text-headline-md font-bold text-secondary">645.000 €</p>
+</div>
+<div class="text-right">
+<p class="font-label-caps text-label-caps text-on-surface-variant">VS ANUNCIO</p>
+<div class="flex items-center gap-xs text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]" data-icon="horizontal_rule">horizontal_rule</span>
+<span class="font-data-mono text-data-mono font-bold">0.0%</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Empty State Hint (Appears if list is small) -->
+<div class="py-xl flex flex-col items-center text-center opacity-60">
+<div class="w-16 h-16 rounded-full bg-surface-container flex items-center justify-center mb-md">
+<span class="material-symbols-outlined text-outline text-[32px]" data-icon="inventory_2">inventory_2</span>
+</div>
+<h4 class="font-body-md text-body-md font-semibold text-primary">Fin de la cartera</h4>
+<p class="font-body-sm text-body-sm max-w-[240px] mt-xs">Valora nuevas propiedades para ampliar tu análisis patrimonial.</p>
+</div>
+</div>
+</main>
+<!-- FAB -->
+<button class="fixed bottom-[96px] right-md z-50 bg-primary shadow-lg w-14 h-14 rounded-full flex items-center justify-center text-white active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-[28px]" data-icon="add">add</span>
+</button>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 bg-surface-container-lowest border-t border-outline-variant flex justify-around items-center px-md pb-md pt-sm shadow-sm">
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-base py-xs hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="dashboard">dashboard</span>
+<span class="font-label-caps text-label-caps">Dashboard</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-base py-xs hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="analytics">analytics</span>
+<span class="font-label-caps text-label-caps">Valorar</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary bg-primary-container/10 rounded-xl px-base py-xs" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="inventory_2" style="font-variation-settings: 'FILL' 1;">inventory_2</span>
+<span class="font-label-caps text-label-caps">Cartera</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-base py-xs hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="menu">menu</span>
+<span class="font-label-caps text-label-caps">Más</span>
+</a>
+</nav>
+<!-- Footer (Suppressed for Main App Flow but kept for Structure check) -->
+<footer class="hidden">
+<p>© 2024 VALIO Proptech. Todos los derechos reservados.</p>
+</footer>
+<script>
+        // Simple micro-interaction for active states
+        document.querySelectorAll('a, button').forEach(el => {
+            el.addEventListener('mousedown', () => el.classList.add('active-nav-scale'));
+            el.addEventListener('mouseup', () => el.classList.remove('active-nav-scale'));
+            el.addEventListener('mouseleave', () => el.classList.remove('active-nav-scale'));
+        });
+        
+        // Sticky Header Shadow Toggle
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 10) {
+                header.classList.add('shadow-md');
+            } else {
+                header.classList.remove('shadow-md');
+            }
+        });
+    </script>
+</body></html>

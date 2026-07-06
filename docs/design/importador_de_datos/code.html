@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es-ES"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Geist:wght@400;500;600;700;800&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Inter:wght@100..900&display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .step-active {
+            width: 2rem;
+            height: 0.25rem;
+            background-color: #0F4C5C;
+            border-radius: 9999px;
+        }
+        .step-inactive {
+            width: 1.5rem;
+            height: 0.25rem;
+            background-color: #E5E5E0;
+            border-radius: 9999px;
+        }
+        /* Custom scrollbar for mobile feel */
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #FAFAF7;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #E5E5E0;
+            border-radius: 10px;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface": "#f9f9ff",
+                        "primary-fixed-dim": "#9acee1",
+                        "secondary-fixed": "#ffdfa0",
+                        "tertiary-fixed-dim": "#c6c7c2",
+                        "inverse-primary": "#9acee1",
+                        "on-error": "#ffffff",
+                        "primary-container": "#0f4c5c",
+                        "on-secondary-container": "#715300",
+                        "surface-dim": "#d2daf0",
+                        "on-primary-fixed": "#001f28",
+                        "error": "#ba1a1a",
+                        "on-tertiary": "#ffffff",
+                        "outline": "#70787c",
+                        "secondary-fixed-dim": "#f6be39",
+                        "on-secondary": "#ffffff",
+                        "on-background": "#141b2c",
+                        "on-secondary-fixed-variant": "#5c4300",
+                        "surface-variant": "#dbe2f9",
+                        "on-primary-container": "#87bbce",
+                        "surface-container-low": "#f1f3ff",
+                        "on-tertiary-container": "#b3b4af",
+                        "on-primary-fixed-variant": "#114d5d",
+                        "inverse-on-surface": "#edf0ff",
+                        "surface-bright": "#f9f9ff",
+                        "error-container": "#ffdad6",
+                        "background": "#f9f9ff",
+                        "surface-container": "#e9edff",
+                        "inverse-surface": "#293041",
+                        "tertiary": "#2e302d",
+                        "tertiary-container": "#454643",
+                        "on-surface-variant": "#40484b",
+                        "on-tertiary-fixed": "#1a1c19",
+                        "tertiary-fixed": "#e3e3de",
+                        "surface-tint": "#306576",
+                        "secondary-container": "#ffc641",
+                        "on-primary": "#ffffff",
+                        "primary-fixed": "#b6ebfe",
+                        "surface-container-high": "#e0e8ff",
+                        "on-tertiary-fixed-variant": "#464744",
+                        "primary": "#003441",
+                        "secondary": "#795900",
+                        "surface-container-lowest": "#ffffff",
+                        "outline-variant": "#c0c8cb",
+                        "surface-container-highest": "#dbe2f9",
+                        "on-secondary-fixed": "#261a00",
+                        "on-surface": "#141b2c",
+                        "on-error-container": "#93000a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "sm": "12px",
+                        "base": "4px",
+                        "xs": "8px",
+                        "sidebar-width": "260px",
+                        "md": "16px",
+                        "lg": "24px",
+                        "xl": "32px",
+                        "container-max": "1280px"
+                    },
+                    "fontFamily": {
+                        "body-sm": ["Inter"],
+                        "headline-lg-mobile": ["Geist"],
+                        "display-lg": ["Geist"],
+                        "body-md": ["Inter"],
+                        "headline-lg": ["Geist"],
+                        "body-lg": ["Inter"],
+                        "data-mono": ["Geist"],
+                        "label-caps": ["Geist"],
+                        "headline-md": ["Geist"]
+                    },
+                    "fontSize": {
+                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "data-mono": ["14px", {"lineHeight": "20px", "fontWeight": "500"}],
+                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "500"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-surface font-body-md text-on-surface min-h-screen flex flex-col">
+<!-- Top AppBar (Mobile context) -->
+<header class="w-full top-0 sticky z-50 bg-surface-container-lowest border-b border-outline-variant">
+<div class="flex justify-between items-center px-lg py-md w-full max-w-container-max mx-auto">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary">arrow_back</span>
+<span class="font-headline-md text-headline-md font-bold text-primary">VALIO</span>
+</div>
+<div class="w-8 h-8 rounded-full bg-primary-container/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-[20px]">account_circle</span>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-grow flex flex-col px-md py-lg gap-lg overflow-y-auto pb-32">
+<!-- Wizard Header -->
+<div class="flex flex-col gap-xs">
+<div class="flex gap-xs items-center">
+<div class="step-inactive bg-primary/20"></div>
+<div class="step-active"></div>
+<div class="step-inactive"></div>
+<span class="font-label-caps text-label-caps text-on-surface-variant ml-base">PASO 2 DE 3</span>
+</div>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile text-primary">Mapear columnas</h1>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Relaciona los datos de tu Excel con los campos de VALIO para una valoración precisa.</p>
+</div>
+<!-- Info Banner (Privacy) -->
+<div class="bg-surface-container-low p-md rounded-xl border border-outline-variant flex gap-sm items-start">
+<span class="material-symbols-outlined text-primary text-[20px]">verified_user</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+                Los datos se anonimizan: solo guardamos <span class="font-bold">inmueble</span>, <span class="font-bold">precio</span> y <span class="font-bold">fecha</span>. No almacenamos datos de clientes.
+            </p>
+</div>
+<!-- Amber Warning -->
+<div class="bg-[#FFF8E1] border-l-4 border-secondary p-md rounded-r-xl flex gap-sm items-start shadow-sm">
+<span class="material-symbols-outlined text-secondary text-[24px]">warning</span>
+<div class="flex flex-col gap-xs">
+<p class="font-body-sm text-body-sm text-secondary font-bold">Campo requerido faltante</p>
+<p class="font-body-sm text-body-sm text-on-secondary-container">No detectamos la columna de ocupación — selecciónala o márcala como no disponible.</p>
+</div>
+</div>
+<!-- Mapping Cards Grid -->
+<div class="flex flex-col gap-md">
+<!-- Card 1: Dirección -->
+<div class="bg-white border border-outline-variant p-md rounded-xl shadow-sm border-l-4 border-secondary">
+<div class="flex justify-between items-start mb-sm">
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps text-on-surface-variant">CAMPO VALIO</span>
+<span class="font-body-md text-body-md font-bold text-primary">Ubicación / Dirección</span>
+</div>
+<span class="material-symbols-outlined text-emerald-600">check_circle</span>
+</div>
+<label class="font-label-caps text-label-caps text-on-surface-variant mb-xs block">COLUMNA EXCEL</label>
+<div class="relative">
+<select class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-md py-xs font-body-md appearance-none focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none">
+<option>Dirección Completa</option>
+<option>Calle + Número</option>
+<option>Coordenadas</option>
+</select>
+<span class="material-symbols-outlined absolute right-md top-1/2 -translate-y-1/2 pointer-events-none text-on-surface-variant">expand_more</span>
+</div>
+</div>
+<!-- Card 2: Precio -->
+<div class="bg-white border border-outline-variant p-md rounded-xl shadow-sm border-l-4 border-secondary">
+<div class="flex justify-between items-start mb-sm">
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps text-on-surface-variant">CAMPO VALIO</span>
+<span class="font-body-md text-body-md font-bold text-primary">Precio de cierre (€)</span>
+</div>
+<span class="material-symbols-outlined text-emerald-600">check_circle</span>
+</div>
+<label class="font-label-caps text-label-caps text-on-surface-variant mb-xs block">COLUMNA EXCEL</label>
+<div class="relative">
+<select class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-md py-xs font-body-md appearance-none focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none">
+<option>Importe_Venta</option>
+<option>Precio</option>
+<option>Valor Transacción</option>
+</select>
+<span class="material-symbols-outlined absolute right-md top-1/2 -translate-y-1/2 pointer-events-none text-on-surface-variant">expand_more</span>
+</div>
+</div>
+<!-- Card 3: Ocupación (The warning one) -->
+<div class="bg-white border-2 border-secondary p-md rounded-xl shadow-sm">
+<div class="flex justify-between items-start mb-sm">
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps text-secondary">CAMPO VALIO</span>
+<span class="font-body-md text-body-md font-bold text-primary">Estado de ocupación</span>
+</div>
+<span class="material-symbols-outlined text-secondary">error</span>
+</div>
+<label class="font-label-caps text-label-caps text-on-surface-variant mb-xs block">COLUMNA EXCEL</label>
+<div class="relative">
+<select class="w-full bg-[#FFF8E1] border border-secondary rounded-lg px-md py-xs font-body-md appearance-none focus:ring-2 focus:ring-secondary/20 focus:border-secondary outline-none">
+<option disabled="" selected="">Seleccionar columna...</option>
+<option>Ocupación</option>
+<option>Situación Jurídica</option>
+<option>-- No disponible en mi archivo --</option>
+</select>
+<span class="material-symbols-outlined absolute right-md top-1/2 -translate-y-1/2 pointer-events-none text-on-surface-variant">expand_more</span>
+</div>
+<div class="mt-sm flex items-center gap-xs">
+<input class="w-4 h-4 text-primary rounded border-outline-variant" id="not-available" type="checkbox"/>
+<label class="font-body-sm text-body-sm text-on-surface-variant italic" for="not-available">Marcar como no disponible en todo el set</label>
+</div>
+</div>
+<!-- Card 4: Superficie -->
+<div class="bg-white border border-outline-variant p-md rounded-xl shadow-sm border-l-4 border-secondary">
+<div class="flex justify-between items-start mb-sm">
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps text-on-surface-variant">CAMPO VALIO</span>
+<span class="font-body-md text-body-md font-bold text-primary">Superficie (m²)</span>
+</div>
+<span class="material-symbols-outlined text-emerald-600">check_circle</span>
+</div>
+<label class="font-label-caps text-label-caps text-on-surface-variant mb-xs block">COLUMNA EXCEL</label>
+<div class="relative">
+<select class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-md py-xs font-body-md appearance-none focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none">
+<option>m2_construidos</option>
+<option>Superficie Catastral</option>
+<option>m2_utiles</option>
+</select>
+<span class="material-symbols-outlined absolute right-md top-1/2 -translate-y-1/2 pointer-events-none text-on-surface-variant">expand_more</span>
+</div>
+</div>
+</div>
+<!-- Data Sample Preview -->
+<div class="mt-md">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant mb-sm uppercase">Previsualización de datos</h3>
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden overflow-x-auto">
+<table class="w-full text-left font-body-sm text-body-sm min-w-[600px]">
+<thead class="bg-surface-container border-b border-outline-variant">
+<tr>
+<th class="px-md py-sm font-label-caps text-label-caps">Excel: Dirección</th>
+<th class="px-md py-sm font-label-caps text-label-caps">Excel: Importe</th>
+<th class="px-md py-sm font-label-caps text-label-caps">Excel: m2</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/30">
+<tr class="hover:bg-primary-container/5 transition-colors">
+<td class="px-md py-sm truncate max-w-[200px]">Calle Almagro 24, 28010</td>
+<td class="px-md py-sm font-data-mono">850.000 €</td>
+<td class="px-md py-sm font-data-mono">112 m²</td>
+</tr>
+<tr class="bg-surface-container-low/50 hover:bg-primary-container/5 transition-colors">
+<td class="px-md py-sm truncate max-w-[200px]">Paseo de la Castellana 12</td>
+<td class="px-md py-sm font-data-mono">1.240.000 €</td>
+<td class="px-md py-sm font-data-mono">145 m²</td>
+</tr>
+<tr class="hover:bg-primary-container/5 transition-colors">
+<td class="px-md py-sm truncate max-w-[200px]">Calle Serrano 102, 5A</td>
+<td class="px-md py-sm font-data-mono">2.100.000 €</td>
+<td class="px-md py-sm font-data-mono">210 m²</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</main>
+<!-- Import Wizard Footer -->
+<footer class="fixed bottom-0 left-0 w-full z-50 bg-surface-container-lowest border-t border-outline-variant p-md flex flex-col gap-sm shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
+<div class="flex justify-between items-center">
+<div class="flex items-center gap-xs">
+<div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
+<span class="font-body-sm text-body-sm text-on-surface-variant font-bold">23 filas listas</span>
+</div>
+<span class="font-label-caps text-label-caps text-primary cursor-pointer hover:underline">Ver errores (0)</span>
+</div>
+<div class="flex gap-md">
+<button class="flex-1 py-md px-lg border border-outline-variant text-primary font-bold rounded-xl bg-white hover:bg-surface-container transition-colors active:scale-95 duration-150">
+                Atrás
+            </button>
+<button class="flex-[2] py-md px-lg bg-primary text-white font-bold rounded-xl shadow-lg shadow-primary/20 hover:opacity-90 active:scale-95 duration-150 flex items-center justify-center gap-xs">
+<span>Importar 23 comparables</span>
+<span class="material-symbols-outlined text-[20px]">upload_file</span>
+</button>
+</div>
+</footer>
+<script>
+        // Micro-interaction for the selects
+        document.querySelectorAll('select').forEach(select => {
+            select.addEventListener('change', function() {
+                const card = this.closest('div.bg-white');
+                if (this.value !== "" && !this.disabled) {
+                    card.classList.remove('border-secondary');
+                    card.classList.add('border-outline-variant');
+                }
+            });
+        });
+    </script>
+</body></html>

@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es-ES"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Geist:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            background-color: #FAFAF7;
+            font-family: 'Inter', sans-serif;
+            color: #141b2c;
+            -webkit-font-smoothing: antialiased;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #c0c8cb;
+            border-radius: 10px;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(8px);
+        }
+        .segmented-control input:checked + label {
+            background-color: #0F4C5C;
+            color: white;
+        }
+        .shadow-ambient {
+            box-shadow: 0px 4px 20px rgba(16, 24, 40, 0.05);
+        }
+        .amber-accent-border {
+            border-left: 4px solid #D4A017;
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: #0F4C5C !important;
+            box-shadow: 0 0 0 2px rgba(15, 76, 92, 0.1);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface": "#f9f9ff",
+                        "primary-fixed-dim": "#9acee1",
+                        "secondary-fixed": "#ffdfa0",
+                        "tertiary-fixed-dim": "#c6c7c2",
+                        "inverse-primary": "#9acee1",
+                        "on-error": "#ffffff",
+                        "primary-container": "#0f4c5c",
+                        "on-secondary-container": "#715300",
+                        "surface-dim": "#d2daf0",
+                        "on-primary-fixed": "#001f28",
+                        "error": "#ba1a1a",
+                        "on-tertiary": "#ffffff",
+                        "outline": "#70787c",
+                        "secondary-fixed-dim": "#f6be39",
+                        "on-secondary": "#ffffff",
+                        "on-background": "#141b2c",
+                        "on-secondary-fixed-variant": "#5c4300",
+                        "surface-variant": "#dbe2f9",
+                        "on-primary-container": "#87bbce",
+                        "surface-container-low": "#f1f3ff",
+                        "on-tertiary-container": "#b3b4af",
+                        "on-primary-fixed-variant": "#114d5d",
+                        "inverse-on-surface": "#edf0ff",
+                        "surface-bright": "#f9f9ff",
+                        "error-container": "#ffdad6",
+                        "background": "#f9f9ff",
+                        "surface-container": "#e9edff",
+                        "inverse-surface": "#293041",
+                        "tertiary": "#2e302d",
+                        "tertiary-container": "#454643",
+                        "on-surface-variant": "#40484b",
+                        "on-tertiary-fixed": "#1a1c19",
+                        "tertiary-fixed": "#e3e3de",
+                        "surface-tint": "#306576",
+                        "secondary-container": "#ffc641",
+                        "on-primary": "#ffffff",
+                        "primary-fixed": "#b6ebfe",
+                        "surface-container-high": "#e0e8ff",
+                        "on-tertiary-fixed-variant": "#464744",
+                        "primary": "#003441",
+                        "secondary": "#795900",
+                        "surface-container-lowest": "#ffffff",
+                        "outline-variant": "#c0c8cb",
+                        "surface-container-highest": "#dbe2f9",
+                        "on-secondary-fixed": "#261a00",
+                        "on-surface": "#141b2c",
+                        "on-error-container": "#93000a",
+                        "brand-petrol": "#0F4C5C",
+                        "brand-amber": "#D4A017",
+                        "brand-ink": "#101828",
+                        "brand-paper": "#FAFAF7",
+                        "brand-border": "#E5E5E0"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "sm": "12px",
+                        "base": "4px",
+                        "xs": "8px",
+                        "sidebar-width": "260px",
+                        "md": "16px",
+                        "lg": "24px",
+                        "xl": "32px",
+                        "container-max": "1280px"
+                    },
+                    "fontFamily": {
+                        "body-sm": ["Inter"],
+                        "headline-lg-mobile": ["Geist"],
+                        "display-lg": ["Geist"],
+                        "body-md": ["Inter"],
+                        "headline-lg": ["Geist"],
+                        "body-lg": ["Inter"],
+                        "data-mono": ["Geist"],
+                        "label-caps": ["Geist"],
+                        "headline-md": ["Geist"]
+                    },
+                    "fontSize": {
+                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "data-mono": ["14px", {"lineHeight": "20px", "fontWeight": "500"}],
+                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "500"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="flex flex-col min-h-screen">
+<!-- TopAppBar (Based on JSON) -->
+<header class="w-full top-0 sticky bg-surface-container-lowest border-b border-outline-variant z-40">
+<div class="flex justify-between items-center px-lg py-md w-full max-w-container-max mx-auto">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-primary" data-icon="business_center">business_center</span>
+<span class="font-headline-lg text-headline-lg font-bold text-primary tracking-tight">VALIO</span>
+</div>
+<div class="hidden md:flex items-center gap-xl">
+<nav class="flex gap-lg">
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors" href="#">Dashboard</a>
+<a class="font-label-caps text-label-caps text-primary font-bold" href="#">Valorar</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors" href="#">Cartera</a>
+</nav>
+<div class="h-10 w-10 rounded-full bg-surface-container flex items-center justify-center overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A professional profile headshot of a financial advisor in a light-filled modern office, following the minimalist and clean aesthetic of the VALIO proptech platform. The lighting is soft and natural, emphasizing trust and professionalism. The background is a blurred warm off-white office setting with subtle architectural lines." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD1K3KCyt0ajbav3uENbSfk1flemGhlzgMdLHGSyoeyjnwiurYDz6zR9ZLBiHas7SN4BkjU0LMoh7SNwk6k85uRDpYU2HtfwE_3FpcrkbY6dH4VRuJMC3nAvaIbuliT2S7uilbarIp-tBS6NiD58c--5Cfv_17jnKAZakaELd4ZbCgMGmSQfQozVN6UqYFKatuF07AowAaffFny4KazKgndO_eXFr2IGggqL5w3tqG6X1f_JoY0kYei"/>
+</div>
+</div>
+<div class="md:hidden">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="menu">menu</span>
+</div>
+</div>
+</header>
+<main class="flex-grow w-full max-w-[900px] mx-auto px-md py-xl mb-32">
+<!-- Stepper -->
+<div class="mb-xl">
+<div class="flex items-center gap-sm mb-base">
+<span class="font-label-caps text-label-caps text-brand-petrol px-xs py-1 bg-primary-container/10 rounded-full">Paso 1 de 2</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-brand-ink">1. Localización</h1>
+<p class="font-body-md text-body-md text-on-surface-variant mt-xs">Indique la ubicación exacta del inmueble para obtener los datos oficiales.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-lg">
+<!-- Left Column: Location and Map -->
+<div class="md:col-span-7 flex flex-col gap-lg">
+<!-- Search Section -->
+<div class="relative">
+<label class="font-label-caps text-label-caps text-on-surface-variant block mb-xs">DIRECCIÓN O REFERENCIA CATASTRAL</label>
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-md top-1/2 -translate-y-1/2 text-outline" data-icon="search">search</span>
+<input class="w-full pl-11 pr-md py-md bg-white border border-brand-border rounded-xl text-body-md transition-all focus:ring-0" placeholder="Calle, número, ciudad..." type="text" value="Calle de Velázquez, 45, Madrid"/>
+</div>
+<p class="mt-xs text-[12px] text-on-surface-variant flex items-center gap-xs">
+<span class="material-symbols-outlined text-[14px]" data-icon="info">info</span>
+                        Detectamos automáticamente la sección censal y los datos del Catastro
+                    </p>
+</div>
+<!-- Map Preview -->
+<div class="w-full h-72 rounded-xl border border-brand-border overflow-hidden relative shadow-sm group">
+<div class="absolute inset-0 bg-gray-100 grayscale transition-all duration-700 group-hover:grayscale-0">
+<div class="w-full h-full bg-cover bg-center" data-location="Madrid, Spain" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAMjRec-XP1_aH-sfrG1iD34kMULC8vGkOvofN2OwbxNCUg-IxrlInDkxaQuhoo8mPsik1ICaSXRQhgfhq3JL_f9icpWmRukLJIeS_a1535BohkPYS7u8A64xXDFRxiIeJsYo0I4C80Aitq-FgVcruVnoXTezsHatjpfjO9UCjDYaUD7kulp3ZWtPretYiCCvGc27FfB_WFDlt0WDsMUuFiBh0mK9dtHrAzcDRZERvQK8n4cKYfINI_')"></div>
+</div>
+<!-- Pin -->
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+<div class="relative flex items-center justify-center">
+<div class="absolute w-12 h-12 bg-brand-petrol/20 rounded-full animate-ping"></div>
+<span class="material-symbols-outlined text-brand-petrol text-4xl" data-icon="location_on" style="font-variation-settings: 'FILL' 1;">location_on</span>
+</div>
+</div>
+<!-- Overlay Info -->
+<div class="absolute bottom-md left-md right-md glass-panel p-md rounded-lg border border-brand-border/40 flex justify-between items-center">
+<div>
+<p class="font-label-caps text-label-caps text-brand-petrol">COORDENADAS</p>
+<p class="font-data-mono text-data-mono">40.4285° N, 3.6845° W</p>
+</div>
+<button class="px-md py-xs bg-brand-petrol text-white text-[12px] font-semibold rounded-lg hover:bg-opacity-90 transition-all">Ver pantalla completa</button>
+</div>
+</div>
+<!-- Catastro Data Card -->
+<div class="bg-white border border-brand-border rounded-xl p-lg amber-accent-border shadow-ambient">
+<div class="flex justify-between items-start mb-md">
+<div>
+<h3 class="font-label-caps text-label-caps text-brand-amber">DATOS DEL CATASTRO</h3>
+<p class="font-body-md text-brand-ink font-semibold">Ref: 4509801VK4740N0001XF</p>
+</div>
+<a class="text-brand-petrol font-label-caps text-label-caps hover:underline" href="#">EDITAR</a>
+</div>
+<div class="grid grid-cols-3 gap-md">
+<div class="p-md bg-brand-paper rounded-lg border border-brand-border/50">
+<p class="text-[11px] text-on-surface-variant font-label-caps mb-base">SUPERFICIE</p>
+<p class="font-data-mono text-lg font-bold">78 m²</p>
+</div>
+<div class="p-md bg-brand-paper rounded-lg border border-brand-border/50">
+<p class="text-[11px] text-on-surface-variant font-label-caps mb-base">AÑO</p>
+<p class="font-data-mono text-lg font-bold">1965</p>
+</div>
+<div class="p-md bg-brand-paper rounded-lg border border-brand-border/50">
+<p class="text-[11px] text-on-surface-variant font-label-caps mb-base">USO</p>
+<p class="font-data-mono text-lg font-bold">Residencial</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Characteristics Form -->
+<div class="md:col-span-5 flex flex-col gap-lg">
+<div class="bg-white border border-brand-border rounded-xl p-lg shadow-ambient">
+<h3 class="font-headline-md text-headline-md text-brand-ink mb-lg">Características</h3>
+<div class="space-y-xl">
+<!-- Tipo Segmented -->
+<div>
+<label class="font-label-caps text-label-caps text-on-surface-variant block mb-xs">TIPO DE INMUEBLE</label>
+<div class="flex bg-brand-paper p-1 rounded-xl border border-brand-border segmented-control">
+<input checked="" class="hidden" id="tipo-piso" name="tipo" type="radio"/>
+<label class="flex-1 text-center py-sm rounded-lg text-body-sm font-medium cursor-pointer transition-all" for="tipo-piso">Piso</label>
+<input class="hidden" id="tipo-casa" name="tipo" type="radio"/>
+<label class="flex-1 text-center py-sm rounded-lg text-body-sm font-medium cursor-pointer transition-all" for="tipo-casa">Casa</label>
+</div>
+</div>
+<!-- Estado Segmented -->
+<div>
+<label class="font-label-caps text-label-caps text-on-surface-variant block mb-xs">ESTADO DE CONSERVACIÓN</label>
+<div class="grid grid-cols-2 gap-1 bg-brand-paper p-1 rounded-xl border border-brand-border segmented-control">
+<input class="hidden" id="estado-reformar" name="estado" type="radio"/>
+<label class="text-center py-sm rounded-lg text-[12px] font-medium cursor-pointer transition-all" for="estado-reformar">A reformar</label>
+<input checked="" class="hidden" id="estado-bueno" name="estado" type="radio"/>
+<label class="text-center py-sm rounded-lg text-[12px] font-medium cursor-pointer transition-all" for="estado-bueno">Buen estado</label>
+<input class="hidden" id="estado-reformado" name="estado" type="radio"/>
+<label class="text-center py-sm rounded-lg text-[12px] font-medium cursor-pointer transition-all" for="estado-reformado">Reformado</label>
+<input class="hidden" id="estado-nueva" name="estado" type="radio"/>
+<label class="text-center py-sm rounded-lg text-[12px] font-medium cursor-pointer transition-all" for="estado-nueva">Obra nueva</label>
+</div>
+</div>
+<!-- Grid Fields -->
+<div class="grid grid-cols-2 gap-md">
+<div>
+<label class="font-label-caps text-label-caps text-on-surface-variant block mb-xs">M² ÚTILES</label>
+<div class="relative">
+<input class="w-full px-md py-sm bg-white border border-brand-border rounded-xl font-data-mono" type="number" value="78"/>
+<span class="absolute right-md top-1/2 -translate-y-1/2 text-outline text-body-sm">m²</span>
+</div>
+</div>
+<div>
+<label class="font-label-caps text-label-caps text-on-surface-variant block mb-xs">HABITACIONES</label>
+<input class="w-full px-md py-sm bg-white border border-brand-border rounded-xl font-data-mono" type="number" value="3"/>
+</div>
+<div>
+<label class="font-label-caps text-label-caps text-on-surface-variant block mb-xs">PLANTA</label>
+<input class="w-full px-md py-sm bg-white border border-brand-border rounded-xl font-data-mono" type="text" value="4º"/>
+</div>
+<div class="flex flex-col justify-end">
+<label class="flex items-center gap-md cursor-pointer select-none py-sm">
+<span class="font-label-caps text-label-caps text-on-surface-variant">ASCENSOR</span>
+<div class="relative">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-outline-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-brand-petrol"></div>
+</div>
+</label>
+</div>
+</div>
+<!-- Ocupacion -->
+<div>
+<div class="flex items-center justify-between mb-xs">
+<label class="font-label-caps text-label-caps text-on-surface-variant">SITUACIÓN DE OCUPACIÓN</label>
+<span class="material-symbols-outlined text-outline text-[18px] cursor-help" data-icon="help_outline">help_outline</span>
+</div>
+<select class="w-full px-md py-sm bg-white border border-brand-border rounded-xl text-body-md appearance-none" id="ocupacion-select" onchange="checkOcupacion(this)">
+<option selected="" value="Libre">Libre</option>
+<option value="Alquilado">Alquilado</option>
+<option value="Ocupado">Ocupado (Ilegalmente)</option>
+</select>
+<!-- Warning Highlight -->
+<div class="hidden mt-md p-md bg-error-container/20 border border-error/20 rounded-lg flex gap-md items-start" id="warning-ocupado">
+<span class="material-symbols-outlined text-error" data-icon="warning">warning</span>
+<div>
+<p class="text-error font-semibold text-body-sm">Aviso de riesgo</p>
+<p class="text-[12px] text-on-error-container">La ocupación ilegal penaliza el valor de mercado entre un 40% y un 60% y requiere procesos legales específicos.</p>
+</div>
+</div>
+</div>
+<!-- CTA -->
+<button class="w-full bg-brand-petrol text-white py-lg rounded-xl font-headline-md text-headline-md flex items-center justify-center gap-md hover:shadow-lg active:scale-[0.98] transition-all">
+<span>Valorar inmueble</span>
+<span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer (Based on JSON) -->
+<footer class="w-full mt-auto bg-surface-container-lowest border-t border-secondary-container/30">
+<div class="flex flex-col items-center gap-base py-lg px-xl text-center max-w-container-max mx-auto">
+<span class="font-label-caps text-label-caps text-primary font-bold">VALIO PROPTECH</span>
+<div class="flex gap-md mt-xs">
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-secondary-container transition-colors" href="#">Aviso Legal</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-secondary-container transition-colors" href="#">Privacidad</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-secondary-container transition-colors" href="#">Cookies</a>
+</div>
+<p class="font-body-sm text-body-sm text-secondary mt-base">© 2024 VALIO Proptech. Todos los derechos reservados.</p>
+</div>
+</footer>
+<!-- BottomNavBar (Based on JSON) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 bg-surface-container-lowest border-t border-outline-variant shadow-sm flex justify-around items-center px-md pb-md pt-sm md:hidden">
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-base py-xs active:scale-95 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-label-caps text-[10px] mt-1">Dashboard</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary bg-primary-container/10 rounded-xl px-base py-xs active:scale-95 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="analytics" style="font-variation-settings: 'FILL' 1;">analytics</span>
+<span class="font-label-caps text-[10px] mt-1">Valorar</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-base py-xs active:scale-95 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span class="font-label-caps text-[10px] mt-1">Cartera</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-base py-xs active:scale-95 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+<span class="font-label-caps text-[10px] mt-1">Más</span>
+</a>
+</nav>
+<script>
+        function checkOcupacion(select) {
+            const warning = document.getElementById('warning-ocupado');
+            if (select.value === 'Ocupado') {
+                warning.classList.remove('hidden');
+            } else {
+                warning.classList.add('hidden');
+            }
+        }
+    </script>
+</body></html>
