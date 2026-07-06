@@ -51,6 +51,39 @@ export async function runValuation(
       fetchZoneStats(supabase),
     ])
     const outcome = valuate(subject, candidates, zones, new Date())
+
+    // Persistencia (snapshot reproducible). El workspace lo resuelve la RLS.
+    const { data: member } = await supabase.from('members').select('workspace_id').limit(1).single()
+    if (member) {
+      const { data: property } = await supabase
+        .from('properties')
+        .insert({
+          workspace_id: member.workspace_id,
+          kind: subject.kind,
+          address: '(pendiente de geocodificación — Plan 2)',
+          built_area_m2: subject.builtAreaM2,
+          bedrooms: subject.bedrooms,
+          floor: subject.floor,
+          has_elevator: subject.hasElevator,
+          year_built: subject.yearBuilt,
+          condition: subject.condition,
+          occupancy: subject.occupancy,
+          lat: subject.lat,
+          lon: subject.lon,
+          census_section_id: subject.censusSectionId,
+        })
+        .select('id')
+        .single()
+      if (property) {
+        await supabase.from('valuations').insert({
+          workspace_id: member.workspace_id,
+          property_id: property.id,
+          outcome,
+          engine_version: 'v0-comparables',
+        })
+      }
+    }
+
     return { status: 'done', outcome }
   } catch (e) {
     return { status: 'error', message: e instanceof Error ? e.message : 'Error inesperado' }
