@@ -46,7 +46,7 @@ export function synthesize(
   return {
     status: 'ok',
     value: Math.round(value),
-    low: Math.round(value * (1 - fsd)),
+    low: Math.max(0, Math.round(value * (1 - fsd))),
     high: Math.round(value * (1 + fsd)),
     pricePerM2: Math.round(pricePerM2),
     confidence: confidence(adjusted.length, fsd),

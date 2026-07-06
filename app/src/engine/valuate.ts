@@ -18,8 +18,12 @@ export function valuate(
     return { status: 'rejected', reason: 'missing_zone_stats', found: 0, required: 1 }
   }
 
-  const usable = selectComparables(subject, candidates, now).filter((c) =>
-    zones.has(c.censusSectionId),
+  // Filtrar comps sin zone_stats ANTES del corte top-20: si no, candidatos válidos
+  // fuera del top-20 no pueden sustituir a los descartados por zona desconocida.
+  const usable = selectComparables(
+    subject,
+    candidates.filter((c) => zones.has(c.censusSectionId)),
+    now,
   )
 
   const adjusted = usable.map((comp) => ({
