@@ -18,7 +18,7 @@ Fuente: investigación de reseñas/foros verificada (informe completo en
 | P3 | 🛡️ **Doble precio: valor de anuncio vs valor de cierre estimado** con diferencial por zona | Q1 dispersión 3x entre valoradores + Q2 precios inflados 10-20% (test empírico HelpMyCash) | M | backlog (necesita calibración Registradores — Plan 2.3) |
 | P4 | 🛡️ **Ocupación como titular del informe** (% sobre valor de mercado, regla inversor 60-70%) | F12; ninguna herramienta reseñada lo cubre; VALIO ya calcula el ajuste | S | **✅ iteración 3** |
 | P5 | 🛡️ **Alquiler estimado + flag zona tensionada** por sección censal | F6 (idealista lo cobra B2B) + F8; encaja con pipeline INE/SERPAVI | M | backlog (tras Plan 2.1 completo) |
-| P6 | 📋 **Informe PDF white-label** con testigos citados y gráficos legibles | F1 — feature más valorada por agencias en toda la evidencia pro | M | **parcial (memorándum print v0)** — iteración 8; PDF white-label real → Plan 3 |
+| P6 | 📋 **Informe PDF white-label** con testigos citados y gráficos legibles | F1 — feature más valorada por agencias en toda la evidencia pro | M | **parcial (memorándum print v0 + carrusel de fotos con grid imprimible — Paquete Alex 3/3)** — iteración 8; PDF white-label real → Plan 3 |
 | P7 | 📋 **Anti-lead-gen como posicionamiento** (sin teléfono, sin vender leads, pricing público) | Q7 RealAdvisor vende leads >56€ + Q8 Trovimap 2,7/5 | S (copy landing) | **✅ (landing anti-lead-gen)** |
 | P8 | 📋 **Estimación de reforma por niveles + escenarios conservador/realista/optimista** | F9+F13 (Invisor la tiene y presume) | M | **✅ iteraciones 5+7** (escenarios + reforma por niveles) |
 | P9 | 📋 Histórico y re-valoración periódica de cartera | Q5/Q10 patrón Zestimate | M | backlog |
@@ -181,6 +181,42 @@ real ejecutado contra él (Plan 2.1 Tasks 3-4, adaptadas a la realidad):
   Barcelona**: dirección → CartoCiudad → sección censal PostGIS → coeficiente
   de renta real. Suite 93/93 y `tsc` limpios tras los scripts.
 
+### Paquete Alex 2026-07-08 (3/3): carrusel de fotos ✅
+
+- **Fotos reales del inmueble en el panel de resultado** (banda visual justo tras
+  los chips y antes de la card de valor: lo primero que quiere ver quien valora).
+  El usuario sube las fotos DESPUÉS de valorar (los inversores fotografían en la
+  visita); se asocian a la `property` que la valoración ya crea (`runValuation`
+  ahora devuelve su `id` en el estado `done`).
+- **Migración 0005** (`property_photos` + RLS de Storage por workspace), aplicada
+  en producción vía Management API: tabla `property_photos(property_id, workspace_id,
+  storage_path único, sort_order)` con RLS por `auth_workspace_id()`, y policies
+  select/insert/delete sobre `storage.objects` del bucket privado `property-photos`
+  restringidas a la carpeta `<workspace_id>/` (`storage.foldername(name)[1]`). Ruta
+  de los objetos: `<workspace_id>/<property_id>/<uuid>.<ext>`.
+- **Data + server actions** (`data/photos.ts`, `valorar/photo-actions.ts`): list con
+  URLs firmadas 1 h, upload (auth + workspace + pertenencia de la property + rollback
+  del objeto si falla el insert) y delete (fila + objeto). Corren con la sesión del
+  usuario, nunca service_role. `validatePhoto` pura (jpeg/png/webp, ≤6 MB) con 3 tests.
+- **Componente** `PropertyPhotos.tsx` (client, sin librerías): dropzone con drag&drop
+  para el estado vacío y carrusel casero accesible (teclado ←/→, contador, miniaturas,
+  añadir más, borrado con confirmación, `useTransition`). Grid imprimible de hasta 3
+  fotos sin controles (patrón `print-hidden`). `<img>` con URL firmada (no `next/image`).
+- **Fix de raíz**: el límite por defecto de los Server Actions (1 MB) rompía la subida
+  de fotos de hasta 6 MB con un error de framework no capturable → `bodySizeLimit: '8mb'`
+  + subida por-archivo (un request por foto) con validación previa en cliente.
+- **Verificación E2E real** (Playwright contra dev server, sesión magic-link admin):
+  "Calle Hospital 92, Barcelona" → sección 0801901019 → 75 m² → Valorar (253.718 €) →
+  banda vacía con dropzone → subida de `kitchen.png` (1,3 MB) → carrusel muestra la
+  foto (URL firmada, 1376×768) → borrado con confirmación → vuelta al dropzone.
+  Verificado en Storage vía service_role: objeto físico presente (1.318.519 B, image/png)
+  y luego 0 tras el borrado. `/demo` intacta (sin carrusel, sin persistencia).
+- **Verde**: `tsc` limpio, suite **96/96** (93 + 3 de `validatePhoto`), `npm run build`
+  limpio. Commits atómicos: migración / data+actions / componente / integración / fix.
+- **Queda 2/3 del paquete**: i18n del RESTO de la app (dashboard, valorar, cartera,
+  resultado…) en su propio paquete de traducción, que traducirá también los textos
+  nuevos del carrusel (hoy en español directo, como el resto de la app).
+
 ### Paquete Alex 2026-07-08 (1/3): landing + i18n ✅
 
 - **Landing pública anti-lead-gen (cierra P7)** en `app/src/app/page.tsx` (antes
@@ -208,9 +244,9 @@ real ejecutado contra él (Plan 2.1 Tasks 3-4, adaptadas a la realidad):
   en ES y cambio de idioma con el switcher a CA ("El preu real…/Prova gratis") y a
   EN ("The real price…/Start free") confirmando que hero, CTAs y header cambian;
   `/login`, `/demo` y `/dashboard` siguen respondiendo (dashboard 307→login sin sesión).
-- **Faltan 2/3 y 3/3 del paquete**: (2/3) i18n del RESTO de la app (dashboard,
-  valorar, cartera, resultado…) en su propio paquete de traducción; (3/3) carrusel
-  de fotos (hoy banda estática de 3 imágenes).
+- **Falta 2/3 del paquete**: i18n del RESTO de la app (dashboard, valorar, cartera,
+  resultado…) en su propio paquete de traducción. (3/3 carrusel de fotos ✅ hecho —
+  ver sección arriba.)
 
 ### Producción de datos — 2026-07-07 ✅ SMOKE E2E REAL VERDE
 - Supabase `valio` (eu-west-3) creado y migrado 0001-0004 + seed VÍA API (sin dashboard).
