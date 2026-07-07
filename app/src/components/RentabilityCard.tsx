@@ -4,6 +4,7 @@ import { useId, useMemo, useState } from 'react'
 import { Info } from 'lucide-react'
 import { computeRentability, type RentabilityLine } from '@/engine/rentability'
 import { ITP_BY_CCAA, type Ccaa, type IrpfReduction } from '@/engine/rentability-rates'
+import { estimateRenovation, RENOVATION_LABELS, type RenovationLevel } from '@/engine/renovation'
 import { computeScenarios, type ScenarioKind } from '@/engine/scenarios'
 import { formatEur } from '@/lib/format'
 
@@ -147,7 +148,13 @@ function BreakdownList({ title, lines }: { title: string; lines: RentabilityLine
   )
 }
 
-export function RentabilityCard({ estimatedValue }: { estimatedValue: number }) {
+export function RentabilityCard({
+  estimatedValue,
+  builtAreaM2,
+}: {
+  estimatedValue: number
+  builtAreaM2?: number | null
+}) {
   const uid = useId()
   const [purchasePrice, setPurchasePrice] = useState(() => String(estimatedValue))
   const [monthlyRent, setMonthlyRent] = useState('')
@@ -159,9 +166,16 @@ export function RentabilityCard({ estimatedValue }: { estimatedValue: number }) 
   const [ibi, setIbi] = useState('')
   const [community, setCommunity] = useState('')
   const [insurance, setInsurance] = useState('')
+  const [renovationLevel, setRenovationLevel] = useState<RenovationLevel>('ninguna')
+  const [renovationAmount, setRenovationAmount] = useState('0')
   const [withIrpf, setWithIrpf] = useState(false)
   const [marginalRate, setMarginalRate] = useState('0.3')
   const [reduction, setReduction] = useState('0.5')
+
+  const handleRenovationLevelChange = (level: RenovationLevel) => {
+    setRenovationLevel(level)
+    setRenovationAmount(String(estimateRenovation(level, builtAreaM2 ?? 0)))
+  }
 
   const input = useMemo(
     () => ({
@@ -180,11 +194,27 @@ export function RentabilityCard({ estimatedValue }: { estimatedValue: number }) 
         community: parseNum(community) || undefined,
         insurance: parseNum(insurance) || undefined,
       },
+      renovationCost: parseNum(renovationAmount) || undefined,
       irpf: withIrpf
         ? { marginalRate: Number(marginalRate), reduction: Number(reduction) as IrpfReduction }
         : undefined,
     }),
-    [purchasePrice, monthlyRent, ccaa, withMortgage, ltvPct, ratePct, years, ibi, community, insurance, withIrpf, marginalRate, reduction],
+    [
+      purchasePrice,
+      monthlyRent,
+      ccaa,
+      withMortgage,
+      ltvPct,
+      ratePct,
+      years,
+      ibi,
+      community,
+      insurance,
+      renovationAmount,
+      withIrpf,
+      marginalRate,
+      reduction,
+    ],
   )
 
   const result = useMemo(() => computeRentability(input), [input])
@@ -338,6 +368,48 @@ export function RentabilityCard({ estimatedValue }: { estimatedValue: number }) 
         </div>
         <p className="mt-2 text-xs text-muted">
           Se añade siempre un 10% de la renta como mantenimiento y un 5% de vacancia por defecto.
+        </p>
+      </div>
+
+      {/* Reforma (P8 — estimación por niveles, iteración 7) */}
+      <div className="mt-5 border-t border-hairline pt-4">
+        <p className="label-caps text-muted">Reforma (opcional)</p>
+        <div className="mt-3 grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div>
+            <FieldLabel htmlFor={`${uid}-renovation-level`}>Nivel de reforma</FieldLabel>
+            <select
+              id={`${uid}-renovation-level`}
+              value={renovationLevel}
+              onChange={(e) => handleRenovationLevelChange(e.target.value as RenovationLevel)}
+              className={INPUT_CLS}
+            >
+              {(Object.keys(RENOVATION_LABELS) as RenovationLevel[]).map((level) => (
+                <option key={level} value={level}>
+                  {RENOVATION_LABELS[level]}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <FieldLabel htmlFor={`${uid}-renovation-amount`}>Importe de reforma</FieldLabel>
+            <div className="relative">
+              <input
+                id={`${uid}-renovation-amount`}
+                type="number"
+                min={0}
+                value={renovationAmount}
+                onChange={(e) => setRenovationAmount(e.target.value)}
+                className={`${INPUT_CLS} pr-8`}
+              />
+              <span className="absolute top-1/2 right-4 -translate-y-1/2 text-sm text-muted">€</span>
+            </div>
+          </div>
+        </div>
+        <p className="mt-2 flex items-center gap-1.5 text-xs text-muted">
+          <Info size={14} aria-hidden="true" />
+          {builtAreaM2
+            ? 'Estimación v0 por nivel — edítala con tu presupuesto real.'
+            : 'Sin superficie del inmueble: estimación v0 en 0 € — importe editable con tu presupuesto real.'}
         </p>
       </div>
 

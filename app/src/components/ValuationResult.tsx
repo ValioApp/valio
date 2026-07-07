@@ -306,7 +306,7 @@ export function ValuationResult({
       </div>
 
       {/* Rentabilidad como inversión (gap nº1 de la competencia: F3+F4+F5) */}
-      <RentabilityCard estimatedValue={outcome.value} />
+      <RentabilityCard estimatedValue={outcome.value} builtAreaM2={subject?.builtAreaM2} />
 
       {/* Testigos */}
       <div className="rounded-card border border-hairline bg-white p-6 shadow-ambient">
