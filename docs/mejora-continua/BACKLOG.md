@@ -30,9 +30,19 @@ el segmento inversor; sus comparativas críticas con CASAFARI/Betterplace son in
 
 ## Iteraciones
 
-### Iteración 1 — 2026-07-07 (en curso)
+### Iteración 1 — 2026-07-07 ✅
 - Infraestructura del loop creada (este archivo + PENDIENTES-SOCIO.md).
-- Lanzada investigación de reseñas/quejas de usuarios sobre valoradores (Idealista
-  valorador, CASAFARI, Betterplace, RealAdvisor, Zestimate, G2/Capterra, foros de
-  inversores ES) para ampliar/repriorizar el backlog con señal real.
-- Siguiente al recibir la investigación: priorizar y ejecutar la primera mejora.
+- Investigación de quejas/reseñas completada y archivada
+  (`2026-07-07-investigacion-quejas.md`): 14 quejas documentadas, 15 features
+  pedidas, top-10 oportunidades. Backlog repriorizado (v2, arriba).
+- **Implementado P1 — Confianza explicada**: `lib/confidence.ts` (+5 tests) y
+  sección "Por qué esta confianza" en la card de valor (testigos, cierres reales,
+  dispersión, y qué faltaría para subir de nivel; aviso de horquilla amplia en
+  confianza baja). Suite 48/48. Fix de alias `@/` en vitest.config.
+- Visible en `/demo` (el motor real ya lo alimenta).
+
+### Iteración 2 — siguiente
+- **P2: Módulo de rentabilidad inversor post-impuestos** — `engine/rentability.ts`
+  puro (yield bruto/neto, cash-flow con hipoteca, ITP por CCAA, notaría/registro,
+  IRPF con reducciones, vacancia por defecto) + card en resultado + tests.
+  Todo local, sin dependencias de Supabase ni del socio.
