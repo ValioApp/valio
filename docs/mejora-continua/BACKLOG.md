@@ -180,3 +180,16 @@ real ejecutado contra él (Plan 2.1 Tasks 3-4, adaptadas a la realidad):
 - **El buscador de direcciones de `/valorar` queda vivo para la provincia de
   Barcelona**: dirección → CartoCiudad → sección censal PostGIS → coeficiente
   de renta real. Suite 93/93 y `tsc` limpios tras los scripts.
+
+### Producción de datos — 2026-07-07 ✅ SMOKE E2E REAL VERDE
+- Supabase `valio` (eu-west-3) creado y migrado 0001-0004 + seed VÍA API (sin dashboard).
+- Auth real verificada (magic link flujo `?code=` PKCE adaptado al free tier).
+- **Primera valoración real end-to-end**: "Calle Hospital 92, Barcelona" → CartoCiudad
+  → sección censal 0801901019 (PostGIS) → coef renta INE 0.594 → prefill Catastro
+  (finca 0514310DF3801D) → **275.380 € (3.672 €/m², confianza media, 8 testigos)**
+  con ajuste renta de zona −1,5% verificado matemáticamente. Persistida en cartera.
+- **Bug de producción cazado y arreglado en el smoke**: `fetchZoneStats` cargaba la
+  tabla entera y el límite de 1.000 filas de PostgREST silenciaba zonas (followup nº12
+  del Plan 1 hecho realidad) → ahora pide solo las secciones implicadas (commit 3cb4ee8).
+- Pendiente: deploy Vercel (Alex) y testigos reales (los 24 actuales son seeds — los
+  reales llegan con las APIs/CSV del socio, Plan 2.2).
