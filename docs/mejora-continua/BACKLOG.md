@@ -24,9 +24,14 @@ Fuente: investigación de reseñas/foros verificada (informe completo en
 | P9 | 📋 Histórico y re-valoración periódica de cartera | Q5/Q10 patrón Zestimate | M | backlog |
 | P10 | 📋 Análisis desde URL de anuncio + historial del anuncio | F10+F11 — demanda alta pero scraping frágil/riesgo legal (regla de oro nº1) | L | congelado (revisar con APIs del socio) |
 | — | Export cartera Excel/CSV | petición típica agencias | S | backlog |
+| P11 | 📋 UX "resultado en <2 min" + free tier 2-3 valoraciones | Estudio Invisor rec.2 — la fricción de entrada es el campo de batalla | S | backlog (freemium → Plan 3) |
+| P12 | 📋 SEO comparativo: /vs/invisor, /vs/cassandra, /vs/lystos, /comparativa | Estudio Invisor rec.3 — gana esas búsquedas sin competencia hoy | S | backlog (Plan 3 landing) |
+| P13 | 📋 "Memorándum de inversión" white-label como formato del PDF | Estudio Invisor rec.4 — ellos lo venden premium sin trazabilidad real | M | backlog (con P6) |
+| P14 | 🛡️ Publicar precisión (MdAPE/PPE10) + página "por qué a veces rehusamos valorar" | Estudio Invisor rec.5 — nadie del segmento publica métricas de error | S | backlog (necesita backtesting con cierres) |
 
-⚠️ Competidor a estudiar de cerca: **Invisor** (invisor.es) — el más parecido a VALIO en
-el segmento inversor; sus comparativas críticas con CASAFARI/Betterplace son interesadas.
+⚠️ Competidor más cercano: **Invisor** (invisor.es) — estudio completo en
+`2026-07-07-competidor-invisor.md`. Responde "¿qué compro?"; VALIO responde "¿cuánto
+vale de verdad y por qué?". Su talón de Aquiles: pipeline de scraping sin acuerdos.
 
 ## Iteraciones
 
@@ -50,7 +55,17 @@ el segmento inversor; sus comparativas críticas con CASAFARI/Betterplace son in
   defecto, con desglose línea a línea trazable. Suite 67/67, build limpio.
 - Pendiente conocido: alquiler mensual es input manual hasta SERPAVI (P5).
 
-### Iteración 3 — siguiente
-- Candidatos por prioridad: **P4** (ocupación como titular del informe — S,
-  el motor ya calcula el ajuste) o **P7** (copy anti-lead-gen). P3 y P5 siguen
-  bloqueados por Plan 2 (calibración Registradores / pipeline INE-SERPAVI).
+### Iteración 3 — 2026-07-07 ✅
+- Estudio del competidor más cercano (**Invisor**) archivado
+  (`2026-07-07-competidor-invisor.md`); backlog ampliado con P11-P14.
+- **Implementado P4 — Análisis de compra ocupada**: `lib/occupancy.ts` (+5 tests)
+  y card destacada en el resultado cuando hay ajuste de ocupación: valor
+  equivalente libre, % sobre valor libre, y veredicto contra la regla del
+  inversor distressed (comprar ≤70% del libre). Suite 72/72, build limpio.
+- P2 también marcado ✅ (iteración 2, commits ff7ffcb/01a1bee/999e47a).
+
+### Iteración 4 — siguiente
+- Candidatos: **P8-lite** (escenarios conservador/realista/optimista sobre la
+  RentabilityCard — S/M, puro), **export CSV cartera** (S), o **Plan 2.1
+  Tasks 7-8** (form con autocomplete — funciona parcialmente sin Supabase).
+  P3/P5 siguen bloqueados por datos; P6/P7/P11-P13 son de Plan 3 (landing/PDF).

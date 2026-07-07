@@ -15,6 +15,7 @@ import { Disclaimer } from '@/components/Disclaimer'
 import { RentabilityCard } from '@/components/RentabilityCard'
 import { explainConfidence } from '@/lib/confidence'
 import { formatEur, formatPct } from '@/lib/format'
+import { analyzeOccupancy } from '@/lib/occupancy'
 import type {
   Adjustment,
   OccupancyStatus,
@@ -135,6 +136,7 @@ export function ValuationResult({
     outcome.fsd,
     outcome.comparables,
   )
+  const occupancyAnalysis = analyzeOccupancy(outcome)
 
   return (
     <section className="space-y-6">
@@ -214,6 +216,43 @@ export function ValuationResult({
           )}
         </div>
       </div>
+
+      {/* Análisis de compra ocupada (P4) — nadie más lo pondera */}
+      {occupancyAnalysis && (
+        <div className="rounded-card border border-petrol/25 bg-petrol/5 p-6 shadow-ambient">
+          <div className="flex items-start gap-3">
+            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-petrol/10 text-petrol">
+              <LockKeyhole size={18} aria-hidden="true" />
+            </span>
+            <div className="min-w-0">
+              <p className="label-caps text-petrol">Análisis de compra ocupada</p>
+              <p className="mt-2 text-sm text-ink">
+                Valor equivalente libre:{' '}
+                <span className="font-display font-bold text-gold-deep tabular-nums">
+                  {formatEur(occupancyAnalysis.freeValue)}
+                </span>{' '}
+                — este inmueble se valora en un{' '}
+                <strong className="tabular-nums">
+                  {Math.round(occupancyAnalysis.pctOfFreeValue * 100)}%
+                </strong>{' '}
+                de su valor libre.
+              </p>
+              <p
+                className={`mt-1 text-sm font-medium ${
+                  occupancyAnalysis.withinInvestorRule ? 'text-success' : 'text-error'
+                }`}
+              >
+                {occupancyAnalysis.withinInvestorRule
+                  ? 'Dentro de la regla del inversor distressed: comprar a ≤70% del valor libre.'
+                  : 'Por encima del 70% del valor libre — la regla del inversor distressed aconseja replantearse el precio.'}
+              </p>
+              <p className="mt-1 text-xs text-muted">
+                Estimación a partir del ajuste medio de ocupación aplicado a los testigos.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Por qué este valor */}
       <div className="rounded-card border border-hairline bg-white p-6 shadow-ambient">
