@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Calculator, FolderOpen, LayoutDashboard, type LucideIcon } from 'lucide-react'
 import { ValioWordmark } from '@/components/ValioWordmark'
+import { LanguageSwitcher } from '@/components/LanguageSwitcher'
 
 interface NavItem {
   href: string
@@ -57,17 +58,19 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             )
           })}
         </nav>
-        <div className="border-t border-hairline px-6 py-4">
+        <div className="flex flex-col gap-3 border-t border-hairline px-6 py-4">
+          <LanguageSwitcher />
           <p className="label-caps text-muted/70">VALIO Proptech</p>
         </div>
       </aside>
 
       {/* Header móvil */}
       <header className="print-hidden sticky top-0 z-40 border-b border-hairline bg-white/80 backdrop-blur md:hidden">
-        <div className="flex items-center px-4 py-3">
+        <div className="flex items-center justify-between px-4 py-3">
           <Link href="/dashboard" aria-label="VALIO — inicio">
             <ValioWordmark size="sm" />
           </Link>
+          <LanguageSwitcher />
         </div>
       </header>
 
