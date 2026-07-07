@@ -12,6 +12,7 @@ import {
 } from 'lucide-react'
 import { ConfidencePill } from '@/components/ConfidencePill'
 import { Disclaimer } from '@/components/Disclaimer'
+import { explainConfidence } from '@/lib/confidence'
 import { formatEur, formatPct } from '@/lib/format'
 import type {
   Adjustment,
@@ -128,6 +129,11 @@ export function ValuationResult({
   const span = outcome.high - outcome.low
   const ratio = span > 0 ? (outcome.value - outcome.low) / span : 0.5
   const markerLeftPct = 12 + Math.min(Math.max(ratio, 0), 1) * 76
+  const confidenceExplanation = explainConfidence(
+    outcome.confidence,
+    outcome.fsd,
+    outcome.comparables,
+  )
 
   return (
     <section className="space-y-6">
@@ -189,6 +195,22 @@ export function ValuationResult({
             <span className="font-bold text-petrol-deep">{formatEur(outcome.value)}</span>
             <span className="text-muted">{formatEur(outcome.high)}</span>
           </div>
+        </div>
+
+        {/* Confianza explicada — anti caja-negra (queja nº1 de los AVM) */}
+        <div className="mt-6 border-t border-hairline pt-4">
+          <p className="label-caps text-muted">Por qué esta confianza</p>
+          <ul className="mt-2 space-y-1 text-sm text-muted">
+            {confidenceExplanation.reasons.map((reason) => (
+              <li key={reason} className="flex items-start gap-2">
+                <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-petrol/40" aria-hidden="true" />
+                <span>{reason}</span>
+              </li>
+            ))}
+          </ul>
+          {confidenceExplanation.nextLevelHint && (
+            <p className="mt-2 text-sm text-petrol">{confidenceExplanation.nextLevelHint}</p>
+          )}
         </div>
       </div>
 

@@ -6,16 +6,27 @@
 > Reglas: nunca romper las reglas de oro del CLAUDE.md; lo del socio → placeholder +
 > PENDIENTES-SOCIO.md; producción/deploy siempre con aprobación de Alex (Fase 1).
 
-## Candidatos iniciales (de la investigación de mercado 2026-07-06)
+## Backlog priorizado (v2 — con investigación de quejas reales 2026-07-07)
 
-| # | Feature | Fuente de la señal | Esfuerzo | Estado |
+Fuente: investigación de reseñas/foros verificada (informe completo en
+`docs/mejora-continua/2026-07-07-investigacion-quejas.md`). 🛡️ = difícil de copiar.
+
+| P | Feature | Señal (queja/petición) | Esfuerzo | Estado |
 |---|---|---|---|---|
-| C1 | Informe PDF white-label con logo del cliente | Betterplace lo tiene; agencias lo piden para captar exclusivas | M | backlog |
-| C2 | Análisis de rentabilidad para inversores (yield bruto/neto, precio máximo de compra dado un yield objetivo) | Inversores = segmento nº1; nadie lo da junto a la valoración | M | backlog |
-| C3 | "Valor vs precio pedido" (detector de oportunidades: % de sobreprecio del anuncio) | Queja clásica: los portales inflan precios | S | backlog |
-| C4 | Histórico y re-valoración (tracking del valor de un inmueble en el tiempo) | Zestimate lo tiene; en España nadie self-service | M | backlog |
-| C5 | Exportar cartera a Excel/CSV | Petición típica de agencias | S | backlog |
-| C6 | Confianza explicada ("por qué media y no alta: solo 8 testigos, dispersión 12%") | Queja nº1 de AVMs: caja negra | S | backlog |
+| P1 | 🛡️ **Confianza explicada + rango honesto** ("por qué media y no alta: 8 testigos, dispersión 3,6%") | Q4 black-box (Reddit alto karma) + Q6 saltos sin explicación + Q13 zonas finas | S | **✅ iteración 1** |
+| P2 | 📋 **Módulo rentabilidad inversor post-impuestos**: yield neto, cash-flow con hipoteca, ITP por CCAA, notaría/registro, IRPF reducciones 50/60/70/90%, vacancia por defecto | F3+F4+F5 (evidencia ALTA: Rankia, Forohipotecario; "Casafari no calcula rentabilidad neta ni cash-flow") | M | **→ iteración 2** |
+| P3 | 🛡️ **Doble precio: valor de anuncio vs valor de cierre estimado** con diferencial por zona | Q1 dispersión 3x entre valoradores + Q2 precios inflados 10-20% (test empírico HelpMyCash) | M | backlog (necesita calibración Registradores — Plan 2.3) |
+| P4 | 🛡️ **Ocupación como titular del informe** (% sobre valor de mercado, regla inversor 60-70%) | F12; ninguna herramienta reseñada lo cubre; VALIO ya calcula el ajuste | S | backlog |
+| P5 | 🛡️ **Alquiler estimado + flag zona tensionada** por sección censal | F6 (idealista lo cobra B2B) + F8; encaja con pipeline INE/SERPAVI | M | backlog (tras Plan 2.1 completo) |
+| P6 | 📋 **Informe PDF white-label** con testigos citados y gráficos legibles | F1 — feature más valorada por agencias en toda la evidencia pro | M | backlog (Plan 3) |
+| P7 | 📋 **Anti-lead-gen como posicionamiento** (sin teléfono, sin vender leads, pricing público) | Q7 RealAdvisor vende leads >56€ + Q8 Trovimap 2,7/5 | S (copy landing) | backlog (Plan 3) |
+| P8 | 📋 **Estimación de reforma por niveles + escenarios conservador/realista/optimista** | F9+F13 (Invisor la tiene y presume) | M | backlog |
+| P9 | 📋 Histórico y re-valoración periódica de cartera | Q5/Q10 patrón Zestimate | M | backlog |
+| P10 | 📋 Análisis desde URL de anuncio + historial del anuncio | F10+F11 — demanda alta pero scraping frágil/riesgo legal (regla de oro nº1) | L | congelado (revisar con APIs del socio) |
+| — | Export cartera Excel/CSV | petición típica agencias | S | backlog |
+
+⚠️ Competidor a estudiar de cerca: **Invisor** (invisor.es) — el más parecido a VALIO en
+el segmento inversor; sus comparativas críticas con CASAFARI/Betterplace son interesadas.
 
 ## Iteraciones
 
