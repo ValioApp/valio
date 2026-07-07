@@ -1,0 +1,132 @@
+{
+  "common": {
+    "signIn": "Entrar",
+    "goToPanel": "Ir al panel",
+    "languageLabel": "Idioma",
+    "es": "ES",
+    "ca": "CA",
+    "en": "EN",
+    "esFull": "Español",
+    "caFull": "Català",
+    "enFull": "English"
+  },
+  "landing": {
+    "hero": {
+      "eyebrow": "Valoración orientativa para profesionales",
+      "title": "El precio real de cualquier inmueble.",
+      "titleAccent": "Con el porqué.",
+      "subtitle": "Valoración orientativa con testigos reales, factor de zona y ajuste por ocupación. Pensada para inversores y agencias que necesitan entender cada cifra, no solo verla.",
+      "ctaPrimary": "Prueba gratis",
+      "ctaSecondary": "Ver ejemplo",
+      "imageAlt": "Interior de vivienda reformada usada como testigo comparable en una valoración"
+    },
+    "features": {
+      "eyebrow": "Diseñado para la precisión",
+      "title": "Datos brutos convertidos en decisiones",
+      "subtitle": "Cada valoración llega con su desglose: sabes de dónde sale el número.",
+      "items": {
+        "zone": {
+          "title": "Factor de renta de zona explicable",
+          "body": "Ajustamos por la renta neta de la sección censal (INE), no por códigos postales genéricos. Verás el porcentaje exacto que la zona suma o resta al valor."
+        },
+        "occupancy": {
+          "title": "Ajuste por ocupación",
+          "body": "Modelamos el descuento por estado de ocupación —arrendado, con inquilino o libre— para separar el valor de mercado del valor por comparación."
+        },
+        "witnesses": {
+          "title": "Testigos con cierres reales",
+          "body": "Comparables procedentes de cierres y fuentes legítimas, con una confianza explicada. Con menos de seis testigos el motor rehúsa valorar antes que inventar."
+        },
+        "profit": {
+          "title": "Rentabilidad post-impuestos",
+          "body": "Estima el retorno real de la operación descontando impuestos y costes, para decidir con la cifra que de verdad te llevas a casa."
+        }
+      }
+    },
+    "portals": {
+      "title": "Lo que los portales no te cuentan",
+      "subtitle": "Un precio de anuncio no es un precio de cierre. Nosotros trabajamos con lo segundo.",
+      "items": {
+        "closings": {
+          "title": "Precios de cierre, no de anuncio",
+          "body": "Nuestras métricas de calidad se miden contra transacciones reales, no contra lo que alguien pide en un portal."
+        },
+        "why": {
+          "title": "El porqué de cada ajuste",
+          "body": "Zona, estado, ocupación y superficie: cada factor aparece desglosado y trazable, no oculto en una caja negra."
+        },
+        "honesty": {
+          "title": "Honestidad ante la falta de datos",
+          "body": "Cuando no hay testigos suficientes lo decimos y degradamos a orientación de zona. Ninguna cifra falsa de relleno."
+        }
+      }
+    },
+    "pricing": {
+      "eyebrow": "Precios públicos",
+      "title": "Planes que escalan contigo",
+      "subtitle": "Sin llamadas de ventas para ver el precio. Aquí lo tienes.",
+      "perMonth": "/mes",
+      "mostPopular": "Más popular",
+      "note": "Precios orientativos · IVA no incluido",
+      "cta": "Empezar",
+      "tiers": {
+        "starter": {
+          "name": "Starter",
+          "price": "49 €",
+          "features": [
+            "25 valoraciones al mes",
+            "Testigos comparables con desglose",
+            "Factor de zona y ajuste por ocupación",
+            "Exportación a PDF"
+          ]
+        },
+        "professional": {
+          "name": "Professional",
+          "price": "99 €",
+          "features": [
+            "100 valoraciones al mes",
+            "Informes con tu marca",
+            "Análisis de zona avanzado",
+            "Soporte prioritario"
+          ]
+        },
+        "agency": {
+          "name": "Agencia",
+          "price": "199 €",
+          "features": [
+            "Valoraciones ilimitadas",
+            "Importación de tu cartera",
+            "Enriquecimiento con tus cierres",
+            "Multiusuario y acceso API"
+          ]
+        }
+      }
+    },
+    "faq": {
+      "title": "Preguntas frecuentes",
+      "items": {
+        "official": {
+          "q": "¿Es una tasación oficial?",
+          "a": "No. VALIO ofrece una valoración orientativa de carácter técnico como ayuda a la decisión. No sustituye a la tasación hipotecaria oficial, reservada a sociedades homologadas por el Banco de España (Orden ECO/805/2003)."
+        },
+        "coverage": {
+          "q": "¿Qué zonas cubrís hoy?",
+          "a": "Empezamos por la provincia de Barcelona y su área metropolitana, y ampliamos zona a zona hacia el resto de Cataluña y España."
+        },
+        "data": {
+          "q": "¿De dónde salen los datos?",
+          "a": "De fuentes legítimas: renta por sección censal del INE, Catastro, open data y cierres reales aportados por profesionales. Nunca de scraping de portales."
+        },
+        "leadgen": {
+          "q": "¿Me pedís datos o teléfono?",
+          "a": "No. No hacemos captación de leads ni te perseguimos con llamadas. Pruebas el producto y decides tú, sin dejar tu teléfono."
+        }
+      }
+    },
+    "footer": {
+      "brand": "VALIO Proptech",
+      "disclaimer": "VALIO ofrece valoraciones orientativas de carácter técnico basadas en testigos comparables y datos públicos. No constituyen una tasación oficial ni sustituyen el informe de una sociedad de tasación homologada por el Banco de España (Orden ECO/805/2003). Los resultados son estimaciones y no tienen carácter vinculante.",
+      "rights": "© 2026 VALIO Proptech. Todos los derechos reservados."
+    }
+  }
+}

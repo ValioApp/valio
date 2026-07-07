@@ -1,0 +1,132 @@
+{
+  "common": {
+    "signIn": "Entrar",
+    "goToPanel": "Anar al tauler",
+    "languageLabel": "Idioma",
+    "es": "ES",
+    "ca": "CA",
+    "en": "EN",
+    "esFull": "Español",
+    "caFull": "Català",
+    "enFull": "English"
+  },
+  "landing": {
+    "hero": {
+      "eyebrow": "Valoració orientativa per a professionals",
+      "title": "El preu real de qualsevol immoble.",
+      "titleAccent": "Amb el perquè.",
+      "subtitle": "Valoració orientativa amb testimonis reals, factor de zona i ajust per ocupació. Pensada per a inversors i agències que necessiten entendre cada xifra, no només veure-la.",
+      "ctaPrimary": "Prova gratis",
+      "ctaSecondary": "Veure exemple",
+      "imageAlt": "Interior d'un habitatge reformat utilitzat com a testimoni comparable en una valoració"
+    },
+    "features": {
+      "eyebrow": "Dissenyat per a la precisió",
+      "title": "Dades en brut convertides en decisions",
+      "subtitle": "Cada valoració arriba amb el seu desglossament: saps d'on surt el número.",
+      "items": {
+        "zone": {
+          "title": "Factor de renda de zona explicable",
+          "body": "Ajustem per la renda neta de la secció censal (INE), no per codis postals genèrics. Veuràs el percentatge exacte que la zona suma o resta al valor."
+        },
+        "occupancy": {
+          "title": "Ajust per ocupació",
+          "body": "Modelem el descompte per estat d'ocupació —arrendat, amb llogater o lliure— per separar el valor de mercat del valor per comparació."
+        },
+        "witnesses": {
+          "title": "Testimonis amb tancaments reals",
+          "body": "Comparables procedents de tancaments i fonts legítimes, amb una confiança explicada. Amb menys de sis testimonis el motor es nega a valorar abans que inventar."
+        },
+        "profit": {
+          "title": "Rendibilitat després d'impostos",
+          "body": "Estima el retorn real de l'operació descomptant impostos i costos, per decidir amb la xifra que de veritat t'endús a casa."
+        }
+      }
+    },
+    "portals": {
+      "title": "El que els portals no t'expliquen",
+      "subtitle": "Un preu d'anunci no és un preu de tancament. Nosaltres treballem amb el segon.",
+      "items": {
+        "closings": {
+          "title": "Preus de tancament, no d'anunci",
+          "body": "Les nostres mètriques de qualitat es mesuren contra transaccions reals, no contra el que algú demana en un portal."
+        },
+        "why": {
+          "title": "El perquè de cada ajust",
+          "body": "Zona, estat, ocupació i superfície: cada factor apareix desglossat i traçable, no amagat en una caixa negra."
+        },
+        "honesty": {
+          "title": "Honestedat davant la manca de dades",
+          "body": "Quan no hi ha prou testimonis ho diem i degradem a orientació de zona. Cap xifra falsa de farciment."
+        }
+      }
+    },
+    "pricing": {
+      "eyebrow": "Preus públics",
+      "title": "Plans que escalen amb tu",
+      "subtitle": "Sense trucades de vendes per veure el preu. Aquí el tens.",
+      "perMonth": "/mes",
+      "mostPopular": "Més popular",
+      "note": "Preus orientatius · IVA no inclòs",
+      "cta": "Començar",
+      "tiers": {
+        "starter": {
+          "name": "Starter",
+          "price": "49 €",
+          "features": [
+            "25 valoracions al mes",
+            "Testimonis comparables amb desglossament",
+            "Factor de zona i ajust per ocupació",
+            "Exportació a PDF"
+          ]
+        },
+        "professional": {
+          "name": "Professional",
+          "price": "99 €",
+          "features": [
+            "100 valoracions al mes",
+            "Informes amb la teva marca",
+            "Anàlisi de zona avançada",
+            "Suport prioritari"
+          ]
+        },
+        "agency": {
+          "name": "Agència",
+          "price": "199 €",
+          "features": [
+            "Valoracions il·limitades",
+            "Importació de la teva cartera",
+            "Enriquiment amb els teus tancaments",
+            "Multiusuari i accés API"
+          ]
+        }
+      }
+    },
+    "faq": {
+      "title": "Preguntes freqüents",
+      "items": {
+        "official": {
+          "q": "És una taxació oficial?",
+          "a": "No. VALIO ofereix una valoració orientativa de caràcter tècnic com a ajuda a la decisió. No substitueix la taxació hipotecària oficial, reservada a societats homologades pel Banc d'Espanya (Ordre ECO/805/2003)."
+        },
+        "coverage": {
+          "q": "Quines zones cobriu ara mateix?",
+          "a": "Comencem per la província de Barcelona i la seva àrea metropolitana, i ampliem zona a zona cap a la resta de Catalunya i Espanya."
+        },
+        "data": {
+          "q": "D'on surten les dades?",
+          "a": "De fonts legítimes: renda per secció censal de l'INE, Cadastre, open data i tancaments reals aportats per professionals. Mai de scraping de portals."
+        },
+        "leadgen": {
+          "q": "Em demaneu dades o telèfon?",
+          "a": "No. No fem captació de leads ni et perseguim amb trucades. Proves el producte i decideixes tu, sense deixar el telèfon."
+        }
+      }
+    },
+    "footer": {
+      "brand": "VALIO Proptech",
+      "disclaimer": "VALIO ofereix valoracions orientatives de caràcter tècnic basades en testimonis comparables i dades públiques. No constitueixen una taxació oficial ni substitueixen l'informe d'una societat de taxació homologada pel Banc d'Espanya (Ordre ECO/805/2003). Els resultats són estimacions i no tenen caràcter vinculant.",
+      "rights": "© 2026 VALIO Proptech. Tots els drets reservats."
+    }
+  }
+}

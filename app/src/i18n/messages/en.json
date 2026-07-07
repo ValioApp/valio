@@ -1,0 +1,132 @@
+{
+  "common": {
+    "signIn": "Sign in",
+    "goToPanel": "Go to dashboard",
+    "languageLabel": "Language",
+    "es": "ES",
+    "ca": "CA",
+    "en": "EN",
+    "esFull": "Español",
+    "caFull": "Català",
+    "enFull": "English"
+  },
+  "landing": {
+    "hero": {
+      "eyebrow": "Indicative valuations for professionals",
+      "title": "The real price of any property.",
+      "titleAccent": "And the why behind it.",
+      "subtitle": "Indicative valuations with real comparables, a zone factor and an occupancy adjustment. Built for investors and agencies who need to understand every figure, not just read it.",
+      "ctaPrimary": "Start free",
+      "ctaSecondary": "See an example",
+      "imageAlt": "Interior of a renovated home used as a comparable in a valuation"
+    },
+    "features": {
+      "eyebrow": "Built for precision",
+      "title": "Raw data turned into decisions",
+      "subtitle": "Every valuation ships with its breakdown: you know where the number comes from.",
+      "items": {
+        "zone": {
+          "title": "Explainable zone income factor",
+          "body": "We adjust for net income per census tract (INE), not generic postcodes. You see the exact percentage the area adds to or subtracts from the value."
+        },
+        "occupancy": {
+          "title": "Occupancy adjustment",
+          "body": "We model the discount for occupancy status —leased, tenanted or vacant— to separate market value from comparison value."
+        },
+        "witnesses": {
+          "title": "Comparables from real closings",
+          "body": "Comparables sourced from actual closings and legitimate feeds, with confidence explained. With fewer than six comparables the engine refuses to value rather than invent one."
+        },
+        "profit": {
+          "title": "After-tax profitability",
+          "body": "Estimate the real return on the deal after taxes and costs, so you decide with the figure you actually take home."
+        }
+      }
+    },
+    "portals": {
+      "title": "What the listing portals won't tell you",
+      "subtitle": "An asking price is not a closing price. We work with the latter.",
+      "items": {
+        "closings": {
+          "title": "Closing prices, not asking prices",
+          "body": "Our quality metrics are measured against real transactions, not against what someone lists on a portal."
+        },
+        "why": {
+          "title": "The why behind every adjustment",
+          "body": "Zone, condition, occupancy and floor area: every factor is broken down and traceable, never hidden in a black box."
+        },
+        "honesty": {
+          "title": "Honest when data is thin",
+          "body": "When there aren't enough comparables we say so and fall back to zone guidance. No fabricated filler figures."
+        }
+      }
+    },
+    "pricing": {
+      "eyebrow": "Public pricing",
+      "title": "Plans that scale with you",
+      "subtitle": "No sales call needed to see the price. Here it is.",
+      "perMonth": "/mo",
+      "mostPopular": "Most popular",
+      "note": "Indicative prices · VAT not included",
+      "cta": "Get started",
+      "tiers": {
+        "starter": {
+          "name": "Starter",
+          "price": "€49",
+          "features": [
+            "25 valuations per month",
+            "Comparables with full breakdown",
+            "Zone factor and occupancy adjustment",
+            "PDF export"
+          ]
+        },
+        "professional": {
+          "name": "Professional",
+          "price": "€99",
+          "features": [
+            "100 valuations per month",
+            "White-label reports with your brand",
+            "Advanced zone analysis",
+            "Priority support"
+          ]
+        },
+        "agency": {
+          "name": "Agency",
+          "price": "€199",
+          "features": [
+            "Unlimited valuations",
+            "Import your own portfolio",
+            "Enrich with your own closings",
+            "Multi-user and API access"
+          ]
+        }
+      }
+    },
+    "faq": {
+      "title": "Frequently asked questions",
+      "items": {
+        "official": {
+          "q": "Is this an official appraisal?",
+          "a": "No. VALIO provides an indicative, technical valuation to support your decisions. It does not replace the official mortgage appraisal, which is reserved to firms authorised by the Bank of Spain (Order ECO/805/2003)."
+        },
+        "coverage": {
+          "q": "Which areas do you cover today?",
+          "a": "We start with the province of Barcelona and its metropolitan area, and we expand area by area across the rest of Catalonia and Spain."
+        },
+        "data": {
+          "q": "Where does the data come from?",
+          "a": "From legitimate sources: net income per census tract from INE, the Cadastre, open data and real closings shared by professionals. Never from scraping listing portals."
+        },
+        "leadgen": {
+          "q": "Do you ask for my details or phone number?",
+          "a": "No. We don't run lead generation or chase you with calls. You try the product and decide for yourself, without handing over your phone."
+        }
+      }
+    },
+    "footer": {
+      "brand": "VALIO Proptech",
+      "disclaimer": "VALIO provides indicative, technical valuations based on comparables and public data. They do not constitute an official appraisal nor replace the report of a valuation firm authorised by the Bank of Spain (Order ECO/805/2003). Results are estimates and are not binding.",
+      "rights": "© 2026 VALIO Proptech. All rights reserved."
+    }
+  }
+}
