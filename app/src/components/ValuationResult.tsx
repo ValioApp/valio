@@ -13,6 +13,7 @@ import {
 import { ConfidencePill } from '@/components/ConfidencePill'
 import { Disclaimer } from '@/components/Disclaimer'
 import { PrintButton } from '@/components/PrintButton'
+import { PropertyPhotos } from '@/components/PropertyPhotos'
 import { RentabilityCard } from '@/components/RentabilityCard'
 import { ReportHeader } from '@/components/ReportHeader'
 import { explainConfidence } from '@/lib/confidence'
@@ -123,11 +124,14 @@ export function ValuationResult({
   outcome,
   subject,
   reportDate = '',
+  propertyId = null,
 }: {
   outcome: ValuationOutcome
   subject?: SubjectSummary | null
   /** Fecha ya formateada (es-ES) para la cabecera imprimible; ver ReportHeader. */
   reportDate?: string
+  /** Property persistida al valorar. Si viene, se muestra el carrusel de fotos. */
+  propertyId?: string | null
 }) {
   if (outcome.status === 'rejected') return <RejectedCard outcome={outcome} />
 
@@ -174,6 +178,9 @@ export function ValuationResult({
           </span>
         </div>
       )}
+
+      {/* Banda visual de fotos del inmueble (lo primero que quiere ver quien valora) */}
+      {propertyId && <PropertyPhotos propertyId={propertyId} />}
 
       {/* Card de valor con acento dorado */}
       <div className="break-inside-avoid rounded-card border border-hairline border-l-4 border-l-gold bg-white p-6 shadow-ambient md:p-8">

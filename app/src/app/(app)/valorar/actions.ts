@@ -23,7 +23,7 @@ const schema = z.object({
 export type ValuationFormState =
   | { status: 'idle' }
   | { status: 'error'; message: string }
-  | { status: 'done'; outcome: ValuationOutcome }
+  | { status: 'done'; outcome: ValuationOutcome; propertyId: string | null }
 
 export async function runValuation(
   _prev: ValuationFormState,
@@ -67,6 +67,7 @@ export async function runValuation(
       .limit(1)
       .single()
     if (memberError) console.error('valorar/persistencia members:', memberError.message)
+    let propertyId: string | null = null
     if (member) {
       const { data: property, error: propertyError } = await supabase
         .from('properties')
@@ -89,6 +90,7 @@ export async function runValuation(
         .single()
       if (propertyError) console.error('valorar/persistencia properties:', propertyError.message)
       if (property) {
+        propertyId = property.id
         const { error: valuationError } = await supabase.from('valuations').insert({
           workspace_id: member.workspace_id,
           property_id: property.id,
@@ -99,7 +101,7 @@ export async function runValuation(
       }
     }
 
-    return { status: 'done', outcome }
+    return { status: 'done', outcome, propertyId }
   } catch (e) {
     return { status: 'error', message: e instanceof Error ? e.message : 'Error inesperado' }
   }

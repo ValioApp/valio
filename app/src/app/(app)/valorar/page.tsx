@@ -397,7 +397,12 @@ export default function ValorarPage() {
       )}
 
       {state.status === 'done' && (
-        <ValuationResult outcome={state.outcome} subject={subject} reportDate={reportDate} />
+        <ValuationResult
+          outcome={state.outcome}
+          subject={subject}
+          reportDate={reportDate}
+          propertyId={state.propertyId}
+        />
       )}
     </main>
   )
