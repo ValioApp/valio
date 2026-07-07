@@ -4,6 +4,7 @@ import { useId, useMemo, useState } from 'react'
 import { Info } from 'lucide-react'
 import { computeRentability, type RentabilityLine } from '@/engine/rentability'
 import { ITP_BY_CCAA, type Ccaa, type IrpfReduction } from '@/engine/rentability-rates'
+import { computeScenarios, type ScenarioKind } from '@/engine/scenarios'
 import { formatEur } from '@/lib/format'
 
 /**
@@ -102,6 +103,30 @@ function Tile({ label, value, valueClass }: { label: string; value: string; valu
   )
 }
 
+const SCENARIO_LABELS: Record<ScenarioKind, { label: string; titleClass: string }> = {
+  conservador: { label: 'Conservador', titleClass: 'text-error/80' },
+  realista: { label: 'Realista', titleClass: 'text-ink' },
+  optimista: { label: 'Optimista', titleClass: 'text-success/80' },
+}
+
+function ScenarioTile({ kind, cashflow, netYield }: { kind: ScenarioKind; cashflow: number; netYield: number }) {
+  const { label, titleClass } = SCENARIO_LABELS[kind]
+  const cashflowClass = cashflow >= 0 ? 'text-gold-deep' : 'text-error'
+  return (
+    <div
+      className={`rounded-card border p-4 ${
+        kind === 'realista' ? 'border-petrol/30 bg-petrol/5' : 'border-hairline bg-paper'
+      }`}
+    >
+      <p className={`label-caps ${titleClass}`}>{label}</p>
+      <p className={`mt-1 font-display text-lg font-bold tracking-tight tabular-nums ${cashflowClass}`}>
+        {formatEur(cashflow)}
+      </p>
+      <p className="mt-0.5 text-xs text-muted tabular-nums">{pctPlain(netYield)} neta</p>
+    </div>
+  )
+}
+
 function BreakdownList({ title, lines }: { title: string; lines: RentabilityLine[] }) {
   if (lines.length === 0) return null
   return (
@@ -138,30 +163,32 @@ export function RentabilityCard({ estimatedValue }: { estimatedValue: number }) 
   const [marginalRate, setMarginalRate] = useState('0.3')
   const [reduction, setReduction] = useState('0.5')
 
-  const result = useMemo(
-    () =>
-      computeRentability({
-        purchasePrice: parseNum(purchasePrice),
-        monthlyRent: parseNum(monthlyRent),
-        ccaa,
-        mortgage: withMortgage
-          ? {
-              ltv: parseNum(ltvPct) / 100,
-              annualRate: parseNum(ratePct) / 100,
-              years: Math.max(1, Math.round(parseNum(years))),
-            }
-          : undefined,
-        annualCosts: {
-          ibi: parseNum(ibi) || undefined,
-          community: parseNum(community) || undefined,
-          insurance: parseNum(insurance) || undefined,
-        },
-        irpf: withIrpf
-          ? { marginalRate: Number(marginalRate), reduction: Number(reduction) as IrpfReduction }
-          : undefined,
-      }),
+  const input = useMemo(
+    () => ({
+      purchasePrice: parseNum(purchasePrice),
+      monthlyRent: parseNum(monthlyRent),
+      ccaa,
+      mortgage: withMortgage
+        ? {
+            ltv: parseNum(ltvPct) / 100,
+            annualRate: parseNum(ratePct) / 100,
+            years: Math.max(1, Math.round(parseNum(years))),
+          }
+        : undefined,
+      annualCosts: {
+        ibi: parseNum(ibi) || undefined,
+        community: parseNum(community) || undefined,
+        insurance: parseNum(insurance) || undefined,
+      },
+      irpf: withIrpf
+        ? { marginalRate: Number(marginalRate), reduction: Number(reduction) as IrpfReduction }
+        : undefined,
+    }),
     [purchasePrice, monthlyRent, ccaa, withMortgage, ltvPct, ratePct, years, ibi, community, insurance, withIrpf, marginalRate, reduction],
   )
+
+  const result = useMemo(() => computeRentability(input), [input])
+  const scenarios = useMemo(() => computeScenarios(input), [input])
 
   const cashflow = result.monthlyCashflowAfterTax ?? result.monthlyCashflowPreTax
   const cashflowClass = cashflow >= 0 ? 'text-gold-deep' : 'text-error'
@@ -380,6 +407,24 @@ export function RentabilityCard({ estimatedValue }: { estimatedValue: number }) 
           value={result.irpfAnnualTax !== null ? formatEur(result.irpfAnnualTax) : '—'}
           valueClass={result.irpfAnnualTax !== null ? 'text-gold-deep' : undefined}
         />
+      </div>
+
+      {/* Escenarios de inversión (P8-lite, iteración 5) */}
+      <div className="mt-6 border-t border-hairline pt-4">
+        <p className="label-caps text-muted">Escenarios</p>
+        <div className="mt-3 grid grid-cols-3 gap-3">
+          {scenarios.map(({ kind, result: scenarioResult }) => (
+            <ScenarioTile
+              key={kind}
+              kind={kind}
+              cashflow={scenarioResult.monthlyCashflowAfterTax ?? scenarioResult.monthlyCashflowPreTax}
+              netYield={scenarioResult.netYield}
+            />
+          ))}
+        </div>
+        <p className="mt-2 text-xs text-muted">
+          Supuestos v0: conservador −10% renta y 8% vacancia; optimista +5% renta y 3% vacancia.
+        </p>
       </div>
 
       <details className="group mt-4">
