@@ -62,12 +62,15 @@ Patrones multi-tenant/RBAC/Stripe: seguir las convenciones de `crm-ai-native/`.
 - Genéricas de apoyo: senior-fullstack, senior-backend, react-best-practices,
   code-reviewer, test-driven-development.
 
-## Git
+## Git / cuentas (decisión de Alex 2026-07-07)
 
-Repo previsto: cuenta **Sekees** (`Sekees/valio`) — como OFISAT, es la cuenta con push
-operativo hoy; identidad global vale. Mientras no exista el repo propio, el mundo se
-respalda en el repo paraguas `Sekees/universo`. Cuando se cree el repo propio: añadirlo
-a `MANIFIESTO-REPOS.md` y excluir la carpeta en el `.gitignore` del paraguas.
+**Cuenta GitHub NUEVA y dedicada solo a VALIO** (pendiente de que Alex la cree), que
+será también la identidad de **Supabase y Vercel** (login con GitHub en ambos). Cuando
+exista: añadirla a `gh` (`gh auth login`) EL MISMO DÍA, fijar identidad por-repo aquí
+(sustituye a la Sekees provisional del init local), crear `valio` privado, pushear, y
+actualizar `MANIFIESTO-REPOS.md` + tabla de cuentas del CLAUDE.md raíz del universo.
+Regla del universo: antes de push, la cuenta `gh` activa debe ser la de VALIO.
+Hosting: **Vercel** (root directory `app/`) + **Supabase** (proyecto `valio`, eu-west).
 
 ## Fase
 
