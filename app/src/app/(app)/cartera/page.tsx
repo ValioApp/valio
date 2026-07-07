@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
-import { ArrowRight, FolderOpen } from 'lucide-react'
+import { ArrowRight, Download, FolderOpen } from 'lucide-react'
 import { ConfidencePill } from '@/components/ConfidencePill'
 import { formatEur } from '@/lib/format'
 import { createClient } from '@/lib/supabase/server'
@@ -25,12 +25,23 @@ export default async function CarteraPage() {
 
   return (
     <main className="mx-auto w-full max-w-5xl space-y-8 px-4 py-8 md:px-6 md:py-10">
-      <header>
-        <p className="label-caps text-petrol">Historial</p>
-        <h1 className="mt-1 font-display text-3xl font-semibold tracking-tight text-ink">
-          Cartera
-        </h1>
-        <p className="mt-2 text-base text-muted">Tus últimas valoraciones orientativas.</p>
+      <header className="flex flex-wrap items-start justify-between gap-4">
+        <div>
+          <p className="label-caps text-petrol">Historial</p>
+          <h1 className="mt-1 font-display text-3xl font-semibold tracking-tight text-ink">
+            Cartera
+          </h1>
+          <p className="mt-2 text-base text-muted">Tus últimas valoraciones orientativas.</p>
+        </div>
+        {rows.length > 0 && (
+          <a
+            href="/cartera/export"
+            className="flex items-center gap-2 rounded-card border border-hairline bg-white px-4 py-2.5 font-display text-sm font-semibold text-ink transition-colors duration-200 hover:bg-paper"
+          >
+            <Download size={16} aria-hidden="true" />
+            Exportar CSV
+          </a>
+        )}
       </header>
 
       {rows.length === 0 ? (
