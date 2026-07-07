@@ -19,7 +19,7 @@ Fuente: investigación de reseñas/foros verificada (informe completo en
 | P4 | 🛡️ **Ocupación como titular del informe** (% sobre valor de mercado, regla inversor 60-70%) | F12; ninguna herramienta reseñada lo cubre; VALIO ya calcula el ajuste | S | **✅ iteración 3** |
 | P5 | 🛡️ **Alquiler estimado + flag zona tensionada** por sección censal | F6 (idealista lo cobra B2B) + F8; encaja con pipeline INE/SERPAVI | M | backlog (tras Plan 2.1 completo) |
 | P6 | 📋 **Informe PDF white-label** con testigos citados y gráficos legibles | F1 — feature más valorada por agencias en toda la evidencia pro | M | **parcial (memorándum print v0)** — iteración 8; PDF white-label real → Plan 3 |
-| P7 | 📋 **Anti-lead-gen como posicionamiento** (sin teléfono, sin vender leads, pricing público) | Q7 RealAdvisor vende leads >56€ + Q8 Trovimap 2,7/5 | S (copy landing) | backlog (Plan 3) |
+| P7 | 📋 **Anti-lead-gen como posicionamiento** (sin teléfono, sin vender leads, pricing público) | Q7 RealAdvisor vende leads >56€ + Q8 Trovimap 2,7/5 | S (copy landing) | **✅ (landing anti-lead-gen)** |
 | P8 | 📋 **Estimación de reforma por niveles + escenarios conservador/realista/optimista** | F9+F13 (Invisor la tiene y presume) | M | **✅ iteraciones 5+7** (escenarios + reforma por niveles) |
 | P9 | 📋 Histórico y re-valoración periódica de cartera | Q5/Q10 patrón Zestimate | M | backlog |
 | P10 | 📋 Análisis desde URL de anuncio + historial del anuncio | F10+F11 — demanda alta pero scraping frágil/riesgo legal (regla de oro nº1) | L | congelado (revisar con APIs del socio) |
@@ -180,6 +180,37 @@ real ejecutado contra él (Plan 2.1 Tasks 3-4, adaptadas a la realidad):
 - **El buscador de direcciones de `/valorar` queda vivo para la provincia de
   Barcelona**: dirección → CartoCiudad → sección censal PostGIS → coeficiente
   de renta real. Suite 93/93 y `tsc` limpios tras los scripts.
+
+### Paquete Alex 2026-07-08 (1/3): landing + i18n ✅
+
+- **Landing pública anti-lead-gen (cierra P7)** en `app/src/app/page.tsx` (antes
+  redirigía a `/dashboard`): server component fiel al export Stitch
+  (`docs/design/landing_page/`) pero adaptado al design system real (paper/petrol/
+  gold, hairline, sombras casi nulas, `ValioWordmark`, lucide en vez de Material
+  Symbols). Secciones: header (wordmark + switcher + "Entrar"/"Ir al panel" según
+  sesión real vía `getUser` server-side → ruta dinámica ƒ), hero con imagen de
+  salón de Barcelona, 4 features (renta de zona · ocupación · testigos con cierres
+  reales · rentabilidad post-impuestos), banda de 3 fotos de interiores, "Lo que
+  los portales no te cuentan", pricing 3 tiers (Starter 49€/25 · Professional
+  99€/100 destacado "Más popular" · Agencia 199€/ilimitado) con nota "orientativo ·
+  IVA no incluido", FAQ (¿tasación oficial? · zonas · datos · lead-gen) y footer con
+  disclaimer legal completo (Orden ECO/805/2003). CTAs → `/login` y `/demo`.
+- **i18n es/ca/en con next-intl (sin routing de URL, cookie `VALIO_LOCALE`)**:
+  plugin en `next.config.ts`, provider + `lang` dinámico en `layout.tsx`, catálogos
+  `landing`+`common` en `src/i18n/messages/{es,ca,en}.json` (catalán central nativo,
+  inglés SaaS neutro; disclaimer legal citando ECO/805/2003 en los 3 idiomas) y
+  `LanguageSwitcher` (server action `setLocale`) en el header de la landing y en el
+  AppShell (sidebar + header móvil).
+- **Fotos**: `docs/design/*/screen.png` (bedroom/living/kitchen) copiadas a
+  `app/public/landing/`.
+- **Verificación**: `tsc` limpio, suite **93/93**, `npm run build` limpio (`/`
+  dinámica ƒ). Playwright real contra dev server: screenshots de `/` desktop+móvil
+  en ES y cambio de idioma con el switcher a CA ("El preu real…/Prova gratis") y a
+  EN ("The real price…/Start free") confirmando que hero, CTAs y header cambian;
+  `/login`, `/demo` y `/dashboard` siguen respondiendo (dashboard 307→login sin sesión).
+- **Faltan 2/3 y 3/3 del paquete**: (2/3) i18n del RESTO de la app (dashboard,
+  valorar, cartera, resultado…) en su propio paquete de traducción; (3/3) carrusel
+  de fotos (hoy banda estática de 3 imágenes).
 
 ### Producción de datos — 2026-07-07 ✅ SMOKE E2E REAL VERDE
 - Supabase `valio` (eu-west-3) creado y migrado 0001-0004 + seed VÍA API (sin dashboard).
