@@ -23,7 +23,7 @@ Fuente: investigación de reseñas/foros verificada (informe completo en
 | P8 | 📋 **Estimación de reforma por niveles + escenarios conservador/realista/optimista** | F9+F13 (Invisor la tiene y presume) | M | **parcial (falta reforma por niveles)** — iteración 5 |
 | P9 | 📋 Histórico y re-valoración periódica de cartera | Q5/Q10 patrón Zestimate | M | backlog |
 | P10 | 📋 Análisis desde URL de anuncio + historial del anuncio | F10+F11 — demanda alta pero scraping frágil/riesgo legal (regla de oro nº1) | L | congelado (revisar con APIs del socio) |
-| — | Export cartera Excel/CSV | petición típica agencias | S | backlog |
+| — | Export cartera Excel/CSV | petición típica agencias | S | **✅ iteración 6** |
 | P11 | 📋 UX "resultado en <2 min" + free tier 2-3 valoraciones | Estudio Invisor rec.2 — la fricción de entrada es el campo de batalla | S | **parcial (falta freemium)** — iteración 4 |
 | P12 | 📋 SEO comparativo: /vs/invisor, /vs/cassandra, /vs/lystos, /comparativa | Estudio Invisor rec.3 — gana esas búsquedas sin competencia hoy | S | backlog (Plan 3 landing) |
 | P13 | 📋 "Memorándum de inversión" white-label como formato del PDF | Estudio Invisor rec.4 — ellos lo venden premium sin trazabilidad real | M | backlog (con P6) |
@@ -84,6 +84,18 @@ vale de verdad y por qué?". Su talón de Aquiles: pipeline de scraping sin acue
   Suite 78/78, `tsc` y build limpios.
 - Falta para cerrar P8 completo: estimación de reforma por niveles.
 
-### Iteración 6 — siguiente
-- Candidatos: **export CSV cartera** (S) o completar **P8** (reforma por niveles).
-  P3/P5 siguen bloqueados por datos; P6/P7/P12-P13 son de Plan 3 (landing/PDF).
+### Iteración 6 — 2026-07-07 ✅
+- **Implementado Export cartera Excel/CSV**: `lib/csv.ts` (builder puro `buildCsv`
+  con BOM UTF-8, separador ';', CRLF y escapado; `buildCarteraCsv` sobre
+  `ValuationRow`, +7 tests TDD) y ruta `GET /cartera/export` (auth, 401 sin
+  sesión, `Content-Disposition: attachment`) con botón "Exportar CSV" en la
+  cartera (visible solo con filas). Suite 85/85, `tsc` y build limpios (la
+  ruta sale dinámica ƒ).
+- Runtime sin verificar en vivo: sin Supabase configurado (Task 11 pendiente
+  de Alex) la ruta devolvería error hasta que exista sesión real.
+
+### Iteración 7 — siguiente
+- Candidatos: completar **P8** (estimación de reforma por niveles, M, motor
+  puro sin dependencias externas) o hacer checkpoint del loop — el backlog
+  local sin bloqueos se está agotando; lo que queda (P3, P5, P6, P9, P10, P12-P14)
+  necesita datos reales (Task 11 + Plan 2/3) o assets de landing/PDF.
