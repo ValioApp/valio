@@ -31,7 +31,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex min-h-dvh w-full flex-col">
       {/* Sidebar desktop */}
-      <aside className="fixed inset-y-0 left-0 z-40 hidden w-[260px] flex-col border-r border-hairline bg-white md:flex">
+      <aside className="print-hidden fixed inset-y-0 left-0 z-40 hidden w-[260px] flex-col border-r border-hairline bg-white md:flex">
         <div className="px-6 py-6">
           <Link href="/dashboard" aria-label="VALIO — inicio">
             <ValioWordmark />
@@ -63,7 +63,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       </aside>
 
       {/* Header móvil */}
-      <header className="sticky top-0 z-40 border-b border-hairline bg-white/80 backdrop-blur md:hidden">
+      <header className="print-hidden sticky top-0 z-40 border-b border-hairline bg-white/80 backdrop-blur md:hidden">
         <div className="flex items-center px-4 py-3">
           <Link href="/dashboard" aria-label="VALIO — inicio">
             <ValioWordmark size="sm" />
@@ -76,7 +76,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
       {/* Bottom-nav móvil */}
       <nav
-        className="fixed bottom-0 left-0 z-50 flex w-full items-center justify-around border-t border-hairline bg-white px-4 pt-2 pb-4 md:hidden"
+        className="print-hidden fixed bottom-0 left-0 z-50 flex w-full items-center justify-around border-t border-hairline bg-white px-4 pt-2 pb-4 md:hidden"
         aria-label="Navegación principal"
       >
         {NAV_ITEMS.map(({ href, label, icon: Icon }) => {

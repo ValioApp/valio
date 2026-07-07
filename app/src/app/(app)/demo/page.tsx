@@ -6,10 +6,11 @@
  * Solo para revisar el producto antes del setup (Task 11). No persiste nada.
  */
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { ValuationResult } from '@/components/ValuationResult'
 import { valuate } from '@/engine/valuate'
 import type { Comparable, OccupancyStatus, SubjectProperty, ZoneStats } from '@/engine/types'
+import { formatReportDate } from '@/lib/format'
 
 const DEMO_ZONES = new Map<string, ZoneStats>([
   [
@@ -56,6 +57,11 @@ const DEMO_COMPARABLES: Comparable[] = RAW_COMPARABLES.map((c, i) => ({
 
 export default function DemoPage() {
   const [occupancy, setOccupancy] = useState<OccupancyStatus>('libre')
+  const [reportDate, setReportDate] = useState('')
+
+  useEffect(() => {
+    setReportDate(formatReportDate(new Date()))
+  }, [])
 
   const subject: SubjectProperty = {
     kind: 'piso',
@@ -75,7 +81,7 @@ export default function DemoPage() {
 
   return (
     <main className="mx-auto max-w-2xl space-y-6 p-4 md:p-6">
-      <div className="rounded-card border border-hairline bg-white p-4">
+      <div className="print-hidden rounded-card border border-hairline bg-white p-4">
         <p className="label-caps text-petrol">Demo sin conexión</p>
         <h1 className="mt-1 font-[family-name:var(--font-geist-sans)] text-xl font-semibold text-ink">
           Piso de ejemplo — El Raval, 75 m², 3 hab
@@ -105,6 +111,7 @@ export default function DemoPage() {
       <ValuationResult
         outcome={outcome}
         subject={{ kind: 'piso', builtAreaM2: 75, bedrooms: 3, occupancy }}
+        reportDate={reportDate}
       />
     </main>
   )

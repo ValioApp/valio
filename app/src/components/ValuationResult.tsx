@@ -12,7 +12,9 @@ import {
 } from 'lucide-react'
 import { ConfidencePill } from '@/components/ConfidencePill'
 import { Disclaimer } from '@/components/Disclaimer'
+import { PrintButton } from '@/components/PrintButton'
 import { RentabilityCard } from '@/components/RentabilityCard'
+import { ReportHeader } from '@/components/ReportHeader'
 import { explainConfidence } from '@/lib/confidence'
 import { formatEur, formatPct } from '@/lib/format'
 import { analyzeOccupancy } from '@/lib/occupancy'
@@ -120,9 +122,12 @@ function RejectedCard({ outcome }: { outcome: Extract<ValuationOutcome, { status
 export function ValuationResult({
   outcome,
   subject,
+  reportDate = '',
 }: {
   outcome: ValuationOutcome
   subject?: SubjectSummary | null
+  /** Fecha ya formateada (es-ES) para la cabecera imprimible; ver ReportHeader. */
+  reportDate?: string
 }) {
   if (outcome.status === 'rejected') return <RejectedCard outcome={outcome} />
 
@@ -140,6 +145,8 @@ export function ValuationResult({
 
   return (
     <section className="space-y-6">
+      <ReportHeader date={reportDate} subject={subject} />
+
       {/* Chips de características */}
       {subject && (
         <div className="flex flex-wrap gap-2 font-display text-xs font-semibold tracking-wide">
@@ -169,7 +176,7 @@ export function ValuationResult({
       )}
 
       {/* Card de valor con acento dorado */}
-      <div className="rounded-card border border-hairline border-l-4 border-l-gold bg-white p-6 shadow-ambient md:p-8">
+      <div className="break-inside-avoid rounded-card border border-hairline border-l-4 border-l-gold bg-white p-6 shadow-ambient md:p-8">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
             <p className="label-caps text-muted">Valor estimado de mercado</p>
@@ -180,7 +187,10 @@ export function ValuationResult({
               {formatEur(outcome.pricePerM2)}/m²
             </p>
           </div>
-          <ConfidencePill level={outcome.confidence} withPrefix />
+          <div className="flex flex-col items-end gap-2">
+            <ConfidencePill level={outcome.confidence} withPrefix />
+            <PrintButton />
+          </div>
         </div>
 
         {/* Barra de rango low — valor — high */}
@@ -219,7 +229,7 @@ export function ValuationResult({
 
       {/* Análisis de compra ocupada (P4) — nadie más lo pondera */}
       {occupancyAnalysis && (
-        <div className="rounded-card border border-petrol/25 bg-petrol/5 p-6 shadow-ambient">
+        <div className="break-inside-avoid rounded-card border border-petrol/25 bg-petrol/5 p-6 shadow-ambient">
           <div className="flex items-start gap-3">
             <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-petrol/10 text-petrol">
               <LockKeyhole size={18} aria-hidden="true" />
@@ -255,7 +265,7 @@ export function ValuationResult({
       )}
 
       {/* Por qué este valor */}
-      <div className="rounded-card border border-hairline bg-white p-6 shadow-ambient">
+      <div className="break-inside-avoid rounded-card border border-hairline bg-white p-6 shadow-ambient">
         <h3 className="mb-4 font-display text-lg font-semibold text-ink">Por qué este valor</h3>
         <div className="space-y-1">
           <div className="flex items-center justify-between gap-4 rounded-lg p-3 transition-colors hover:bg-paper">
@@ -309,7 +319,7 @@ export function ValuationResult({
       <RentabilityCard estimatedValue={outcome.value} builtAreaM2={subject?.builtAreaM2} />
 
       {/* Testigos */}
-      <div className="rounded-card border border-hairline bg-white p-6 shadow-ambient">
+      <div className="break-inside-avoid rounded-card border border-hairline bg-white p-6 shadow-ambient">
         <h3 className="mb-4 font-display text-lg font-semibold text-ink">
           {outcome.comparables.length} testigos
         </h3>

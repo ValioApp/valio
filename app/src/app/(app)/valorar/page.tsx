@@ -1,6 +1,7 @@
 'use client'
 
 import { useActionState, useEffect, useRef, useState } from 'react'
+import { formatReportDate } from '@/lib/format'
 import {
   AlertCircle,
   ArrowRight,
@@ -35,6 +36,12 @@ export default function ValorarPage() {
   const [state, action, pending] = useActionState<ValuationFormState, FormData>(runValuation, { status: 'idle' })
   const [occupancy, setOccupancy] = useState('libre')
   const [subject, setSubject] = useState<SubjectSummary | null>(null)
+
+  // Fecha del informe: se fija en el cliente tras montar (ver formatReportDate).
+  const [reportDate, setReportDate] = useState('')
+  useEffect(() => {
+    setReportDate(formatReportDate(new Date()))
+  }, [])
 
   // — Dirección: autocomplete (debounce 300 ms) + resolución —
   const [query, setQuery] = useState('')
@@ -114,7 +121,7 @@ export default function ValorarPage() {
 
   return (
     <main className="mx-auto w-full max-w-2xl space-y-6 px-4 py-8 md:px-6 md:py-10">
-      <header>
+      <header className="print-hidden">
         <p className="label-caps text-petrol">Valoración residencial</p>
         <h1 className="mt-1 font-display text-3xl font-semibold tracking-tight text-ink">
           Valorar inmueble
@@ -124,7 +131,7 @@ export default function ValorarPage() {
         </p>
       </header>
 
-      <form action={action} onSubmit={captureSubject} className="space-y-6">
+      <form action={action} onSubmit={captureSubject} className="print-hidden space-y-6">
         {/* Localización — dirección real (CartoCiudad → sección censal INE) */}
         <section className="rounded-card border border-hairline bg-white p-6 shadow-ambient">
           <h2 className="mb-5 font-display text-lg font-semibold text-ink">Localización</h2>
@@ -389,7 +396,9 @@ export default function ValorarPage() {
         </div>
       )}
 
-      {state.status === 'done' && <ValuationResult outcome={state.outcome} subject={subject} />}
+      {state.status === 'done' && (
+        <ValuationResult outcome={state.outcome} subject={subject} reportDate={reportDate} />
+      )}
     </main>
   )
 }

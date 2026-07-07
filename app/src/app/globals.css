@@ -68,3 +68,41 @@
     box-shadow: 0 0 0 2px rgba(15, 76, 92, 0.1);
   }
 }
+
+/*
+ * Informe imprimible (memorándum de valoración) — iteración 8.
+ * Solo CSS del navegador (sin librerías PDF): `.print-hidden` oculta el chrome
+ * de la app (shell/formularios/botones) al imprimir o exportar a PDF; el resto
+ * de reglas evitan cortes feos y fuerzan fondo blanco puro para el papel.
+ */
+@media print {
+  .print-hidden {
+    display: none !important;
+  }
+
+  * {
+    box-shadow: none !important;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  body {
+    background: #fff !important;
+  }
+
+  /*
+   * Los <details> (desglose de rentabilidad) se imprimen siempre abiertos.
+   * El mecanismo real es JS (RentabilityCard: listeners beforeprint/afterprint
+   * que fuerzan el atributo `open` nativo) porque Chromium renderiza el
+   * contenido cerrado con `content-visibility: hidden` en un pseudo-elemento
+   * interno que un `display` en CSS no revierte de forma fiable. Esta regla
+   * queda como refuerzo por si el JS no llegó a ejecutarse a tiempo.
+   */
+  details > *:not(summary) {
+    display: block !important;
+  }
+
+  details > summary {
+    display: none !important;
+  }
+}

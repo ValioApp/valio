@@ -18,3 +18,13 @@ export function formatPct(n: number, decimals = 1): string {
   const value = (Math.abs(n) * 100).toFixed(decimals).replace('.', ',')
   return `${n < 0 ? '−' : '+'}${value}%`
 }
+
+/**
+ * Fecha larga es-ES para la cabecera del informe imprimible: '7 de julio de 2026'.
+ * Se calcula explícitamente en un `useEffect` del cliente (nunca en el render
+ * inicial) para no arrastrar `new Date()` al HTML servido y evitar un
+ * hydration mismatch entre servidor y navegador.
+ */
+export function formatReportDate(date: Date): string {
+  return date.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })
+}

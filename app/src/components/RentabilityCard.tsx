@@ -1,6 +1,6 @@
 'use client'
 
-import { useId, useMemo, useState } from 'react'
+import { useEffect, useId, useMemo, useRef, useState } from 'react'
 import { Info } from 'lucide-react'
 import { computeRentability, type RentabilityLine } from '@/engine/rentability'
 import { ITP_BY_CCAA, type Ccaa, type IrpfReduction } from '@/engine/rentability-rates'
@@ -156,6 +156,7 @@ export function RentabilityCard({
   builtAreaM2?: number | null
 }) {
   const uid = useId()
+  const breakdownDetailsRef = useRef<HTMLDetailsElement>(null)
   const [purchasePrice, setPurchasePrice] = useState(() => String(estimatedValue))
   const [monthlyRent, setMonthlyRent] = useState('')
   const [ccaa, setCcaa] = useState<Ccaa>('cataluna')
@@ -220,11 +221,37 @@ export function RentabilityCard({
   const result = useMemo(() => computeRentability(input), [input])
   const scenarios = useMemo(() => computeScenarios(input), [input])
 
+  // Informe imprimible (iteración 8): el desglose línea a línea debe salir
+  // SIEMPRE abierto en el papel/PDF, sin depender de que el usuario lo haya
+  // desplegado en pantalla. Chromium renderiza el contenido de <details>
+  // cerrado con `content-visibility: hidden` en un pseudo-elemento interno,
+  // que un simple `display: block` en CSS no revierte de forma fiable — por
+  // eso se fuerza el atributo `open` nativo justo antes de imprimir y se
+  // restaura el estado previo justo después.
+  useEffect(() => {
+    const el = breakdownDetailsRef.current
+    if (!el) return
+    let wasOpen = el.open
+    const handleBeforePrint = () => {
+      wasOpen = el.open
+      el.open = true
+    }
+    const handleAfterPrint = () => {
+      el.open = wasOpen
+    }
+    window.addEventListener('beforeprint', handleBeforePrint)
+    window.addEventListener('afterprint', handleAfterPrint)
+    return () => {
+      window.removeEventListener('beforeprint', handleBeforePrint)
+      window.removeEventListener('afterprint', handleAfterPrint)
+    }
+  }, [])
+
   const cashflow = result.monthlyCashflowAfterTax ?? result.monthlyCashflowPreTax
   const cashflowClass = cashflow >= 0 ? 'text-gold-deep' : 'text-error'
 
   return (
-    <div className="rounded-card border border-hairline bg-white p-6 shadow-ambient">
+    <div className="break-inside-avoid rounded-card border border-hairline bg-white p-6 shadow-ambient">
       <h3 className="font-display text-lg font-semibold text-ink">Rentabilidad como inversión</h3>
       <p className="mt-1 text-sm text-muted">
         Simule la compra a un precio y alquiler dados: impuestos de compra, hipoteca y fiscalidad
@@ -499,7 +526,7 @@ export function RentabilityCard({
         </p>
       </div>
 
-      <details className="group mt-4">
+      <details ref={breakdownDetailsRef} className="group mt-4">
         <summary className="cursor-pointer list-none rounded-lg px-3 py-2 text-sm font-medium text-petrol transition-colors hover:bg-paper">
           <span className="group-open:hidden">Ver desglose línea a línea</span>
           <span className="hidden group-open:inline">Ocultar desglose</span>
