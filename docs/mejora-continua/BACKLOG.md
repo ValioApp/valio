@@ -14,7 +14,7 @@ Fuente: investigación de reseñas/foros verificada (informe completo en
 | P | Feature | Señal (queja/petición) | Esfuerzo | Estado |
 |---|---|---|---|---|
 | P1 | 🛡️ **Confianza explicada + rango honesto** ("por qué media y no alta: 8 testigos, dispersión 3,6%") | Q4 black-box (Reddit alto karma) + Q6 saltos sin explicación + Q13 zonas finas | S | **✅ iteración 1** |
-| P2 | 📋 **Módulo rentabilidad inversor post-impuestos**: yield neto, cash-flow con hipoteca, ITP por CCAA, notaría/registro, IRPF reducciones 50/60/70/90%, vacancia por defecto | F3+F4+F5 (evidencia ALTA: Rankia, Forohipotecario; "Casafari no calcula rentabilidad neta ni cash-flow") | M | **→ iteración 2** |
+| P2 | 📋 **Módulo rentabilidad inversor post-impuestos**: yield neto, cash-flow con hipoteca, ITP por CCAA, notaría/registro, IRPF reducciones 50/60/70/90%, vacancia por defecto | F3+F4+F5 (evidencia ALTA: Rankia, Forohipotecario; "Casafari no calcula rentabilidad neta ni cash-flow") | M | **✅ iteración 2** |
 | P3 | 🛡️ **Doble precio: valor de anuncio vs valor de cierre estimado** con diferencial por zona | Q1 dispersión 3x entre valoradores + Q2 precios inflados 10-20% (test empírico HelpMyCash) | M | backlog (necesita calibración Registradores — Plan 2.3) |
 | P4 | 🛡️ **Ocupación como titular del informe** (% sobre valor de mercado, regla inversor 60-70%) | F12; ninguna herramienta reseñada lo cubre; VALIO ya calcula el ajuste | S | backlog |
 | P5 | 🛡️ **Alquiler estimado + flag zona tensionada** por sección censal | F6 (idealista lo cobra B2B) + F8; encaja con pipeline INE/SERPAVI | M | backlog (tras Plan 2.1 completo) |
@@ -41,8 +41,16 @@ el segmento inversor; sus comparativas críticas con CASAFARI/Betterplace son in
   confianza baja). Suite 48/48. Fix de alias `@/` en vitest.config.
 - Visible en `/demo` (el motor real ya lo alimenta).
 
-### Iteración 2 — siguiente
-- **P2: Módulo de rentabilidad inversor post-impuestos** — `engine/rentability.ts`
-  puro (yield bruto/neto, cash-flow con hipoteca, ITP por CCAA, notaría/registro,
-  IRPF con reducciones, vacancia por defecto) + card en resultado + tests.
-  Todo local, sin dependencias de Supabase ni del socio.
+### Iteración 2 — 2026-07-07 ✅
+- **Implementado P2 — Rentabilidad inversor post-impuestos**: `engine/rentability.ts`
+  + `rentability-rates.ts` (tasas v0 documentadas, VERIFICAR antes de producción;
+  +19 tests TDD) y `RentabilityCard` interactiva en la pantalla de resultado:
+  yield bruto/neto/post-impuestos, cash-flow con hipoteca francesa, ITP por CCAA
+  (o IVA+AJD obra nueva), IRPF con reducciones 50/60/70/90% y vacancia 5% por
+  defecto, con desglose línea a línea trazable. Suite 67/67, build limpio.
+- Pendiente conocido: alquiler mensual es input manual hasta SERPAVI (P5).
+
+### Iteración 3 — siguiente
+- Candidatos por prioridad: **P4** (ocupación como titular del informe — S,
+  el motor ya calcula el ajuste) o **P7** (copy anti-lead-gen). P3 y P5 siguen
+  bloqueados por Plan 2 (calibración Registradores / pipeline INE-SERPAVI).

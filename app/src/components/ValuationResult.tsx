@@ -12,6 +12,7 @@ import {
 } from 'lucide-react'
 import { ConfidencePill } from '@/components/ConfidencePill'
 import { Disclaimer } from '@/components/Disclaimer'
+import { RentabilityCard } from '@/components/RentabilityCard'
 import { explainConfidence } from '@/lib/confidence'
 import { formatEur, formatPct } from '@/lib/format'
 import type {
@@ -264,6 +265,9 @@ export function ValuationResult({
           </div>
         )}
       </div>
+
+      {/* Rentabilidad como inversión (gap nº1 de la competencia: F3+F4+F5) */}
+      <RentabilityCard estimatedValue={outcome.value} />
 
       {/* Testigos */}
       <div className="rounded-card border border-hairline bg-white p-6 shadow-ambient">
