@@ -53,8 +53,20 @@ export async function fetchCandidates(
   }))
 }
 
-export async function fetchZoneStats(supabase: SupabaseClient): Promise<Map<string, ZoneStats>> {
-  const { data, error } = await supabase.from('zone_stats').select('*')
+/**
+ * Carga SOLO las zonas implicadas (subject + testigos). Nunca la tabla entera:
+ * con miles de secciones censales cargadas, PostgREST corta en 1.000 filas y el
+ * motor perdería zonas en silencio (bug real cazado en el smoke E2E 2026-07-07).
+ */
+export async function fetchZoneStats(
+  supabase: SupabaseClient,
+  sectionIds: string[],
+): Promise<Map<string, ZoneStats>> {
+  if (sectionIds.length === 0) return new Map()
+  const { data, error } = await supabase
+    .from('zone_stats')
+    .select('*')
+    .in('census_section_id', [...new Set(sectionIds)])
   if (error) throw new Error(`zone_stats: ${error.message}`)
   return new Map(
     (data ?? []).map((z) => [

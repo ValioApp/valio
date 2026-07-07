@@ -46,9 +46,16 @@ export async function runValuation(
 
   const subject: SubjectProperty = parsed.data
   try {
-    const [candidates, zones] = await Promise.all([
-      fetchCandidates(supabase, { lat: subject.lat, lon: subject.lon, radiusM: 1500, kind: subject.kind }),
-      fetchZoneStats(supabase),
+    const candidates = await fetchCandidates(supabase, {
+      lat: subject.lat,
+      lon: subject.lon,
+      radiusM: 1500,
+      kind: subject.kind,
+    })
+    // Solo las zonas implicadas: subject + secciones de los testigos encontrados.
+    const zones = await fetchZoneStats(supabase, [
+      subject.censusSectionId,
+      ...candidates.map((c) => c.censusSectionId),
     ])
     const outcome = valuate(subject, candidates, zones, new Date())
 
