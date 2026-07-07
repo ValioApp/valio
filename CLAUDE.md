@@ -62,15 +62,15 @@ Patrones multi-tenant/RBAC/Stripe: seguir las convenciones de `crm-ai-native/`.
 - Genéricas de apoyo: senior-fullstack, senior-backend, react-best-practices,
   code-reviewer, test-driven-development.
 
-## Git / cuentas (decisión de Alex 2026-07-07)
+## Git / cuentas
 
-**Cuenta GitHub NUEVA y dedicada solo a VALIO** (pendiente de que Alex la cree), que
-será también la identidad de **Supabase y Vercel** (login con GitHub en ambos). Cuando
-exista: añadirla a `gh` (`gh auth login`) EL MISMO DÍA, fijar identidad por-repo aquí
-(sustituye a la Sekees provisional del init local), crear `valio` privado, pushear, y
-actualizar `MANIFIESTO-REPOS.md` + tabla de cuentas del CLAUDE.md raíz del universo.
-Regla del universo: antes de push, la cuenta `gh` activa debe ser la de VALIO.
-Hosting: **Vercel** (root directory `app/`) + **Supabase** (proyecto `valio`, eu-west).
+Cuenta GitHub dedicada **ValioApp** (solo VALIO; también login de Supabase y Vercel).
+Repo: **`ValioApp/valio`** (privado, main) — creado y pusheado 2026-07-07. Identidad
+por-repo fijada: `ValioApp <301057959+ValioApp@users.noreply.github.com>`. En `gh`:
+antes de push la cuenta activa debe ser ValioApp (`gh auth switch --user ValioApp`
+si hay varias). gh CLI instalado en `C:\Program Files\GitHub CLI\gh.exe`.
+Hosting: **Vercel** (importar `ValioApp/valio`, root directory `app/`) + **Supabase**
+(proyecto `valio`, eu-west) — ambos con login GitHub de ValioApp.
 
 ## Fase
 
