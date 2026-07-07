@@ -13,7 +13,7 @@ import {
   listPhotosAction,
   uploadPropertyPhotos,
 } from '@/app/(app)/valorar/photo-actions'
-import { MAX_PHOTOS_PER_PROPERTY, type PropertyPhoto } from '@/data/photos'
+import { MAX_PHOTOS_PER_PROPERTY, validatePhoto, type PropertyPhoto } from '@/data/photos'
 
 export function PropertyPhotos({ propertyId }: { propertyId: string }) {
   const [photos, setPhotos] = useState<PropertyPhoto[]>([])
@@ -47,18 +47,38 @@ export function PropertyPhotos({ propertyId }: { propertyId: string }) {
 
   function handleFiles(fileList: FileList | null) {
     if (!fileList || fileList.length === 0) return
-    const fd = new FormData()
-    const count = fileList.length
-    for (const file of Array.from(fileList)) fd.append('photos', file)
-    setError(null)
-    startTransition(async () => {
-      const res = await uploadPropertyPhotos(propertyId, fd)
-      if (res.status === 'error') {
-        setError(res.message)
+    const files = Array.from(fileList)
+    // Validación previa en cliente: evita disparar el límite de body de los Server
+    // Actions (error de framework no capturable) y da feedback inmediato.
+    for (const file of files) {
+      const check = validatePhoto(file)
+      if (!check.ok) {
+        setError(check.reason)
+        if (inputRef.current) inputRef.current.value = ''
         return
       }
-      setPhotos(res.photos)
-      setCurrent(Math.max(0, res.photos.length - count)) // salta a la primera recién subida
+    }
+    setError(null)
+    // Subida por-archivo (un request por foto): cada uno queda muy por debajo del
+    // bodySizeLimit aunque el usuario seleccione varias de 6 MB a la vez.
+    startTransition(async () => {
+      let lastPhotos: PropertyPhoto[] | null = null
+      let failure: string | null = null
+      for (const file of files) {
+        const fd = new FormData()
+        fd.append('photos', file)
+        const res = await uploadPropertyPhotos(propertyId, fd)
+        if (res.status === 'error') {
+          failure = res.message
+          break
+        }
+        lastPhotos = res.photos
+      }
+      if (lastPhotos) {
+        setPhotos(lastPhotos)
+        setCurrent(Math.max(0, lastPhotos.length - 1)) // muestra la última subida
+      }
+      if (failure) setError(failure)
     })
     if (inputRef.current) inputRef.current.value = ''
   }
