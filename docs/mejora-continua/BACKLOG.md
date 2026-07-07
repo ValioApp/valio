@@ -24,7 +24,7 @@ Fuente: investigación de reseñas/foros verificada (informe completo en
 | P9 | 📋 Histórico y re-valoración periódica de cartera | Q5/Q10 patrón Zestimate | M | backlog |
 | P10 | 📋 Análisis desde URL de anuncio + historial del anuncio | F10+F11 — demanda alta pero scraping frágil/riesgo legal (regla de oro nº1) | L | congelado (revisar con APIs del socio) |
 | — | Export cartera Excel/CSV | petición típica agencias | S | backlog |
-| P11 | 📋 UX "resultado en <2 min" + free tier 2-3 valoraciones | Estudio Invisor rec.2 — la fricción de entrada es el campo de batalla | S | backlog (freemium → Plan 3) |
+| P11 | 📋 UX "resultado en <2 min" + free tier 2-3 valoraciones | Estudio Invisor rec.2 — la fricción de entrada es el campo de batalla | S | **parcial (falta freemium)** — iteración 4 |
 | P12 | 📋 SEO comparativo: /vs/invisor, /vs/cassandra, /vs/lystos, /comparativa | Estudio Invisor rec.3 — gana esas búsquedas sin competencia hoy | S | backlog (Plan 3 landing) |
 | P13 | 📋 "Memorándum de inversión" white-label como formato del PDF | Estudio Invisor rec.4 — ellos lo venden premium sin trazabilidad real | M | backlog (con P6) |
 | P14 | 🛡️ Publicar precisión (MdAPE/PPE10) + página "por qué a veces rehusamos valorar" | Estudio Invisor rec.5 — nadie del segmento publica métricas de error | S | backlog (necesita backtesting con cierres) |
@@ -64,8 +64,17 @@ vale de verdad y por qué?". Su talón de Aquiles: pipeline de scraping sin acue
   inversor distressed (comprar ≤70% del libre). Suite 72/72, build limpio.
 - P2 también marcado ✅ (iteración 2, commits ff7ffcb/01a1bee/999e47a).
 
-### Iteración 4 — siguiente
+### Iteración 4 — 2026-07-07 ✅
+- **Implementado Plan 2.1 Tasks 7-8 (P11 parcial — UX de entrada)**: server actions
+  de resolución (`valorar/resolve-actions.ts`: CartoCiudad find → RPC PostGIS →
+  zone_stats → Catastro con caché) y `/valorar` real con autocomplete (debounce
+  300 ms), card "Datos del Catastro" editable, hidden lat/lon/censusSectionId y
+  gating de submit por zona activa. Degradación sin Supabase: aviso claro que
+  remite a Task 11 + /demo (desviación documentada). Suite 72/72, build limpio.
+- Falta para cerrar P11: free tier 2-3 valoraciones (freemium → Plan 3) y runtime
+  real (Task 11 Plan 1 + migración 0004 + ETL, en manos de Alex).
+
+### Iteración 5 — siguiente
 - Candidatos: **P8-lite** (escenarios conservador/realista/optimista sobre la
-  RentabilityCard — S/M, puro), **export CSV cartera** (S), o **Plan 2.1
-  Tasks 7-8** (form con autocomplete — funciona parcialmente sin Supabase).
-  P3/P5 siguen bloqueados por datos; P6/P7/P11-P13 son de Plan 3 (landing/PDF).
+  RentabilityCard — S/M, puro) o **export CSV cartera** (S).
+  P3/P5 siguen bloqueados por datos; P6/P7/P12-P13 son de Plan 3 (landing/PDF).
