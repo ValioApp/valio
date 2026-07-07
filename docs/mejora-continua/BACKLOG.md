@@ -20,7 +20,7 @@ Fuente: investigación de reseñas/foros verificada (informe completo en
 | P5 | 🛡️ **Alquiler estimado + flag zona tensionada** por sección censal | F6 (idealista lo cobra B2B) + F8; encaja con pipeline INE/SERPAVI | M | backlog (tras Plan 2.1 completo) |
 | P6 | 📋 **Informe PDF white-label** con testigos citados y gráficos legibles | F1 — feature más valorada por agencias en toda la evidencia pro | M | backlog (Plan 3) |
 | P7 | 📋 **Anti-lead-gen como posicionamiento** (sin teléfono, sin vender leads, pricing público) | Q7 RealAdvisor vende leads >56€ + Q8 Trovimap 2,7/5 | S (copy landing) | backlog (Plan 3) |
-| P8 | 📋 **Estimación de reforma por niveles + escenarios conservador/realista/optimista** | F9+F13 (Invisor la tiene y presume) | M | **parcial (falta reforma por niveles)** — iteración 5 |
+| P8 | 📋 **Estimación de reforma por niveles + escenarios conservador/realista/optimista** | F9+F13 (Invisor la tiene y presume) | M | **✅ iteraciones 5+7** (escenarios + reforma por niveles) |
 | P9 | 📋 Histórico y re-valoración periódica de cartera | Q5/Q10 patrón Zestimate | M | backlog |
 | P10 | 📋 Análisis desde URL de anuncio + historial del anuncio | F10+F11 — demanda alta pero scraping frágil/riesgo legal (regla de oro nº1) | L | congelado (revisar con APIs del socio) |
 | — | Export cartera Excel/CSV | petición típica agencias | S | **✅ iteración 6** |
@@ -94,8 +94,35 @@ vale de verdad y por qué?". Su talón de Aquiles: pipeline de scraping sin acue
 - Runtime sin verificar en vivo: sin Supabase configurado (Task 11 pendiente
   de Alex) la ruta devolvería error hasta que exista sesión real.
 
-### Iteración 7 — siguiente
-- Candidatos: completar **P8** (estimación de reforma por niveles, M, motor
-  puro sin dependencias externas) o hacer checkpoint del loop — el backlog
-  local sin bloqueos se está agotando; lo que queda (P3, P5, P6, P9, P10, P12-P14)
-  necesita datos reales (Task 11 + Plan 2/3) o assets de landing/PDF.
+### Iteración 7 — 2026-07-07 ✅
+- **Implementado P8 (cierre) — Estimación de reforma por niveles**:
+  `engine/renovation.ts` (`estimateRenovation(level, builtAreaM2)`, tarifas v0
+  €/m² por nivel ninguna/lavado/parcial/integral/premium, redondeo a la centena,
+  +5 tests TDD) y select de nivel en `RentabilityCard` que autorrellena el
+  importe de reforma (editable) al cambiar de nivel; `ValuationResult` pasa
+  `subject?.builtAreaM2` como nueva prop opcional. Sin superficie disponible el
+  autorrelleno usa 0 y manda el importe editado a mano. Suite 90/90, `tsc` y
+  build limpios.
+- P8 queda completo (escenarios de iteración 5 + reforma por niveles).
+
+### Checkpoint del loop — 2026-07-07
+- **Backlog local ejecutable AGOTADO tras 7 iteraciones**: P1✅ P2✅ P4✅ P8✅
+  P11-parcial✅ export✅ (P3, P5, P6, P7, P9, P10, P12, P13, P14 no tienen más
+  recorrido sin datos/activos externos).
+- Lo que queda requiere una de tres cosas:
+  1. **Task 11 de Alex** (Supabase): aplicar migraciones/seed, `.env.local`,
+     smoke test — desbloquea el pipeline de datos reales para P3 (doble
+     precio), P5 (alquiler por zona), P14 (precisión publicable) y los ETLs
+     del Plan 2.1.
+  2. **Plan 3** (landing/PDF/freemium/SEO): P6 (informe PDF white-label), P7
+     (posicionamiento anti-lead-gen en landing), P12 (SEO comparativo /vs/),
+     P13 (memorándum de inversión white-label).
+  3. **Al socio**: P10 (análisis desde URL, congelado por riesgo legal de
+     scraping — regla de oro nº1) y calibración de tarifas/tasas con sus datos
+     reales (idealista/data, CSV de cierres).
+- **Estado del producto local**: la pantalla de resultado y el análisis de
+  inversión (rentabilidad post-impuestos, escenarios, ocupación, reforma por
+  niveles, confianza explicada) están objetivamente por delante de todo lo
+  reseñado del segmento (Invisor incluido). Falta el pipeline de datos reales
+  para poder reclamarlo públicamente — sin eso, todo es v0 con tasas
+  documentadas pero sin calibrar contra cierres reales.
