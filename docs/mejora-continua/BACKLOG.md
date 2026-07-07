@@ -154,3 +154,29 @@ vale de verdad y por qué?". Su talón de Aquiles: pipeline de scraping sin acue
   contra cierres reales.
 - **Fase local COMPLETADA con 8 iteraciones.** Loop en pausa hasta
   desbloqueo (Task 11 de Alex / OK del socio a nombre / Plan 3).
+
+### Datos reales cargados — 2026-07-07 ✅
+
+Proyecto Supabase operativo (migraciones 0001-0004 aplicadas) y pipeline de zona
+real ejecutado contra él (Plan 2.1 Tasks 3-4, adaptadas a la realidad):
+
+- **Renta INE 2023** (`npm run etl:adrh`, `app/scripts/etl-adrh.ts`): 3.646
+  secciones de la provincia 08 en `zone_stats` (+3 seeds intactas). El CSV
+  vigente del INE trae 40 secciones bajo secreto estadístico (eran 4 en la
+  verificación del plan → 3.646 y no 3.682). Raval `0801901001` coef 0.672 ✓.
+- **Cartografía censal 2023** (`npm run etl:secciones`,
+  `app/scripts/load-census-sections.ts`): 3.642 polígonos en `census_sections`
+  vía **WFS 2.0 del INE** (capa `Secciones_2023`, filtro `CPRO='08'` en
+  servidor) — sin GDAL: el OGC API Features solo publica el seccionado 2026,
+  pero el WFS clásico mantiene las capas anuales. Inserción por lotes con la
+  Management API (`st_geomfromgeojson`), idempotente. Excluidos 494 agregados
+  `CSEC='000'` (distrito/municipio) que solapaban con las secciones y rompían
+  el lookup punto→sección.
+- **Verificación**: `census_section_for_point(41.379908, 2.168444)` →
+  `0801901019` (Raval, coef 0.594) y `(41.3990, 2.1210)` → `0801905010`
+  (Sarrià). Join renta↔geometría: **3.637** secciones con renta Y polígono
+  (9 CUSEC del ADRH vigente no existen en la capa WFS 2023 — revisiones
+  distintas del propio INE, sin impacto práctico).
+- **El buscador de direcciones de `/valorar` queda vivo para la provincia de
+  Barcelona**: dirección → CartoCiudad → sección censal PostGIS → coeficiente
+  de renta real. Suite 93/93 y `tsc` limpios tras los scripts.
