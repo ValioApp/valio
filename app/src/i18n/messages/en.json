@@ -4,6 +4,7 @@
     "logIn": "Log in",
     "createAccount": "Create account",
     "goToPanel": "Go to dashboard",
+    "logout": "Log out",
     "languageLabel": "Language",
     "es": "ES",
     "ca": "CA",
@@ -195,7 +196,6 @@
       "forgotLink": "Forgot your password?",
       "submit": "Log in",
       "submitting": "Logging in…",
-      "invalidCredentials": "Incorrect email or password.",
       "magicToggle": "Prefer a magic link?",
       "magicSubmit": "Send access link",
       "magicSubmitting": "Sending…",
@@ -223,7 +223,12 @@
       "submitting": "Saving…"
     },
     "errors": {
-      "generic": "Something went wrong. Please try again."
+      "generic": "Something went wrong. Please try again.",
+      "invalidCredentials": "Incorrect email or password.",
+      "emailRateLimit": "Too many attempts. Wait a few minutes and try again.",
+      "userExists": "An account with this email already exists. Log in instead.",
+      "weakPassword": "That password is too weak. Use at least 8 characters.",
+      "linkExpired": "The link has expired or is invalid. Please try again."
     }
   }
 }

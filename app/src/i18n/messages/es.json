@@ -4,6 +4,7 @@
     "logIn": "Iniciar sesión",
     "createAccount": "Crear cuenta",
     "goToPanel": "Ir al panel",
+    "logout": "Cerrar sesión",
     "languageLabel": "Idioma",
     "es": "ES",
     "ca": "CA",
@@ -195,7 +196,6 @@
       "forgotLink": "¿Olvidaste tu contraseña?",
       "submit": "Entrar",
       "submitting": "Entrando…",
-      "invalidCredentials": "Email o contraseña incorrectos.",
       "magicToggle": "¿Prefieres un enlace mágico?",
       "magicSubmit": "Enviar enlace de acceso",
       "magicSubmitting": "Enviando…",
@@ -223,7 +223,12 @@
       "submitting": "Guardando…"
     },
     "errors": {
-      "generic": "Algo ha ido mal. Inténtalo de nuevo."
+      "generic": "Algo ha ido mal. Inténtalo de nuevo.",
+      "invalidCredentials": "Email o contraseña incorrectos.",
+      "emailRateLimit": "Demasiados intentos. Espera unos minutos e inténtalo de nuevo.",
+      "userExists": "Ya existe una cuenta con este email. Inicia sesión.",
+      "weakPassword": "La contraseña es demasiado débil. Usa al menos 8 caracteres.",
+      "linkExpired": "El enlace ha caducado o no es válido. Inténtalo de nuevo."
     }
   }
 }

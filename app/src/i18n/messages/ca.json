@@ -4,6 +4,7 @@
     "logIn": "Inicia la sessió",
     "createAccount": "Crea un compte",
     "goToPanel": "Anar al tauler",
+    "logout": "Tancar sessió",
     "languageLabel": "Idioma",
     "es": "ES",
     "ca": "CA",
@@ -195,7 +196,6 @@
       "forgotLink": "Has oblidat la contrasenya?",
       "submit": "Entrar",
       "submitting": "Entrant…",
-      "invalidCredentials": "Correu o contrasenya incorrectes.",
       "magicToggle": "Prefereixes un enllaç màgic?",
       "magicSubmit": "Envia l'enllaç d'accés",
       "magicSubmitting": "Enviant…",
@@ -223,7 +223,12 @@
       "submitting": "Desant…"
     },
     "errors": {
-      "generic": "Alguna cosa ha anat malament. Torna-ho a provar."
+      "generic": "Alguna cosa ha anat malament. Torna-ho a provar.",
+      "invalidCredentials": "Correu o contrasenya incorrectes.",
+      "emailRateLimit": "Massa intents. Espera uns minuts i torna-ho a provar.",
+      "userExists": "Ja existeix un compte amb aquest correu. Inicia la sessió.",
+      "weakPassword": "La contrasenya és massa feble. Fes servir com a mínim 8 caràcters.",
+      "linkExpired": "L'enllaç ha caducat o no és vàlid. Torna-ho a provar."
     }
   }
 }

@@ -3,6 +3,7 @@
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { resetPasswordSchema } from '@/lib/auth-schemas'
+import { mapAuthError } from '@/lib/auth-errors'
 import type { AuthState } from '@/lib/auth-state'
 
 /**
@@ -19,7 +20,7 @@ export async function updatePassword(_prev: AuthState, formData: FormData): Prom
   const supabase = await createClient()
   const { error } = await supabase.auth.updateUser({ password: parsed.data.password })
   if (error) {
-    return { status: 'error', code: 'generic', message: error.message }
+    return { status: 'error', code: mapAuthError(error) }
   }
 
   redirect('/dashboard')

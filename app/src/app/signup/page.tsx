@@ -37,8 +37,8 @@ export default function SignupPage() {
   const errorMessage =
     state?.status === 'error'
       ? state.code === 'validation'
-        ? state.message
-        : (state.message ?? te('generic'))
+        ? (state.message ?? te('generic'))
+        : te(state.code)
       : null
 
   return (

@@ -3,9 +3,9 @@
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { emailSchema, signInSchema } from '@/lib/auth-schemas'
+import { mapAuthError } from '@/lib/auth-errors'
+import { getSiteUrl } from '@/lib/env'
 import type { AuthState } from '@/lib/auth-state'
-
-const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'
 
 /** Acceso principal: email + contraseña → /dashboard. */
 export async function signInWithPassword(_prev: AuthState, formData: FormData): Promise<AuthState> {
@@ -20,8 +20,9 @@ export async function signInWithPassword(_prev: AuthState, formData: FormData): 
   const supabase = await createClient()
   const { error } = await supabase.auth.signInWithPassword(parsed.data)
   if (error) {
-    // Credenciales inválidas u otro fallo de acceso: mensaje único y legible.
-    return { status: 'error', code: 'invalid' }
+    // Acceso: NO distinguimos el motivo (credenciales, usuario inexistente,
+    // etc.) para no facilitar enumeración de cuentas. Mensaje único.
+    return { status: 'error', code: 'invalidCredentials' }
   }
 
   redirect('/dashboard')
@@ -37,10 +38,13 @@ export async function sendMagicLink(_prev: AuthState, formData: FormData): Promi
   const supabase = await createClient()
   const { error } = await supabase.auth.signInWithOtp({
     email: parsed.data.email,
-    options: { emailRedirectTo: `${SITE}/auth/confirm` },
+    // El login NUNCA crea cuentas: un email desconocido no debe provocar alta
+    // (evita registro por spam y el consiguiente workspace fantasma). El alta
+    // pasa siempre por /signup.
+    options: { emailRedirectTo: `${getSiteUrl()}/auth/confirm`, shouldCreateUser: false },
   })
   if (error) {
-    return { status: 'error', code: 'generic', message: error.message }
+    return { status: 'error', code: mapAuthError(error) }
   }
   return { status: 'sent' }
 }

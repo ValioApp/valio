@@ -1,7 +1,8 @@
 'use client'
 
-import { useActionState } from 'react'
+import { Suspense, useActionState } from 'react'
 import Link from 'next/link'
+import { useSearchParams } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import { ChevronDown } from 'lucide-react'
 import { AuthShell } from '@/components/auth/AuthShell'
@@ -10,27 +11,24 @@ import { AuthMessage } from '@/components/auth/AuthMessage'
 import type { AuthState } from '@/lib/auth-state'
 import { sendMagicLink, signInWithPassword } from './actions'
 
-export default function LoginPage() {
+/** Traduce el estado de error de una acción a un mensaje localizado seguro. */
+function authError(state: AuthState, te: (key: string) => string): string | null {
+  if (state?.status !== 'error') return null
+  // 'validation' trae su propio mensaje (Zod, ya en español); el resto son
+  // claves bajo auth.errors mapeadas desde el código de Supabase.
+  return state.code === 'validation' ? (state.message ?? te('generic')) : te(state.code)
+}
+
+function LoginForm() {
   const t = useTranslations('auth.login')
   const te = useTranslations('auth.errors')
+  const searchParams = useSearchParams()
+  const linkExpired = searchParams.get('error') === 'link_expired'
   const [state, action, pending] = useActionState<AuthState, FormData>(signInWithPassword, null)
   const [magicState, magicAction, magicPending] = useActionState<AuthState, FormData>(sendMagicLink, null)
 
-  const errorMessage =
-    state?.status === 'error'
-      ? state.code === 'invalid'
-        ? t('invalidCredentials')
-        : state.code === 'validation'
-          ? state.message
-          : (state.message ?? te('generic'))
-      : null
-
-  const magicError =
-    magicState?.status === 'error'
-      ? magicState.code === 'validation'
-        ? magicState.message
-        : (magicState.message ?? te('generic'))
-      : null
+  const errorMessage = authError(state, te)
+  const magicError = authError(magicState, te)
 
   return (
     <AuthShell
@@ -45,6 +43,12 @@ export default function LoginPage() {
         </>
       }
     >
+      {linkExpired && (
+        <div className="mb-4">
+          <AuthMessage tone="error">{te('linkExpired')}</AuthMessage>
+        </div>
+      )}
+
       <form action={action} className="flex flex-col gap-4">
         <AuthField
           id="email"
@@ -121,5 +125,14 @@ export default function LoginPage() {
         </form>
       </details>
     </AuthShell>
+  )
+}
+
+export default function LoginPage() {
+  // useSearchParams exige un límite de Suspense para no deoptar el prerender.
+  return (
+    <Suspense>
+      <LoginForm />
+    </Suspense>
   )
 }
