@@ -217,6 +217,41 @@ real ejecutado contra él (Plan 2.1 Tasks 3-4, adaptadas a la realidad):
   resultado…) en su propio paquete de traducción, que traducirá también los textos
   nuevos del carrusel (hoy en español directo, como el resto de la app).
 
+### Hardening carrusel (post-revisión) 2026-07-08 ✅
+
+Revisión adversarial del carrusel de fotos. La seguridad base ya era sólida; esto es
+endurecimiento + una mejora de UX. Aplicado:
+
+1. **Migración 0006** (`0006_photos_hardening.sql`, aplicada en producción vía
+   Management API): versiona el bucket `property-photos` como infra-as-code (idempotente,
+   sigue `public=false` · 6 MB · jpeg/png/webp) y sustituye la policy `ALL` de
+   `property_photos` por policies por-comando; el **INSERT** exige además que
+   `storage_path` viva bajo `<workspace_id>/%` (ata la fila de metadatos a la carpeta del
+   tenant, replicando en la tabla lo que la RLS de `storage.objects` ya hacía en Storage).
+   Verificado en `pg_policies` (4 policies) y bucket privado; 0 filas que migrar.
+2. **Bytes mágicos (CWE-434, anti content-type spoofing)** en `data/photos.ts`:
+   `sniffPhotoMime` + `validatePhotoBytes` (puras) verifican la firma real (JPEG `FF D8 FF`,
+   PNG `89 50 4E 47 0D 0A 1A 0A`, WEBP `RIFF…WEBP`) y su coherencia con el Content-Type
+   declarado; el server action valida la cabecera antes de subir. +6 tests (98→102 en el
+   total de la suite; 3 nuevos grupos: sniff, spoofing, límites).
+3. **Robustez de las server actions** (`photo-actions.ts`): `deletePropertyPhoto` y el
+   revert del upload ahora desestructuran el `{ error }` de Storage y lo loguean (antes se
+   ignoraba → objeto huérfano sin traza); ambas acciones envueltas en try/catch que
+   devuelve `{status:'error'}` (los throws de `listPropertyPhotos` en el re-listado ya no
+   caen en silencio); `sort_order` usa `max(sort_order)+1` en vez de `length` (sin colisión
+   al re-subir tras borrar una intermedia) y `listPropertyPhotos` desempata por `created_at`.
+4. **a11y del carrusel** (`PropertyPhotos.tsx`): región `role="status"` `aria-live="polite"`
+   que anuncia "Foto n de N" al cambiar (el contador visual pasa a `aria-hidden`); el overlay
+   de confirmación de borrado es `role="dialog"` `aria-modal` con `aria-labelledby`, cierre
+   con Escape y foco inicial en Cancelar (salida segura de una acción destructiva).
+
+**Pendiente (no hecho en este paquete):**
+- **Refresh de signed-URL antes de imprimir**: las URLs firmadas del carrusel viven 1 h
+  (`SIGNED_URL_TTL`); un informe abierto y dejado >1 h imprimiría imágenes caducadas. Re-
+  firmar/re-listar en `beforeprint` (o subir el TTL solo para el grid imprimible) → backlog.
+
+Verde: `tsc` limpio, suite **102/102**, `npm run build` limpio.
+
 ### Paquete Alex 2026-07-08 (1/3): landing + i18n ✅
 
 - **Landing pública anti-lead-gen (cierra P7)** en `app/src/app/page.tsx` (antes
