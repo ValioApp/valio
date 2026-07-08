@@ -30,6 +30,8 @@ export type PhotoValidation =
  * Valida tipo y tamaño de una foto antes de subirla. Función pura (sin I/O):
  * espeja los límites del bucket (jpeg/png/webp, ≤6 MB) como defensa en el cliente
  * y en el server action; la RLS de Storage y el bucket son la última línea.
+ * NO mira el contenido: el cliente solo tiene los metadatos del `File`. La
+ * verificación de bytes mágicos vive en el server (`validatePhotoBytes`).
  */
 export function validatePhoto(file: PhotoLike): PhotoValidation {
   if (!(ALLOWED_PHOTO_MIME as readonly string[]).includes(file.type)) {
@@ -42,6 +44,65 @@ export function validatePhoto(file: PhotoLike): PhotoValidation {
     return { ok: false, reason: 'La imagen supera el límite de 6 MB.' }
   }
   return { ok: true, ext: EXT_BY_MIME[file.type as AllowedPhotoMime] }
+}
+
+/** ¿`bytes` empieza por la firma `sig` a partir de `offset`? (comparación pura). */
+function startsWith(bytes: Uint8Array, sig: readonly number[], offset = 0): boolean {
+  if (bytes.length < offset + sig.length) return false
+  for (let i = 0; i < sig.length; i += 1) {
+    if (bytes[offset + i] !== sig[i]) return false
+  }
+  return true
+}
+
+/**
+ * Firmas de bytes mágicos por MIME de la allowlist:
+ *  - JPEG:  FF D8 FF
+ *  - PNG:   89 50 4E 47 0D 0A 1A 0A
+ *  - WEBP:  RIFF (52 49 46 46) en offset 0 + WEBP (57 45 42 50) en offset 8
+ */
+const MAGIC_MATCHERS: Record<AllowedPhotoMime, (h: Uint8Array) => boolean> = {
+  'image/jpeg': (h) => startsWith(h, [0xff, 0xd8, 0xff]),
+  'image/png': (h) => startsWith(h, [0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]),
+  'image/webp': (h) => startsWith(h, [0x52, 0x49, 0x46, 0x46]) && startsWith(h, [0x57, 0x45, 0x42, 0x50], 8),
+}
+
+/** Nº de bytes de cabecera suficientes para decidir (WEBP necesita hasta el byte 11). */
+export const PHOTO_HEADER_BYTES = 12
+
+/**
+ * Detecta el MIME real de una imagen por su firma de bytes; `null` si no casa con
+ * ningún tipo de la allowlist. Función pura y testeable (recibe la cabecera cruda).
+ */
+export function sniffPhotoMime(header: Uint8Array): AllowedPhotoMime | null {
+  for (const mime of ALLOWED_PHOTO_MIME) {
+    if (MAGIC_MATCHERS[mime](header)) return mime
+  }
+  return null
+}
+
+/**
+ * Validación completa server-side (anti content-type spoofing, CWE-434): tipo + tamaño
+ * (via `validatePhoto`) Y coherencia entre el Content-Type declarado y los bytes mágicos
+ * reales. Rechaza un binario que se declara `image/png` pero cuya cabecera es otra cosa.
+ * Pura: recibe la cabecera cruda, el tamaño y el tipo declarado.
+ */
+export function validatePhotoBytes(input: {
+  header: Uint8Array
+  size: number
+  declaredType: string
+}): PhotoValidation {
+  const meta = validatePhoto({ type: input.declaredType, size: input.size })
+  if (!meta.ok) return meta
+
+  const actual = sniffPhotoMime(input.header)
+  if (actual === null) {
+    return { ok: false, reason: 'El archivo no es una imagen JPG, PNG o WEBP válida.' }
+  }
+  if (actual !== input.declaredType) {
+    return { ok: false, reason: 'El contenido del archivo no coincide con su formato declarado.' }
+  }
+  return { ok: true, ext: EXT_BY_MIME[actual] }
 }
 
 /** Foto lista para pintar en el carrusel (URL firmada temporal). */
