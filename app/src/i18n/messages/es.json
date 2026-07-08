@@ -84,6 +84,20 @@
         }
       }
     },
+    "barrio": {
+      "eyebrow": "Barcelona real",
+      "title": "Pisos y calles de verdad, no renders",
+      "kicker": "Fachadas del Eixample, tejados con la ciudad al fondo y ramblas de barrio: el mercado que se ve por la ventana.",
+      "caption": "Fotografías reales de Barcelona (Eixample y Gràcia).",
+      "alt": {
+        "facadeCorner": "Edificio modernista en chaflán del Eixample de Barcelona, con cúpulas y balcones de forja",
+        "skyline": "Tejados de Barcelona al atardecer con Montjuïc y el Palau Nacional al fondo",
+        "balconies": "Fachada de Barcelona con balcones de forja y persianas de madera a contraluz",
+        "rambla": "Rambla arbolada de un barrio de Barcelona con terrazas y plátanos",
+        "aerial": "Vista aérea de la retícula del Eixample de Barcelona con la Sagrada Família",
+        "rooftops": "Tejados residenciales de Barcelona al anochecer con cielo malva"
+      }
+    },
     "pricing": {
       "eyebrow": "Precios públicos",
       "title": "Planes que escalan contigo",

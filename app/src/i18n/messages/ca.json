@@ -84,6 +84,20 @@
         }
       }
     },
+    "barrio": {
+      "eyebrow": "Barcelona real",
+      "title": "Pisos i carrers de veritat, no renders",
+      "kicker": "Façanes de l'Eixample, terrats amb la ciutat al fons i rambles de barri: el mercat que es veu per la finestra.",
+      "caption": "Fotografies reals de Barcelona (Eixample i Gràcia).",
+      "alt": {
+        "facadeCorner": "Edifici modernista al xamfrà de l'Eixample de Barcelona, amb cúpules i balcons de forja",
+        "skyline": "Terrats de Barcelona al capvespre amb Montjuïc i el Palau Nacional al fons",
+        "balconies": "Façana de Barcelona amb balcons de forja i persianes de fusta a contrallum",
+        "rambla": "Rambla arbrada d'un barri de Barcelona amb terrasses i plàtans",
+        "aerial": "Vista aèria de la retícula de l'Eixample de Barcelona amb la Sagrada Família",
+        "rooftops": "Terrats residencials de Barcelona al vespre amb cel malva"
+      }
+    },
     "pricing": {
       "eyebrow": "Preus públics",
       "title": "Plans que escalen amb tu",

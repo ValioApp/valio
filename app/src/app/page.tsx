@@ -4,6 +4,7 @@ import { Hero } from '@/components/landing/Hero'
 import { TrustStrip } from '@/components/landing/TrustStrip'
 import { PortalesSection } from '@/components/landing/PortalesSection'
 import { Features } from '@/components/landing/Features'
+import { BarrioStrip } from '@/components/landing/BarrioStrip'
 import { Pricing } from '@/components/landing/Pricing'
 import { Faq } from '@/components/landing/Faq'
 import { LandingFooter } from '@/components/landing/LandingFooter'
@@ -27,6 +28,7 @@ export default async function LandingPage() {
         <TrustStrip />
         <PortalesSection />
         <Features />
+        <BarrioStrip />
         <Pricing />
         <Faq />
       </main>

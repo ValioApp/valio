@@ -84,6 +84,20 @@
         }
       }
     },
+    "barrio": {
+      "eyebrow": "Real Barcelona",
+      "title": "Real flats and streets, not renders",
+      "kicker": "Eixample facades, rooftops with the city behind them and neighbourhood boulevards: the market you see out the window.",
+      "caption": "Real photographs of Barcelona (Eixample and Gràcia).",
+      "alt": {
+        "facadeCorner": "Modernist corner building in Barcelona's Eixample, with domes and wrought-iron balconies",
+        "skyline": "Barcelona rooftops at dusk with Montjuïc and the Palau Nacional behind",
+        "balconies": "Barcelona facade with wrought-iron balconies and wooden shutters backlit at sunset",
+        "rambla": "Tree-lined neighbourhood boulevard in Barcelona with cafe terraces and plane trees",
+        "aerial": "Aerial view of Barcelona's Eixample grid with the Sagrada Família",
+        "rooftops": "Residential Barcelona rooftops at nightfall under a mauve sky"
+      }
+    },
     "pricing": {
       "eyebrow": "Public pricing",
       "title": "Plans that scale with you",
