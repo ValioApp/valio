@@ -1,6 +1,7 @@
 'use server'
 
 import { z } from 'zod'
+import { getTranslations } from 'next-intl/server'
 import { fetchCandidates, fetchZoneStats } from '@/data/comparables'
 import { valuate } from '@/engine/valuate'
 import type { SubjectProperty, ValuationOutcome } from '@/engine/types'
@@ -32,6 +33,7 @@ export async function runValuation(
   _prev: ValuationFormState,
   formData: FormData,
 ): Promise<ValuationFormState> {
+  const t = await getTranslations('valorar')
   const raw = Object.fromEntries(formData.entries())
   const parsed = schema.safeParse({
     ...raw,
@@ -46,7 +48,7 @@ export async function runValuation(
 
   const supabase = await createClient()
   const { data: auth } = await supabase.auth.getUser()
-  if (!auth.user) return { status: 'error', message: 'Inicia sesión para valorar.' }
+  if (!auth.user) return { status: 'error', message: t('errorSession') }
 
   const subject: SubjectProperty = parsed.data
   try {
@@ -108,6 +110,6 @@ export async function runValuation(
 
     return { status: 'done', outcome, propertyId }
   } catch (e) {
-    return { status: 'error', message: e instanceof Error ? e.message : 'Error inesperado' }
+    return { status: 'error', message: e instanceof Error ? e.message : t('errorUnexpected') }
   }
 }

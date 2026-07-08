@@ -10,14 +10,15 @@ import { logout } from '@/app/(app)/actions'
 
 interface NavItem {
   href: string
-  label: string
+  /** Clave i18n en el namespace `nav`. */
+  labelKey: 'dashboard' | 'valorar' | 'cartera'
   icon: LucideIcon
 }
 
 const NAV_ITEMS: NavItem[] = [
-  { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  { href: '/valorar', label: 'Valorar', icon: Calculator },
-  { href: '/cartera', label: 'Cartera', icon: FolderOpen },
+  { href: '/dashboard', labelKey: 'dashboard', icon: LayoutDashboard },
+  { href: '/valorar', labelKey: 'valorar', icon: Calculator },
+  { href: '/cartera', labelKey: 'cartera', icon: FolderOpen },
 ]
 
 function isActive(pathname: string, href: string): boolean {
@@ -31,18 +32,19 @@ function isActive(pathname: string, href: string): boolean {
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
   const t = useTranslations('common')
+  const tNav = useTranslations('nav')
 
   return (
     <div className="flex min-h-dvh w-full flex-col">
       {/* Sidebar desktop */}
       <aside className="print-hidden fixed inset-y-0 left-0 z-40 hidden w-[260px] flex-col border-r border-hairline bg-white md:flex">
         <div className="px-6 py-6">
-          <Link href="/dashboard" aria-label="VALIO — inicio">
+          <Link href="/dashboard" aria-label={tNav('homeAria')}>
             <ValioWordmark />
           </Link>
         </div>
-        <nav className="flex flex-1 flex-col gap-1 px-3" aria-label="Navegación principal">
-          {NAV_ITEMS.map(({ href, label, icon: Icon }) => {
+        <nav className="flex flex-1 flex-col gap-1 px-3" aria-label={tNav('mainNav')}>
+          {NAV_ITEMS.map(({ href, labelKey, icon: Icon }) => {
             const active = isActive(pathname, href)
             return (
               <Link
@@ -56,7 +58,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 }`}
               >
                 <Icon size={18} className={active ? 'text-petrol' : undefined} aria-hidden="true" />
-                {label}
+                {tNav(labelKey)}
               </Link>
             )
           })}
@@ -79,7 +81,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       {/* Header móvil */}
       <header className="print-hidden sticky top-0 z-40 border-b border-hairline bg-white/80 backdrop-blur md:hidden">
         <div className="flex items-center justify-between px-4 py-3">
-          <Link href="/dashboard" aria-label="VALIO — inicio">
+          <Link href="/dashboard" aria-label={tNav('homeAria')}>
             <ValioWordmark size="sm" />
           </Link>
           <div className="flex items-center gap-2">
@@ -103,9 +105,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       {/* Bottom-nav móvil */}
       <nav
         className="print-hidden fixed bottom-0 left-0 z-50 flex w-full items-center justify-around border-t border-hairline bg-white px-4 pt-2 pb-4 md:hidden"
-        aria-label="Navegación principal"
+        aria-label={tNav('mainNav')}
       >
-        {NAV_ITEMS.map(({ href, label, icon: Icon }) => {
+        {NAV_ITEMS.map(({ href, labelKey, icon: Icon }) => {
           const active = isActive(pathname, href)
           return (
             <Link
@@ -117,7 +119,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               }`}
             >
               <Icon size={22} className={active ? 'text-petrol' : undefined} aria-hidden="true" />
-              <span className="font-display text-[10px] font-semibold tracking-wide">{label}</span>
+              <span className="font-display text-[10px] font-semibold tracking-wide">{tNav(labelKey)}</span>
             </Link>
           )
         })}

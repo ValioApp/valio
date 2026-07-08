@@ -1,6 +1,7 @@
 'use client'
 
 import { Printer } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 
 /**
  * Botón "Imprimir informe" (iteración 8). Extraído como client component
@@ -9,6 +10,7 @@ import { Printer } from 'lucide-react'
  * clase `print-hidden`: no debe aparecer en el papel/PDF resultante.
  */
 export function PrintButton() {
+  const t = useTranslations('result')
   return (
     <button
       type="button"
@@ -16,7 +18,7 @@ export function PrintButton() {
       className="print-hidden flex shrink-0 items-center gap-2 rounded-card border border-hairline bg-white px-4 py-2 font-display text-sm font-semibold text-ink transition-colors duration-200 hover:bg-paper"
     >
       <Printer size={16} aria-hidden="true" />
-      Imprimir informe
+      {t('printReport')}
     </button>
   )
 }

@@ -133,7 +133,7 @@ export async function HeroValuationCard() {
                       style={{ width: `${barPx}px` }}
                       aria-hidden="true"
                     />
-                    {formatPct(pct, 0)}
+                    {formatPct(pct, undefined, 0)}
                   </span>
                 </div>
               )

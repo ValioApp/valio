@@ -5,24 +5,41 @@ import type { AdjustedComparable, ConfidenceLevel } from '@/engine/types'
  * Explicación honesta del nivel de confianza (anti caja-negra).
  * La queja nº1 documentada contra los AVM es no explicar el porqué; aquí se
  * expone con qué datos se calculó y qué faltaría para subir de nivel.
+ *
+ * i18n: la función es pura y NO produce texto — devuelve tokens estructurados
+ * (clave + parámetros) que el componente traduce con next-intl. Así el copy
+ * vive en los catálogos es/ca/en y la lógica de umbrales queda intacta.
  */
-export interface ConfidenceExplanation {
-  reasons: string[]
-  /** Qué faltaría para el siguiente nivel; null si ya es 'alta'. */
-  nextLevelHint: string | null
+export type ConfidenceReasonToken =
+  | { key: 'comparablesWithClosings'; n: number; closings: number }
+  | { key: 'comparablesNoClosings'; n: number }
+  | { key: 'dispersion'; fsd: number }
+  | { key: 'wideRange' }
+
+export type ConfidenceMissingToken =
+  | { key: 'minComps'; required: number; have: number }
+  | { key: 'maxDispersion'; max: number; current: number }
+
+export interface ConfidenceHintToken {
+  /** Nivel al que se aspira (para el texto "Para confianza …"). */
+  targetLevel: Exclude<ConfidenceLevel, 'baja'>
+  missing: ConfidenceMissingToken[]
 }
 
-const pctEs = (x: number) => `${(x * 100).toFixed(1).replace('.', ',')}%`
+export interface ConfidenceExplanation {
+  reasons: ConfidenceReasonToken[]
+  /** Qué faltaría para el siguiente nivel; null si ya es 'alta'. */
+  nextLevelHint: ConfidenceHintToken | null
+}
 
 function missingFor(
   target: { maxFsd: number; minComps: number },
   n: number,
   fsd: number,
-): string[] {
-  const parts: string[] = []
-  if (n < target.minComps) parts.push(`al menos ${target.minComps} testigos (hay ${n})`)
-  if (fsd > target.maxFsd)
-    parts.push(`dispersión ≤ ${pctEs(target.maxFsd)} (está en ${pctEs(fsd)})`)
+): ConfidenceMissingToken[] {
+  const parts: ConfidenceMissingToken[] = []
+  if (n < target.minComps) parts.push({ key: 'minComps', required: target.minComps, have: n })
+  if (fsd > target.maxFsd) parts.push({ key: 'maxDispersion', max: target.maxFsd, current: fsd })
   return parts
 }
 
@@ -34,26 +51,23 @@ export function explainConfidence(
   const n = comparables.length
   const closings = comparables.filter((c) => c.comparable.isClosingPrice).length
 
-  const reasons = [
+  const reasons: ConfidenceReasonToken[] = [
     closings > 0
-      ? `${n} testigos comparables, ${closings} con precio de cierre real`
-      : `${n} testigos comparables, todos precios de anuncio`,
-    `dispersión del ${pctEs(fsd)} entre los €/m² ajustados`,
+      ? { key: 'comparablesWithClosings', n, closings }
+      : { key: 'comparablesNoClosings', n },
+    { key: 'dispersion', fsd },
   ]
   if (confidence === 'baja') {
-    reasons.push('horquilla amplia: tómala como orientación de zona, no como precio')
+    reasons.push({ key: 'wideRange' })
   }
 
   if (confidence === 'alta') return { reasons, nextLevelHint: null }
 
   const target = confidence === 'media' ? CONFIDENCE_HIGH : CONFIDENCE_MEDIUM
-  const targetName = confidence === 'media' ? 'alta' : 'media'
+  const targetLevel: Exclude<ConfidenceLevel, 'baja'> = confidence === 'media' ? 'alta' : 'media'
   const missing = missingFor(target, n, fsd)
   return {
     reasons,
-    nextLevelHint:
-      missing.length > 0
-        ? `Para confianza ${targetName} haría falta ${missing.join(' y ')}.`
-        : null,
+    nextLevelHint: missing.length > 0 ? { targetLevel, missing } : null,
   }
 }

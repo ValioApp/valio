@@ -1,6 +1,7 @@
 'use server'
 
 import { z } from 'zod'
+import { getTranslations } from 'next-intl/server'
 import { consultaDNPRC, type CatastroProperty } from '@/services/catastro'
 import { findAddress, searchCandidates, type FindQuery, type GeocodeCandidate } from '@/services/geocoder'
 import { createClient } from '@/lib/supabase/server'
@@ -21,14 +22,10 @@ export type ResolveResult =
   | { status: 'ok'; resolved: ResolvedAddress }
   | { status: 'error'; message: string }
 
-const NO_COVERAGE_MSG = 'Aún no cubrimos esta zona — Barcelona y área metropolitana primero.'
-
-// Desviación documentada (degradación sin Supabase): mientras la Task 11 del Plan 1
-// (proyecto Supabase) y la migración 0004 no estén hechas, la RPC y zone_stats fallan.
-// En vez de propagar el error crudo de PostgREST, se muestra este aviso accionable.
-const DB_UNAVAILABLE_MSG =
-  'Zona no disponible todavía — la base de datos de secciones censales no está configurada ' +
-  '(Task 11 del Plan 1 + migración 0004). Mientras tanto puedes usar /demo.'
+// Los mensajes de error visibles se traducen con next-intl (namespace `valorar`):
+// `errorNoCoverage` (fuera de cobertura) y `errorDbUnavailable` (degradación documentada
+// mientras la Task 11 del Plan 1 + migración 0004 no estén hechas; en vez de propagar el
+// error crudo de PostgREST se muestra un aviso accionable).
 
 /** Candidatos para el autocomplete. Errores → lista vacía (UX de autocomplete). */
 export async function searchAddress(q: string): Promise<GeocodeCandidate[]> {
@@ -53,13 +50,14 @@ const findQuerySchema = z.union([
 ])
 
 export async function resolveAddress(query: FindQuery): Promise<ResolveResult> {
+  const t = await getTranslations('valorar')
   const parsed = findQuerySchema.safeParse(query)
-  if (!parsed.success) return { status: 'error', message: 'Dirección no válida.' }
+  if (!parsed.success) return { status: 'error', message: t('errorAddressInvalid') }
 
   try {
     const supabase = await createClient()
     const { data: auth } = await supabase.auth.getUser()
-    if (!auth.user) return { status: 'error', message: 'Inicia sesión para valorar.' }
+    if (!auth.user) return { status: 'error', message: t('errorSession') }
 
     const geo = await findAddress(parsed.data)
 
@@ -69,9 +67,9 @@ export async function resolveAddress(query: FindQuery): Promise<ResolveResult> {
     })
     if (rpcError) {
       console.error('census_section_for_point:', rpcError.message)
-      return { status: 'error', message: DB_UNAVAILABLE_MSG }
+      return { status: 'error', message: t('errorDbUnavailable') }
     }
-    if (!cusec) return { status: 'error', message: NO_COVERAGE_MSG }
+    if (!cusec) return { status: 'error', message: t('errorNoCoverage') }
 
     const { data: zone, error: zoneError } = await supabase
       .from('zone_stats')
@@ -80,7 +78,7 @@ export async function resolveAddress(query: FindQuery): Promise<ResolveResult> {
       .maybeSingle()
     if (zoneError) {
       console.error('zone_stats:', zoneError.message)
-      return { status: 'error', message: DB_UNAVAILABLE_MSG }
+      return { status: 'error', message: t('errorDbUnavailable') }
     }
 
     return {
@@ -97,7 +95,7 @@ export async function resolveAddress(query: FindQuery): Promise<ResolveResult> {
       },
     }
   } catch (e) {
-    return { status: 'error', message: e instanceof Error ? e.message : 'Error inesperado' }
+    return { status: 'error', message: e instanceof Error ? e.message : t('errorUnexpected') }
   }
 }
 

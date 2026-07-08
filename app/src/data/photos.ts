@@ -22,9 +22,20 @@ export interface PhotoLike {
   size: number
 }
 
+/**
+ * Código de error de validación (clave i18n, no texto): el mensaje visible lo
+ * resuelve el consumidor (cliente o server action) contra el catálogo `photos.errors`.
+ */
+export type PhotoErrorCode =
+  | 'formatNotAllowed'
+  | 'empty'
+  | 'tooLarge'
+  | 'notValidImage'
+  | 'contentMismatch'
+
 export type PhotoValidation =
   | { ok: true; ext: string }
-  | { ok: false; reason: string }
+  | { ok: false; reason: PhotoErrorCode }
 
 /**
  * Valida tipo y tamaño de una foto antes de subirla. Función pura (sin I/O):
@@ -35,13 +46,13 @@ export type PhotoValidation =
  */
 export function validatePhoto(file: PhotoLike): PhotoValidation {
   if (!(ALLOWED_PHOTO_MIME as readonly string[]).includes(file.type)) {
-    return { ok: false, reason: 'Formato no admitido. Usa JPG, PNG o WEBP.' }
+    return { ok: false, reason: 'formatNotAllowed' }
   }
   if (file.size <= 0) {
-    return { ok: false, reason: 'El archivo está vacío.' }
+    return { ok: false, reason: 'empty' }
   }
   if (file.size > MAX_PHOTO_BYTES) {
-    return { ok: false, reason: 'La imagen supera el límite de 6 MB.' }
+    return { ok: false, reason: 'tooLarge' }
   }
   return { ok: true, ext: EXT_BY_MIME[file.type as AllowedPhotoMime] }
 }
@@ -97,10 +108,10 @@ export function validatePhotoBytes(input: {
 
   const actual = sniffPhotoMime(input.header)
   if (actual === null) {
-    return { ok: false, reason: 'El archivo no es una imagen JPG, PNG o WEBP válida.' }
+    return { ok: false, reason: 'notValidImage' }
   }
   if (actual !== input.declaredType) {
-    return { ok: false, reason: 'El contenido del archivo no coincide con su formato declarado.' }
+    return { ok: false, reason: 'contentMismatch' }
   }
   return { ok: true, ext: EXT_BY_MIME[actual] }
 }

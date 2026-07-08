@@ -1,15 +1,16 @@
+import { useTranslations } from 'next-intl'
 import { ValioWordmark } from '@/components/ValioWordmark'
 import type { SubjectSummary } from '@/components/ValuationResult'
 
-const KIND_LABELS: Record<SubjectSummary['kind'], string> = {
-  piso: 'Piso',
-  casa: 'Casa',
+const KIND_KEY: Record<SubjectSummary['kind'], 'kindPiso' | 'kindCasa'> = {
+  piso: 'kindPiso',
+  casa: 'kindCasa',
 }
 
-const OCCUPANCY_LABELS: Record<SubjectSummary['occupancy'], string> = {
-  libre: 'Libre',
-  alquilado: 'Alquilado',
-  ocupado: 'Ocupado',
+const OCCUPANCY_KEY: Record<SubjectSummary['occupancy'], 'occLibre' | 'occAlquilado' | 'occOcupado'> = {
+  libre: 'occLibre',
+  alquilado: 'occAlquilado',
+  ocupado: 'occOcupado',
 }
 
 /**
@@ -26,26 +27,24 @@ export function ReportHeader({
   date: string
   subject?: SubjectSummary | null
 }) {
+  const t = useTranslations('result')
+  const tProp = useTranslations('property')
   return (
     <header className="hidden print:block print:mb-6">
       <div className="flex items-start justify-between gap-4 border-b border-hairline pb-4">
         <ValioWordmark size="md" />
         <p className="text-right font-display text-xs text-muted">{date}</p>
       </div>
-      <h1 className="mt-4 font-display text-2xl font-semibold text-ink">
-        Memorándum de valoración orientativa
-      </h1>
+      <h1 className="mt-4 font-display text-2xl font-semibold text-ink">{t('memoTitle')}</h1>
       {subject && (
         <p className="mt-1 text-sm text-muted">
-          {KIND_LABELS[subject.kind]}
+          {tProp(KIND_KEY[subject.kind])}
           {subject.builtAreaM2 !== null && ` · ${subject.builtAreaM2} m²`}
-          {subject.bedrooms !== null && ` · ${subject.bedrooms} hab`}
-          {` · ${OCCUPANCY_LABELS[subject.occupancy]}`}
+          {subject.bedrooms !== null && ` · ${subject.bedrooms} ${tProp('bedroomsShort')}`}
+          {` · ${tProp(OCCUPANCY_KEY[subject.occupancy])}`}
         </p>
       )}
-      <p className="mt-3 border-t border-hairline pt-2 text-xs text-muted">
-        Valoración orientativa. No es una tasación oficial (Orden ECO/805/2003).
-      </p>
+      <p className="mt-3 border-t border-hairline pt-2 text-xs text-muted">{t('memoLegal')}</p>
     </header>
   )
 }

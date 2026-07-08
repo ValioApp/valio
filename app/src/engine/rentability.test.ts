@@ -48,7 +48,7 @@ describe('computeRentability — adquisición e ITP', () => {
     const r = computeRentability(BASE)
     // 200.000 + 20.000 (ITP) + 3.000 (notaría/registro/gestoría) = 223.000
     expect(r.totalAcquisitionCost).toBe(223_000)
-    const itp = r.acquisitionBreakdown.find((l) => l.concept.startsWith('ITP'))
+    const itp = r.acquisitionBreakdown.find((l) => l.concept.key === 'itp')
     expect(itp?.amount).toBe(Math.round(200_000 * ITP_BY_CCAA.cataluna))
     expect(sum(r.acquisitionBreakdown)).toBe(r.totalAcquisitionCost)
   })
@@ -56,18 +56,18 @@ describe('computeRentability — adquisición e ITP', () => {
   it('Madrid usada: ITP 6% (8.000 € menos que Cataluña a mismo precio)', () => {
     const cat = computeRentability(BASE)
     const mad = computeRentability({ ...BASE, ccaa: 'madrid' })
-    const itp = mad.acquisitionBreakdown.find((l) => l.concept.startsWith('ITP'))
+    const itp = mad.acquisitionBreakdown.find((l) => l.concept.key === 'itp')
     expect(itp?.amount).toBe(12_000)
     expect(cat.totalAcquisitionCost - mad.totalAcquisitionCost).toBe(8_000)
   })
 
   it('obra nueva: IVA 10% + AJD 1,5% en vez de ITP', () => {
     const r = computeRentability({ ...BASE, isNewBuild: true })
-    const iva = r.acquisitionBreakdown.find((l) => l.concept.startsWith('IVA'))
-    const ajd = r.acquisitionBreakdown.find((l) => l.concept.startsWith('AJD'))
+    const iva = r.acquisitionBreakdown.find((l) => l.concept.key === 'ivaNewBuild')
+    const ajd = r.acquisitionBreakdown.find((l) => l.concept.key === 'ajd')
     expect(iva?.amount).toBe(Math.round(200_000 * NEW_BUILD_IVA))
     expect(ajd?.amount).toBe(Math.round(200_000 * NEW_BUILD_AJD_DEFAULT))
-    expect(r.acquisitionBreakdown.some((l) => l.concept.startsWith('ITP'))).toBe(false)
+    expect(r.acquisitionBreakdown.some((l) => l.concept.key === 'itp')).toBe(false)
     // 200.000 + 20.000 + 3.000 + 3.000 = 226.000
     expect(r.totalAcquisitionCost).toBe(226_000)
     expect(sum(r.acquisitionBreakdown)).toBe(r.totalAcquisitionCost)
@@ -204,12 +204,12 @@ describe('computeRentability — IRPF', () => {
 
   it('el breakdown fiscal cuadra: rendimiento × (1−reducción) = base; base × tipo = cuota', () => {
     const r = computeRentability({ ...BASE, irpf: { marginalRate: 0.3, reduction: 0.5 } })
-    const get = (prefix: string) =>
-      r.irpfBreakdown.find((l) => l.concept.startsWith(prefix))?.amount
-    expect(get('Rendimiento neto')).toBe(5_300)
-    expect(get('Base imponible')).toBe(2_650)
-    expect(get('Cuota IRPF')).toBe(795)
-    expect(get('Reducción')).toBe(-2_650)
+    const get = (key: string) =>
+      r.irpfBreakdown.find((l) => l.concept.key === key)?.amount
+    expect(get('netIncome')).toBe(5_300)
+    expect(get('taxBase')).toBe(2_650)
+    expect(get('irpfQuota')).toBe(795)
+    expect(get('rentReduction')).toBe(-2_650)
   })
 })
 

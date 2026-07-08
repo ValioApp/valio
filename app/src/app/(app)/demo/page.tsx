@@ -7,10 +7,17 @@
  */
 
 import { useEffect, useState } from 'react'
+import { useLocale, useTranslations } from 'next-intl'
 import { ValuationResult } from '@/components/ValuationResult'
 import { valuate } from '@/engine/valuate'
 import type { Comparable, OccupancyStatus, SubjectProperty, ZoneStats } from '@/engine/types'
 import { formatReportDate } from '@/lib/format'
+
+const OCC_KEY: Record<OccupancyStatus, 'occLibre' | 'occAlquilado' | 'occOcupado'> = {
+  libre: 'occLibre',
+  alquilado: 'occAlquilado',
+  ocupado: 'occOcupado',
+}
 
 const DEMO_ZONES = new Map<string, ZoneStats>([
   [
@@ -56,12 +63,14 @@ const DEMO_COMPARABLES: Comparable[] = RAW_COMPARABLES.map((c, i) => ({
 }))
 
 export default function DemoPage() {
+  const t = useTranslations('demo')
+  const locale = useLocale()
   const [occupancy, setOccupancy] = useState<OccupancyStatus>('libre')
   const [reportDate, setReportDate] = useState('')
 
   useEffect(() => {
-    setReportDate(formatReportDate(new Date()))
-  }, [])
+    setReportDate(formatReportDate(new Date(), locale))
+  }, [locale])
 
   const subject: SubjectProperty = {
     kind: 'piso',
@@ -82,27 +91,24 @@ export default function DemoPage() {
   return (
     <main className="mx-auto max-w-2xl space-y-6 p-4 md:p-6">
       <div className="print-hidden rounded-card border border-hairline bg-white p-4">
-        <p className="label-caps text-petrol">Demo sin conexión</p>
+        <p className="label-caps text-petrol">{t('eyebrow')}</p>
         <h1 className="mt-1 font-[family-name:var(--font-geist-sans)] text-xl font-semibold text-ink">
-          Piso de ejemplo — El Raval, 75 m², 3 hab
+          {t('title')}
         </h1>
-        <p className="mt-1 text-sm text-muted">
-          Motor real ejecutado en tu navegador con 8 testigos sintéticos. Cambia la
-          ocupación y mira cómo reacciona la valoración:
-        </p>
+        <p className="mt-1 text-sm text-muted">{t('subtitle')}</p>
         <div className="mt-3 grid grid-cols-3 gap-2">
           {(['libre', 'alquilado', 'ocupado'] as const).map((o) => (
             <button
               key={o}
               type="button"
               onClick={() => setOccupancy(o)}
-              className={`rounded-card border px-3 py-2 text-sm font-medium capitalize transition-colors ${
+              className={`rounded-card border px-3 py-2 text-sm font-medium transition-colors ${
                 occupancy === o
                   ? 'border-petrol bg-petrol text-white'
                   : 'border-hairline bg-white text-ink hover:border-petrol/20'
               }`}
             >
-              {o}
+              {t(OCC_KEY[o])}
             </button>
           ))}
         </div>

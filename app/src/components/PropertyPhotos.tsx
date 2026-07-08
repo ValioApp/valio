@@ -7,6 +7,7 @@
 /* eslint-disable @next/next/no-img-element */
 
 import { useEffect, useRef, useState, useTransition } from 'react'
+import { useTranslations } from 'next-intl'
 import { AlertCircle, ChevronLeft, ChevronRight, ImagePlus, Loader2, Trash2 } from 'lucide-react'
 import {
   deletePropertyPhoto,
@@ -16,6 +17,7 @@ import {
 import { MAX_PHOTOS_PER_PROPERTY, validatePhoto, type PropertyPhoto } from '@/data/photos'
 
 export function PropertyPhotos({ propertyId }: { propertyId: string }) {
+  const t = useTranslations('photos')
   const [photos, setPhotos] = useState<PropertyPhoto[]>([])
   const [loaded, setLoaded] = useState(false)
   const [current, setCurrent] = useState(0)
@@ -59,7 +61,7 @@ export function PropertyPhotos({ propertyId }: { propertyId: string }) {
     for (const file of files) {
       const check = validatePhoto(file)
       if (!check.ok) {
-        setError(check.reason)
+        setError(t(`errors.${check.reason}`))
         if (inputRef.current) inputRef.current.value = ''
         return
       }
@@ -130,7 +132,7 @@ export function PropertyPhotos({ propertyId }: { propertyId: string }) {
       <div className="mb-4 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <ImagePlus size={18} className="text-petrol" aria-hidden="true" />
-          <h3 className="font-display text-lg font-semibold text-ink">Fotos del inmueble</h3>
+          <h3 className="font-display text-lg font-semibold text-ink">{t('title')}</h3>
         </div>
         {hasPhotos && (
           <span className="label-caps text-muted tabular-nums print-hidden">
@@ -177,30 +179,28 @@ export function PropertyPhotos({ propertyId }: { propertyId: string }) {
             </span>
             <span>
               <span className="block font-display text-sm font-semibold text-ink">
-                {pending ? 'Subiendo…' : 'Añade fotos del inmueble para tu informe'}
+                {pending ? t('uploading') : t('addPrompt')}
               </span>
-              <span className="mt-1 block text-xs text-muted">
-                Arrastra o pulsa para subir · JPG, PNG o WEBP · hasta 6 MB
-              </span>
+              <span className="mt-1 block text-xs text-muted">{t('uploadHint')}</span>
             </span>
           </button>
         ) : (
           <div
             role="group"
             aria-roledescription="carrusel"
-            aria-label="Fotos del inmueble"
+            aria-label={t('carouselAria')}
             tabIndex={0}
             onKeyDown={onKeyDown}
             className="rounded-card outline-none focus-visible:ring-2 focus-visible:ring-petrol/40"
           >
             {/* Anuncio para lectores de pantalla al cambiar de foto (el contador visual es aria-hidden). */}
             <span className="sr-only" role="status" aria-live="polite">
-              Foto {safeCurrent + 1} de {photos.length}
+              {t('photoOf', { current: safeCurrent + 1, total: photos.length })}
             </span>
             <div className="relative overflow-hidden rounded-card bg-paper">
               <img
                 src={photos[safeCurrent].signedUrl}
-                alt={`Foto ${safeCurrent + 1} de ${photos.length} del inmueble`}
+                alt={t('photoOf', { current: safeCurrent + 1, total: photos.length })}
                 className="aspect-[16/10] w-full object-cover"
               />
 
@@ -209,7 +209,7 @@ export function PropertyPhotos({ propertyId }: { propertyId: string }) {
                   <button
                     type="button"
                     onClick={goPrev}
-                    aria-label="Foto anterior"
+                    aria-label={t('prevPhoto')}
                     className="absolute top-1/2 left-3 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-ink shadow-ambient transition hover:bg-white"
                   >
                     <ChevronLeft size={18} aria-hidden="true" />
@@ -217,7 +217,7 @@ export function PropertyPhotos({ propertyId }: { propertyId: string }) {
                   <button
                     type="button"
                     onClick={goNext}
-                    aria-label="Foto siguiente"
+                    aria-label={t('nextPhoto')}
                     className="absolute top-1/2 right-3 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-ink shadow-ambient transition hover:bg-white"
                   >
                     <ChevronRight size={18} aria-hidden="true" />
@@ -235,7 +235,7 @@ export function PropertyPhotos({ propertyId }: { propertyId: string }) {
               <button
                 type="button"
                 onClick={() => setConfirmDeleteId(photos[safeCurrent].id)}
-                aria-label="Borrar esta foto"
+                aria-label={t('deletePhoto')}
                 disabled={pending}
                 className="absolute top-3 right-3 flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-error shadow-ambient transition hover:bg-white disabled:opacity-60"
               >
@@ -256,7 +256,7 @@ export function PropertyPhotos({ propertyId }: { propertyId: string }) {
                   className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-4 bg-ink/70 px-4 text-center backdrop-blur-sm"
                 >
                   <p id="confirm-delete-title" className="font-display text-sm font-semibold text-white">
-                    ¿Borrar esta foto del informe?
+                    {t('confirmDeleteTitle')}
                   </p>
                   <div className="flex gap-2">
                     <button
@@ -266,7 +266,7 @@ export function PropertyPhotos({ propertyId }: { propertyId: string }) {
                       className="flex items-center gap-1.5 rounded-card bg-error px-4 py-2 font-display text-sm font-semibold text-white transition hover:brightness-110 disabled:opacity-60"
                     >
                       {pending ? <Loader2 size={16} className="animate-spin" /> : <Trash2 size={16} />}
-                      Borrar
+                      {t('delete')}
                     </button>
                     <button
                       ref={cancelDeleteRef}
@@ -275,7 +275,7 @@ export function PropertyPhotos({ propertyId }: { propertyId: string }) {
                       disabled={pending}
                       className="rounded-card bg-white px-4 py-2 font-display text-sm font-semibold text-ink transition hover:bg-paper disabled:opacity-60"
                     >
-                      Cancelar
+                      {t('cancel')}
                     </button>
                   </div>
                 </div>
@@ -284,7 +284,7 @@ export function PropertyPhotos({ propertyId }: { propertyId: string }) {
               {pending && !confirmDeleteId && (
                 <div className="absolute inset-0 z-10 flex items-center justify-center gap-2 bg-ink/40 font-display text-sm font-semibold text-white backdrop-blur-sm">
                   <Loader2 size={18} className="animate-spin" aria-hidden="true" />
-                  Subiendo…
+                  {t('uploading')}
                 </div>
               )}
             </div>
@@ -296,7 +296,7 @@ export function PropertyPhotos({ propertyId }: { propertyId: string }) {
                   key={p.id}
                   type="button"
                   onClick={() => setCurrent(i)}
-                  aria-label={`Ver foto ${i + 1}`}
+                  aria-label={t('viewPhoto', { n: i + 1 })}
                   aria-current={i === safeCurrent}
                   className={`h-14 w-20 shrink-0 overflow-hidden rounded-lg border-2 transition ${
                     i === safeCurrent ? 'border-petrol' : 'border-transparent hover:border-hairline'
@@ -310,7 +310,7 @@ export function PropertyPhotos({ propertyId }: { propertyId: string }) {
                   type="button"
                   onClick={openPicker}
                   disabled={pending}
-                  aria-label="Añadir más fotos"
+                  aria-label={t('addMore')}
                   className="flex h-14 w-20 shrink-0 items-center justify-center rounded-lg border-2 border-dashed border-hairline text-muted transition hover:border-petrol/40 hover:text-petrol disabled:opacity-60"
                 >
                   <ImagePlus size={18} aria-hidden="true" />
@@ -328,7 +328,7 @@ export function PropertyPhotos({ propertyId }: { propertyId: string }) {
             <img
               key={p.id}
               src={p.signedUrl}
-              alt={`Foto ${i + 1} del inmueble`}
+              alt={t('photoOf', { current: i + 1, total: photos.length })}
               className="aspect-[4/3] w-full rounded-lg object-cover"
             />
           ))}

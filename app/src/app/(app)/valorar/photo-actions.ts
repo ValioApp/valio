@@ -1,5 +1,6 @@
 'use server'
 
+import { getTranslations } from 'next-intl/server'
 import { createClient } from '@/lib/supabase/server'
 import {
   listPropertyPhotos,
@@ -25,14 +26,15 @@ async function resolveWorkspaceId(
 
 /** Lista las fotos de una property (para hidratar el carrusel al montar). */
 export async function listPhotosAction(propertyId: string): Promise<PhotoActionResult> {
+  const t = await getTranslations('photos.errors')
   const supabase = await createClient()
   const { data: auth } = await supabase.auth.getUser()
-  if (!auth.user) return { status: 'error', message: 'Inicia sesión para ver las fotos.' }
+  if (!auth.user) return { status: 'error', message: t('sessionView') }
   try {
     const photos = await listPropertyPhotos(supabase, propertyId)
     return { status: 'ok', photos }
   } catch (e) {
-    return { status: 'error', message: e instanceof Error ? e.message : 'Error inesperado' }
+    return { status: 'error', message: e instanceof Error ? e.message : t('unexpected') }
   }
 }
 
@@ -47,12 +49,13 @@ export async function uploadPropertyPhotos(
   propertyId: string,
   formData: FormData,
 ): Promise<PhotoActionResult> {
+  const t = await getTranslations('photos.errors')
   const supabase = await createClient()
   const { data: auth } = await supabase.auth.getUser()
-  if (!auth.user) return { status: 'error', message: 'Inicia sesión para subir fotos.' }
+  if (!auth.user) return { status: 'error', message: t('sessionUpload') }
 
   const workspaceId = await resolveWorkspaceId(supabase)
-  if (!workspaceId) return { status: 'error', message: 'No se encontró tu workspace.' }
+  if (!workspaceId) return { status: 'error', message: t('workspaceNotFound') }
 
   // try/catch global: los throws de listPropertyPhotos (existentes / re-listado
   // post-mutación) no deben caer en silencio como error de framework.
@@ -64,19 +67,19 @@ export async function uploadPropertyPhotos(
       .eq('id', propertyId)
       .single()
     if (propertyError || !property) {
-      return { status: 'error', message: 'Inmueble no encontrado o sin acceso.' }
+      return { status: 'error', message: t('propertyNotFound') }
     }
 
     const files = formData
       .getAll('photos')
       .filter((f): f is File => f instanceof File && f.size > 0)
-    if (files.length === 0) return { status: 'error', message: 'No se han seleccionado fotos.' }
+    if (files.length === 0) return { status: 'error', message: t('noneSelected') }
 
     const existing = await listPropertyPhotos(supabase, propertyId)
     if (existing.length + files.length > MAX_PHOTOS_PER_PROPERTY) {
       return {
         status: 'error',
-        message: `Máximo ${MAX_PHOTOS_PER_PROPERTY} fotos por inmueble (ya hay ${existing.length}).`,
+        message: t('maxPhotos', { max: MAX_PHOTOS_PER_PROPERTY, have: existing.length }),
       }
     }
 
@@ -100,14 +103,14 @@ export async function uploadPropertyPhotos(
         size: bytes.length,
         declaredType: file.type,
       })
-      if (!check.ok) return { status: 'error', message: check.reason }
+      if (!check.ok) return { status: 'error', message: t(check.reason) }
 
       const path = `${workspaceId}/${propertyId}/${crypto.randomUUID()}.${check.ext}`
       const { error: uploadError } = await supabase.storage
         .from(PHOTOS_BUCKET)
         .upload(path, bytes, { contentType: file.type, upsert: false })
       if (uploadError) {
-        return { status: 'error', message: `No se pudo subir la imagen: ${uploadError.message}` }
+        return { status: 'error', message: t('uploadFailed', { msg: uploadError.message }) }
       }
 
       const { error: insertError } = await supabase.from('property_photos').insert({
@@ -120,7 +123,7 @@ export async function uploadPropertyPhotos(
         // Revierte el objeto para no dejar huérfanos; si el revert falla, deja traza.
         const { error: revertError } = await supabase.storage.from(PHOTOS_BUCKET).remove([path])
         if (revertError) console.error('uploadPropertyPhotos revert:', revertError.message)
-        return { status: 'error', message: `No se pudo registrar la foto: ${insertError.message}` }
+        return { status: 'error', message: t('registerFailed', { msg: insertError.message }) }
       }
       sortOrder += 1
     }
@@ -128,15 +131,16 @@ export async function uploadPropertyPhotos(
     const photos = await listPropertyPhotos(supabase, propertyId)
     return { status: 'ok', photos }
   } catch (e) {
-    return { status: 'error', message: e instanceof Error ? e.message : 'Error inesperado' }
+    return { status: 'error', message: e instanceof Error ? e.message : t('unexpected') }
   }
 }
 
 /** Borra una foto: primero la fila (RLS) y después el objeto de Storage. */
 export async function deletePropertyPhoto(photoId: string): Promise<PhotoActionResult> {
+  const t = await getTranslations('photos.errors')
   const supabase = await createClient()
   const { data: auth } = await supabase.auth.getUser()
-  if (!auth.user) return { status: 'error', message: 'Inicia sesión para borrar fotos.' }
+  if (!auth.user) return { status: 'error', message: t('sessionDelete') }
 
   try {
     const { data: photo, error: fetchError } = await supabase
@@ -144,10 +148,10 @@ export async function deletePropertyPhoto(photoId: string): Promise<PhotoActionR
       .select('id, property_id, storage_path')
       .eq('id', photoId)
       .single()
-    if (fetchError || !photo) return { status: 'error', message: 'Foto no encontrada o sin acceso.' }
+    if (fetchError || !photo) return { status: 'error', message: t('photoNotFound') }
 
     const { error: deleteError } = await supabase.from('property_photos').delete().eq('id', photoId)
-    if (deleteError) return { status: 'error', message: `No se pudo borrar: ${deleteError.message}` }
+    if (deleteError) return { status: 'error', message: t('deleteFailed', { msg: deleteError.message }) }
 
     // La fila ya no está; si el objeto físico no se borra, queda huérfano → deja traza
     // en el log del servidor (antes se ignoraba en silencio).
@@ -159,6 +163,6 @@ export async function deletePropertyPhoto(photoId: string): Promise<PhotoActionR
     const photos = await listPropertyPhotos(supabase, photo.property_id as string)
     return { status: 'ok', photos }
   } catch (e) {
-    return { status: 'error', message: e instanceof Error ? e.message : 'Error inesperado' }
+    return { status: 'error', message: e instanceof Error ? e.message : t('unexpected') }
   }
 }

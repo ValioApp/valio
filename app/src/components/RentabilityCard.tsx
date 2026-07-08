@@ -1,12 +1,13 @@
 'use client'
 
 import { useEffect, useId, useMemo, useRef, useState } from 'react'
+import { useLocale, useTranslations } from 'next-intl'
 import { Info } from 'lucide-react'
-import { computeRentability, type RentabilityLine } from '@/engine/rentability'
+import { computeRentability, type RentabilityConcept, type RentabilityLine } from '@/engine/rentability'
 import { ITP_BY_CCAA, type Ccaa, type IrpfReduction } from '@/engine/rentability-rates'
 import { estimateRenovation, RENOVATION_LABELS, type RenovationLevel } from '@/engine/renovation'
 import { computeScenarios, type ScenarioKind } from '@/engine/scenarios'
-import { formatEur } from '@/lib/format'
+import { formatEur, formatPercentPlain } from '@/lib/format'
 
 /**
  * Card interactiva de rentabilidad inversor (iteración 2 del loop).
@@ -18,42 +19,36 @@ import { formatEur } from '@/lib/format'
 const INPUT_CLS =
   'w-full rounded-card border border-hairline bg-white px-4 py-2.5 text-base text-ink placeholder:text-muted/50'
 
-const CCAA_LABELS: Record<Ccaa, string> = {
-  andalucia: 'Andalucía',
-  aragon: 'Aragón',
-  asturias: 'Asturias',
-  baleares: 'Baleares',
-  canarias: 'Canarias',
-  cantabria: 'Cantabria',
-  castilla_la_mancha: 'Castilla-La Mancha',
-  castilla_y_leon: 'Castilla y León',
-  cataluna: 'Cataluña',
-  extremadura: 'Extremadura',
-  galicia: 'Galicia',
-  la_rioja: 'La Rioja',
-  madrid: 'Madrid',
-  murcia: 'Murcia',
-  navarra: 'Navarra',
-  pais_vasco: 'País Vasco',
-  valencia: 'Comunidad Valenciana',
-}
-
 const MARGINAL_RATES = [0.19, 0.24, 0.3, 0.37, 0.45, 0.47] as const
 
-const IRPF_REDUCTIONS: { value: IrpfReduction; label: string }[] = [
-  { value: 0.5, label: '50% — alquiler vivienda general' },
-  { value: 0.6, label: '60% — reforma en los 2 años anteriores' },
-  { value: 0.7, label: '70% — jóvenes / zona tensionada con condiciones' },
-  { value: 0.9, label: '90% — zona tensionada con rebaja de renta' },
-  { value: 0, label: 'Sin reducción (0%)' },
+/** Reducciones de IRPF por alquiler de vivienda; la etiqueta la resuelve i18n. */
+const IRPF_REDUCTIONS: { value: IrpfReduction; key: 'r50' | 'r60' | 'r70' | 'r90' | 'r0' }[] = [
+  { value: 0.5, key: 'r50' },
+  { value: 0.6, key: 'r60' },
+  { value: 0.7, key: 'r70' },
+  { value: 0.9, key: 'r90' },
+  { value: 0, key: 'r0' },
 ]
-
-/** Porcentaje sin signo con coma es-ES: '5,38%'. */
-const pctPlain = (x: number, decimals = 2) => `${(x * 100).toFixed(decimals).replace('.', ',')}%`
 
 const parseNum = (s: string): number => {
   const n = Number(s.replace(',', '.'))
   return Number.isFinite(n) && n >= 0 ? n : 0
+}
+
+type RentabilityT = ReturnType<typeof useTranslations>
+
+/** Etiqueta traducida de un concepto de desglose; los % dinámicos van como parámetro. */
+function conceptText(t: RentabilityT, locale: string, c: RentabilityConcept): string {
+  switch (c.key) {
+    case 'itp':
+      return t('concept.itp', { pct: formatPercentPlain(c.pct, locale, { min: 0, max: 1 }) })
+    case 'rentReduction':
+      return t('concept.rentReduction', { pct: formatPercentPlain(c.pct, locale, { min: 0, max: 0 }) })
+    case 'irpfQuota':
+      return t('concept.irpfQuota', { rate: formatPercentPlain(c.rate, locale, { min: 0, max: 0 }) })
+    default:
+      return t(`concept.${c.key}`)
+  }
 }
 
 function FieldLabel({ htmlFor, children }: { htmlFor: string; children: React.ReactNode }) {
@@ -104,14 +99,25 @@ function Tile({ label, value, valueClass }: { label: string; value: string; valu
   )
 }
 
-const SCENARIO_LABELS: Record<ScenarioKind, { label: string; titleClass: string }> = {
-  conservador: { label: 'Conservador', titleClass: 'text-error/80' },
-  realista: { label: 'Realista', titleClass: 'text-ink' },
-  optimista: { label: 'Optimista', titleClass: 'text-success/80' },
+const SCENARIO_TITLE_CLASS: Record<ScenarioKind, string> = {
+  conservador: 'text-error/80',
+  realista: 'text-ink',
+  optimista: 'text-success/80',
 }
 
-function ScenarioTile({ kind, cashflow, netYield }: { kind: ScenarioKind; cashflow: number; netYield: number }) {
-  const { label, titleClass } = SCENARIO_LABELS[kind]
+function ScenarioTile({
+  kind,
+  cashflow,
+  netYield,
+  t,
+  locale,
+}: {
+  kind: ScenarioKind
+  cashflow: number
+  netYield: number
+  t: RentabilityT
+  locale: string
+}) {
   const cashflowClass = cashflow >= 0 ? 'text-gold-deep' : 'text-error'
   return (
     <div
@@ -119,28 +125,40 @@ function ScenarioTile({ kind, cashflow, netYield }: { kind: ScenarioKind; cashfl
         kind === 'realista' ? 'border-petrol/30 bg-petrol/5' : 'border-hairline bg-paper'
       }`}
     >
-      <p className={`label-caps ${titleClass}`}>{label}</p>
+      <p className={`label-caps ${SCENARIO_TITLE_CLASS[kind]}`}>{t(`scenario.${kind}`)}</p>
       <p className={`mt-1 font-display text-lg font-bold tracking-tight tabular-nums ${cashflowClass}`}>
-        {formatEur(cashflow)}
+        {formatEur(cashflow, locale)}
       </p>
-      <p className="mt-0.5 text-xs text-muted tabular-nums">{pctPlain(netYield)} neta</p>
+      <p className="mt-0.5 text-xs text-muted tabular-nums">
+        {formatPercentPlain(netYield, locale)} {t('netSuffix')}
+      </p>
     </div>
   )
 }
 
-function BreakdownList({ title, lines }: { title: string; lines: RentabilityLine[] }) {
+function BreakdownList({
+  title,
+  lines,
+  t,
+  locale,
+}: {
+  title: string
+  lines: RentabilityLine[]
+  t: RentabilityT
+  locale: string
+}) {
   if (lines.length === 0) return null
   return (
     <div>
       <p className="label-caps mt-4 mb-1 text-muted">{title}</p>
       {lines.map((line) => (
         <div
-          key={line.concept}
+          key={line.concept.key}
           className="flex items-center justify-between gap-4 rounded-lg px-3 py-1.5 transition-colors hover:bg-paper"
         >
-          <span className="text-sm text-ink">{line.concept}</span>
+          <span className="text-sm text-ink">{conceptText(t, locale, line.concept)}</span>
           <span className="font-display text-sm font-semibold text-ink tabular-nums">
-            {formatEur(line.amount)}
+            {formatEur(line.amount, locale)}
           </span>
         </div>
       ))}
@@ -155,6 +173,8 @@ export function RentabilityCard({
   estimatedValue: number
   builtAreaM2?: number | null
 }) {
+  const t = useTranslations('rentability')
+  const locale = useLocale()
   const uid = useId()
   const breakdownDetailsRef = useRef<HTMLDetailsElement>(null)
   const [purchasePrice, setPurchasePrice] = useState(() => String(estimatedValue))
@@ -252,16 +272,13 @@ export function RentabilityCard({
 
   return (
     <div className="break-inside-avoid rounded-card border border-hairline bg-white p-6 shadow-ambient">
-      <h3 className="font-display text-lg font-semibold text-ink">Rentabilidad como inversión</h3>
-      <p className="mt-1 text-sm text-muted">
-        Simule la compra a un precio y alquiler dados: impuestos de compra, hipoteca y fiscalidad
-        del alquiler incluidos.
-      </p>
+      <h3 className="font-display text-lg font-semibold text-ink">{t('title')}</h3>
+      <p className="mt-1 text-sm text-muted">{t('subtitle')}</p>
 
       {/* Escenario de compra */}
       <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-3">
         <div>
-          <FieldLabel htmlFor={`${uid}-price`}>Precio de compra</FieldLabel>
+          <FieldLabel htmlFor={`${uid}-price`}>{t('purchasePrice')}</FieldLabel>
           <div className="relative">
             <input
               id={`${uid}-price`}
@@ -275,7 +292,7 @@ export function RentabilityCard({
           </div>
         </div>
         <div>
-          <FieldLabel htmlFor={`${uid}-rent`}>Alquiler mensual</FieldLabel>
+          <FieldLabel htmlFor={`${uid}-rent`}>{t('monthlyRent')}</FieldLabel>
           <div className="relative">
             <input
               id={`${uid}-rent`}
@@ -290,7 +307,7 @@ export function RentabilityCard({
           </div>
         </div>
         <div>
-          <FieldLabel htmlFor={`${uid}-ccaa`}>Comunidad autónoma</FieldLabel>
+          <FieldLabel htmlFor={`${uid}-ccaa`}>{t('ccaaLabel')}</FieldLabel>
           <select
             id={`${uid}-ccaa`}
             value={ccaa}
@@ -299,7 +316,7 @@ export function RentabilityCard({
           >
             {(Object.keys(ITP_BY_CCAA) as Ccaa[]).map((key) => (
               <option key={key} value={key}>
-                {CCAA_LABELS[key]}
+                {t(`ccaa.${key}`)}
               </option>
             ))}
           </select>
@@ -307,18 +324,18 @@ export function RentabilityCard({
       </div>
       <p className="mt-2 flex items-center gap-1.5 text-xs text-muted">
         <Info size={14} aria-hidden="true" />
-        Alquiler: estimación manual — el alquiler por zona llegará con SERPAVI.
+        {t('rentHint')}
       </p>
 
       {/* Hipoteca */}
       <div className="mt-5 border-t border-hairline pt-4">
         <Toggle id={`${uid}-mortgage`} checked={withMortgage} onChange={setWithMortgage}>
-          Con hipoteca
+          {t('withMortgage')}
         </Toggle>
         {withMortgage && (
           <div className="mt-3 grid grid-cols-3 gap-4">
             <div>
-              <FieldLabel htmlFor={`${uid}-ltv`}>Financiación</FieldLabel>
+              <FieldLabel htmlFor={`${uid}-ltv`}>{t('financing')}</FieldLabel>
               <div className="relative">
                 <input
                   id={`${uid}-ltv`}
@@ -333,7 +350,7 @@ export function RentabilityCard({
               </div>
             </div>
             <div>
-              <FieldLabel htmlFor={`${uid}-rate`}>Interés anual</FieldLabel>
+              <FieldLabel htmlFor={`${uid}-rate`}>{t('annualRate')}</FieldLabel>
               <div className="relative">
                 <input
                   id={`${uid}-rate`}
@@ -347,7 +364,7 @@ export function RentabilityCard({
               </div>
             </div>
             <div>
-              <FieldLabel htmlFor={`${uid}-years`}>Plazo</FieldLabel>
+              <FieldLabel htmlFor={`${uid}-years`}>{t('term')}</FieldLabel>
               <div className="relative">
                 <input
                   id={`${uid}-years`}
@@ -358,7 +375,9 @@ export function RentabilityCard({
                   onChange={(e) => setYears(e.target.value)}
                   className={`${INPUT_CLS} pr-12`}
                 />
-                <span className="absolute top-1/2 right-4 -translate-y-1/2 text-sm text-muted">años</span>
+                <span className="absolute top-1/2 right-4 -translate-y-1/2 text-sm text-muted">
+                  {t('yearsUnit')}
+                </span>
               </div>
             </div>
           </div>
@@ -367,20 +386,20 @@ export function RentabilityCard({
 
       {/* Gastos anuales opcionales */}
       <div className="mt-5 border-t border-hairline pt-4">
-        <p className="label-caps text-muted">Gastos anuales (opcional)</p>
+        <p className="label-caps text-muted">{t('annualCostsTitle')}</p>
         <div className="mt-3 grid grid-cols-3 gap-4">
           {(
             [
-              ['IBI', ibi, setIbi],
-              ['Comunidad', community, setCommunity],
-              ['Seguro', insurance, setInsurance],
+              ['ibi', ibi, setIbi],
+              ['community', community, setCommunity],
+              ['insurance', insurance, setInsurance],
             ] as const
-          ).map(([label, value, setter]) => (
-            <div key={label}>
-              <FieldLabel htmlFor={`${uid}-${label}`}>{label}</FieldLabel>
+          ).map(([key, value, setter]) => (
+            <div key={key}>
+              <FieldLabel htmlFor={`${uid}-${key}`}>{t(key)}</FieldLabel>
               <div className="relative">
                 <input
-                  id={`${uid}-${label}`}
+                  id={`${uid}-${key}`}
                   type="number"
                   min={0}
                   placeholder="0"
@@ -393,17 +412,15 @@ export function RentabilityCard({
             </div>
           ))}
         </div>
-        <p className="mt-2 text-xs text-muted">
-          Se añade siempre un 10% de la renta como mantenimiento y un 5% de vacancia por defecto.
-        </p>
+        <p className="mt-2 text-xs text-muted">{t('costsNote')}</p>
       </div>
 
       {/* Reforma (P8 — estimación por niveles, iteración 7) */}
       <div className="mt-5 border-t border-hairline pt-4">
-        <p className="label-caps text-muted">Reforma (opcional)</p>
+        <p className="label-caps text-muted">{t('renovationTitle')}</p>
         <div className="mt-3 grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
-            <FieldLabel htmlFor={`${uid}-renovation-level`}>Nivel de reforma</FieldLabel>
+            <FieldLabel htmlFor={`${uid}-renovation-level`}>{t('renovationLevel')}</FieldLabel>
             <select
               id={`${uid}-renovation-level`}
               value={renovationLevel}
@@ -412,13 +429,13 @@ export function RentabilityCard({
             >
               {(Object.keys(RENOVATION_LABELS) as RenovationLevel[]).map((level) => (
                 <option key={level} value={level}>
-                  {RENOVATION_LABELS[level]}
+                  {t(`renov.${level}`)}
                 </option>
               ))}
             </select>
           </div>
           <div>
-            <FieldLabel htmlFor={`${uid}-renovation-amount`}>Importe de reforma</FieldLabel>
+            <FieldLabel htmlFor={`${uid}-renovation-amount`}>{t('renovationAmount')}</FieldLabel>
             <div className="relative">
               <input
                 id={`${uid}-renovation-amount`}
@@ -434,21 +451,19 @@ export function RentabilityCard({
         </div>
         <p className="mt-2 flex items-center gap-1.5 text-xs text-muted">
           <Info size={14} aria-hidden="true" />
-          {builtAreaM2
-            ? 'Estimación v0 por nivel — edítala con tu presupuesto real.'
-            : 'Sin superficie del inmueble: estimación v0 en 0 € — importe editable con tu presupuesto real.'}
+          {builtAreaM2 ? t('renovationHintWithArea') : t('renovationHintNoArea')}
         </p>
       </div>
 
       {/* IRPF */}
       <div className="mt-5 border-t border-hairline pt-4">
         <Toggle id={`${uid}-irpf`} checked={withIrpf} onChange={setWithIrpf}>
-          Calcular IRPF del alquiler
+          {t('calcIrpf')}
         </Toggle>
         {withIrpf && (
           <div className="mt-3 grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
-              <FieldLabel htmlFor={`${uid}-marginal`}>Tipo marginal</FieldLabel>
+              <FieldLabel htmlFor={`${uid}-marginal`}>{t('marginalRate')}</FieldLabel>
               <select
                 id={`${uid}-marginal`}
                 value={marginalRate}
@@ -457,13 +472,13 @@ export function RentabilityCard({
               >
                 {MARGINAL_RATES.map((r) => (
                   <option key={r} value={String(r)}>
-                    {Math.round(r * 100)}%
+                    {formatPercentPlain(r, locale, { min: 0, max: 0 })}
                   </option>
                 ))}
               </select>
             </div>
             <div>
-              <FieldLabel htmlFor={`${uid}-reduction`}>Reducción por alquiler de vivienda</FieldLabel>
+              <FieldLabel htmlFor={`${uid}-reduction`}>{t('rentReductionLabel')}</FieldLabel>
               <select
                 id={`${uid}-reduction`}
                 value={reduction}
@@ -472,7 +487,7 @@ export function RentabilityCard({
               >
                 {IRPF_REDUCTIONS.map((r) => (
                   <option key={r.value} value={String(r.value)}>
-                    {r.label}
+                    {t(`reduction.${r.key}`)}
                   </option>
                 ))}
               </select>
@@ -483,34 +498,38 @@ export function RentabilityCard({
 
       {/* Resultado */}
       <div className="mt-6 grid grid-cols-2 gap-3 lg:grid-cols-4">
-        <Tile label="Rentabilidad bruta" value={pctPlain(result.grossYield)} />
-        <Tile label="Rentabilidad neta" value={pctPlain(result.netYield)} />
+        <Tile label={t('tile.grossYield')} value={formatPercentPlain(result.grossYield, locale)} />
+        <Tile label={t('tile.netYield')} value={formatPercentPlain(result.netYield, locale)} />
         <Tile
-          label="Neta tras impuestos"
-          value={result.netYieldAfterTax !== null ? pctPlain(result.netYieldAfterTax) : '—'}
+          label={t('tile.netAfterTax')}
+          value={result.netYieldAfterTax !== null ? formatPercentPlain(result.netYieldAfterTax, locale) : '—'}
         />
         <Tile
-          label={result.monthlyCashflowAfterTax !== null ? 'Cash-flow mensual (tras IRPF)' : 'Cash-flow mensual'}
-          value={formatEur(cashflow)}
+          label={result.monthlyCashflowAfterTax !== null ? t('tile.cashflowAfterTax') : t('tile.cashflow')}
+          value={formatEur(cashflow, locale)}
           valueClass={cashflowClass}
         />
         <Tile
-          label="Cuota hipoteca"
-          value={result.monthlyMortgagePayment !== null ? `${formatEur(result.monthlyMortgagePayment)}/mes` : '—'}
+          label={t('tile.mortgagePayment')}
+          value={
+            result.monthlyMortgagePayment !== null
+              ? `${formatEur(result.monthlyMortgagePayment, locale)}${t('perMonthSuffix')}`
+              : '—'
+          }
           valueClass="text-gold-deep"
         />
-        <Tile label="Cash invertido" value={formatEur(result.cashInvested)} valueClass="text-gold-deep" />
-        <Tile label="Cash-on-cash" value={pctPlain(result.cashOnCash)} />
+        <Tile label={t('tile.cashInvested')} value={formatEur(result.cashInvested, locale)} valueClass="text-gold-deep" />
+        <Tile label={t('tile.cashOnCash')} value={formatPercentPlain(result.cashOnCash, locale)} />
         <Tile
-          label="IRPF anual estimado"
-          value={result.irpfAnnualTax !== null ? formatEur(result.irpfAnnualTax) : '—'}
+          label={t('tile.irpfAnnual')}
+          value={result.irpfAnnualTax !== null ? formatEur(result.irpfAnnualTax, locale) : '—'}
           valueClass={result.irpfAnnualTax !== null ? 'text-gold-deep' : undefined}
         />
       </div>
 
       {/* Escenarios de inversión (P8-lite, iteración 5) */}
       <div className="mt-6 border-t border-hairline pt-4">
-        <p className="label-caps text-muted">Escenarios</p>
+        <p className="label-caps text-muted">{t('scenariosTitle')}</p>
         <div className="mt-3 grid grid-cols-3 gap-3">
           {scenarios.map(({ kind, result: scenarioResult }) => (
             <ScenarioTile
@@ -518,28 +537,25 @@ export function RentabilityCard({
               kind={kind}
               cashflow={scenarioResult.monthlyCashflowAfterTax ?? scenarioResult.monthlyCashflowPreTax}
               netYield={scenarioResult.netYield}
+              t={t}
+              locale={locale}
             />
           ))}
         </div>
-        <p className="mt-2 text-xs text-muted">
-          Supuestos v0: conservador −10% renta y 8% vacancia; optimista +5% renta y 3% vacancia.
-        </p>
+        <p className="mt-2 text-xs text-muted">{t('scenariosNote')}</p>
       </div>
 
       <details ref={breakdownDetailsRef} className="group mt-4">
         <summary className="cursor-pointer list-none rounded-lg px-3 py-2 text-sm font-medium text-petrol transition-colors hover:bg-paper">
-          <span className="group-open:hidden">Ver desglose línea a línea</span>
-          <span className="hidden group-open:inline">Ocultar desglose</span>
+          <span className="group-open:hidden">{t('showBreakdown')}</span>
+          <span className="hidden group-open:inline">{t('hideBreakdown')}</span>
         </summary>
-        <BreakdownList title="Coste de adquisición" lines={result.acquisitionBreakdown} />
-        <BreakdownList title="Gastos operativos anuales" lines={result.operatingBreakdown} />
-        <BreakdownList title="IRPF del alquiler (estimación)" lines={result.irpfBreakdown} />
+        <BreakdownList title={t('acquisitionTitle')} lines={result.acquisitionBreakdown} t={t} locale={locale} />
+        <BreakdownList title={t('operatingTitle')} lines={result.operatingBreakdown} t={t} locale={locale} />
+        <BreakdownList title={t('irpfTitle')} lines={result.irpfBreakdown} t={t} locale={locale} />
       </details>
 
-      <p className="mt-4 border-t border-hairline pt-3 text-xs text-muted">
-        Estimación orientativa con tipos generales v0; ITP y fiscalidad varían según caso —
-        verificar con asesor.
-      </p>
+      <p className="mt-4 border-t border-hairline pt-3 text-xs text-muted">{t('footnote')}</p>
     </div>
   )
 }

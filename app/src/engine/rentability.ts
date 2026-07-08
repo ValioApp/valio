@@ -46,9 +46,36 @@ export interface RentabilityInput {
   irpf?: { marginalRate: number; reduction: IrpfReduction }
 }
 
+/**
+ * Concepto de una línea de desglose como token i18n (clave + parámetros), no
+ * como texto: el motor no produce copy: el componente lo traduce con next-intl.
+ * Los porcentajes fijos (IVA 10%, AJD/notaría 1,5%, amortización 3% del 60%…)
+ * viven ya en la traducción; solo viajan como parámetro los que dependen del
+ * input del usuario (ITP por CCAA, % de reducción y tipo marginal de IRPF).
+ */
+export type RentabilityConcept =
+  | { key: 'purchasePrice' }
+  | { key: 'ivaNewBuild' }
+  | { key: 'ajd' }
+  | { key: 'itp'; pct: number }
+  | { key: 'notaryRegistryAgency' }
+  | { key: 'renovation' }
+  | { key: 'ibi' }
+  | { key: 'community' }
+  | { key: 'insurance' }
+  | { key: 'maintenance' }
+  | { key: 'effectiveAnnualRent' }
+  | { key: 'deductibleOperating' }
+  | { key: 'mortgageInterestsY1' }
+  | { key: 'buildingAmortization' }
+  | { key: 'netIncome' }
+  | { key: 'rentReduction'; pct: number }
+  | { key: 'taxBase' }
+  | { key: 'irpfQuota'; rate: number }
+
 /** Línea trazable de un desglose, como los adjustments del motor. */
 export interface RentabilityLine {
-  concept: string
+  concept: RentabilityConcept
   amount: number
 }
 
@@ -116,26 +143,26 @@ export function computeRentability(input: RentabilityInput): RentabilityResult {
   // ── Adquisición (cada línea redondeada; el total es la suma de las líneas
   //    para que el desglose cuadre siempre al céntimo con lo mostrado) ──
   const acquisitionBreakdown: RentabilityLine[] = [
-    { concept: 'Precio de compra', amount: roundEur(price) },
+    { concept: { key: 'purchasePrice' }, amount: roundEur(price) },
   ]
   if (input.isNewBuild) {
     acquisitionBreakdown.push(
-      { concept: 'IVA obra nueva (10%)', amount: roundEur(price * NEW_BUILD_IVA) },
-      { concept: 'AJD (aprox. 1,5%)', amount: roundEur(price * NEW_BUILD_AJD_DEFAULT) },
+      { concept: { key: 'ivaNewBuild' }, amount: roundEur(price * NEW_BUILD_IVA) },
+      { concept: { key: 'ajd' }, amount: roundEur(price * NEW_BUILD_AJD_DEFAULT) },
     )
   } else {
     const itpRate = ITP_BY_CCAA[input.ccaa]
     acquisitionBreakdown.push({
-      concept: `ITP (${(itpRate * 100).toFixed(1).replace('.', ',').replace(',0', '')}%)`,
+      concept: { key: 'itp', pct: itpRate },
       amount: roundEur(price * itpRate),
     })
   }
   acquisitionBreakdown.push({
-    concept: 'Notaría, registro y gestoría (aprox. 1,5%)',
+    concept: { key: 'notaryRegistryAgency' },
     amount: roundEur(price * NOTARY_REGISTRY_AGENCY_PCT),
   })
   if (renovation > 0) {
-    acquisitionBreakdown.push({ concept: 'Reforma', amount: roundEur(renovation) })
+    acquisitionBreakdown.push({ concept: { key: 'renovation' }, amount: roundEur(renovation) })
   }
   const totalAcquisitionCost = acquisitionBreakdown.reduce((s, l) => s + l.amount, 0)
 
@@ -154,15 +181,15 @@ export function computeRentability(input: RentabilityInput): RentabilityResult {
   const effectiveAnnualRent = grossAnnualRent * (1 - vacancyPct)
 
   const operatingBreakdown: RentabilityLine[] = []
-  const pushCost = (concept: string, amount: number | undefined) => {
+  const pushCost = (concept: RentabilityConcept, amount: number | undefined) => {
     if (amount !== undefined && amount > 0) {
       operatingBreakdown.push({ concept, amount: roundEur(amount) })
     }
   }
-  pushCost('IBI', input.annualCosts?.ibi)
-  pushCost('Comunidad', input.annualCosts?.community)
-  pushCost('Seguro', input.annualCosts?.insurance)
-  pushCost('Mantenimiento (10% de la renta)', grossAnnualRent * DEFAULT_MAINTENANCE_PCT_OF_RENT)
+  pushCost({ key: 'ibi' }, input.annualCosts?.ibi)
+  pushCost({ key: 'community' }, input.annualCosts?.community)
+  pushCost({ key: 'insurance' }, input.annualCosts?.insurance)
+  pushCost({ key: 'maintenance' }, grossAnnualRent * DEFAULT_MAINTENANCE_PCT_OF_RENT)
   const operatingCosts = operatingBreakdown.reduce((s, l) => s + l.amount, 0)
 
   // ── Yields y cash-flow pre-tax ──
@@ -184,28 +211,28 @@ export function computeRentability(input: RentabilityInput): RentabilityResult {
     irpfAnnualTax = roundEur(exactTax)
 
     irpfBreakdown.push(
-      { concept: 'Renta efectiva anual', amount: roundEur(effectiveAnnualRent) },
-      { concept: 'Gastos operativos deducibles', amount: -roundEur(operatingCosts) },
+      { concept: { key: 'effectiveAnnualRent' }, amount: roundEur(effectiveAnnualRent) },
+      { concept: { key: 'deductibleOperating' }, amount: -roundEur(operatingCosts) },
     )
     if (input.mortgage) {
       irpfBreakdown.push({
-        concept: 'Intereses de hipoteca (año 1)',
+        concept: { key: 'mortgageInterestsY1' },
         amount: -roundEur(exactFirstYearInterests),
       })
     }
     irpfBreakdown.push(
-      { concept: 'Amortización construcción (3% del 60%)', amount: -roundEur(amortization) },
-      { concept: 'Rendimiento neto', amount: roundEur(netIncome) },
+      { concept: { key: 'buildingAmortization' }, amount: -roundEur(amortization) },
+      { concept: { key: 'netIncome' }, amount: roundEur(netIncome) },
       {
-        concept: `Reducción alquiler vivienda (${input.irpf.reduction * 100}%)`,
+        concept: { key: 'rentReduction', pct: input.irpf.reduction },
         amount: netIncome > 0 ? -roundEur(netIncome * input.irpf.reduction) : 0,
       },
       {
-        concept: 'Base imponible',
+        concept: { key: 'taxBase' },
         amount: netIncome > 0 ? roundEur(netIncome * (1 - input.irpf.reduction)) : 0,
       },
       {
-        concept: `Cuota IRPF estimada (tipo ${Math.round(input.irpf.marginalRate * 100)}%)`,
+        concept: { key: 'irpfQuota', rate: input.irpf.marginalRate },
         amount: roundEur(exactTax),
       },
     )
