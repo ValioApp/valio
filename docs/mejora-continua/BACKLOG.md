@@ -19,12 +19,12 @@ Fuente: investigación de reseñas/foros verificada (informe completo en
 | P4 | 🛡️ **Ocupación como titular del informe** (% sobre valor de mercado, regla inversor 60-70%) | F12; ninguna herramienta reseñada lo cubre; VALIO ya calcula el ajuste | S | **✅ iteración 3** |
 | P5 | 🛡️ **Alquiler estimado + flag zona tensionada** por sección censal | F6 (idealista lo cobra B2B) + F8; encaja con pipeline INE/SERPAVI | M | backlog (tras Plan 2.1 completo) |
 | P6 | 📋 **Informe PDF white-label** con testigos citados y gráficos legibles | F1 — feature más valorada por agencias en toda la evidencia pro | M | **parcial (memorándum print v0 + carrusel de fotos con grid imprimible — Paquete Alex 3/3)** — iteración 8; PDF white-label real → Plan 3 |
-| P7 | 📋 **Anti-lead-gen como posicionamiento** (sin teléfono, sin vender leads, pricing público) | Q7 RealAdvisor vende leads >56€ + Q8 Trovimap 2,7/5 | S (copy landing) | **✅ (landing anti-lead-gen)** |
+| P7 | 📋 **Anti-lead-gen como posicionamiento** (sin teléfono, sin vender leads, pricing público) | Q7 RealAdvisor vende leads >56€ + Q8 Trovimap 2,7/5 | S (copy landing) | **✅ REHECHA editorial (2026-07-08)** — landing "precisión editorial" (Fraunces + tarjeta de producto + motivo cartográfico), micro-trust "sin llamadas de ventas · sin vender tus datos", FAQ lead-gen |
 | P8 | 📋 **Estimación de reforma por niveles + escenarios conservador/realista/optimista** | F9+F13 (Invisor la tiene y presume) | M | **✅ iteraciones 5+7** (escenarios + reforma por niveles) |
 | P9 | 📋 Histórico y re-valoración periódica de cartera | Q5/Q10 patrón Zestimate | M | backlog |
 | P10 | 📋 Análisis desde URL de anuncio + historial del anuncio | F10+F11 — demanda alta pero scraping frágil/riesgo legal (regla de oro nº1) | L | congelado (revisar con APIs del socio) |
 | — | Export cartera Excel/CSV | petición típica agencias | S | **✅ iteración 6** |
-| P11 | 📋 UX "resultado en <2 min" + free tier 2-3 valoraciones | Estudio Invisor rec.2 — la fricción de entrada es el campo de batalla | S | **parcial (falta freemium)** — iteración 4 |
+| P11 | 📋 UX "resultado en <2 min" + free tier 2-3 valoraciones | Estudio Invisor rec.2 — la fricción de entrada es el campo de batalla | S | **avanza: registro self-service real (2026-07-08)** — signup email+contraseña → panel directo (autoconfirm provisional); falta freemium/límite por tier |
 | P12 | 📋 SEO comparativo: /vs/invisor, /vs/cassandra, /vs/lystos, /comparativa | Estudio Invisor rec.3 — gana esas búsquedas sin competencia hoy | S | backlog (Plan 3 landing) |
 | P13 | 📋 "Memorándum de inversión" white-label como formato del PDF | Estudio Invisor rec.4 — ellos lo venden premium sin trazabilidad real | M | **parcial (memorándum print v0)** — iteración 8; PDF white-label real → Plan 3 |
 | P14 | 🛡️ Publicar precisión (MdAPE/PPE10) + página "por qué a veces rehusamos valorar" | Estudio Invisor rec.5 — nadie del segmento publica métricas de error | S | backlog (necesita backtesting con cierres) |
@@ -295,3 +295,57 @@ Verde: `tsc` limpio, suite **102/102**, `npm run build` limpio.
   del Plan 1 hecho realidad) → ahora pide solo las secciones implicadas (commit 3cb4ee8).
 - Pendiente: deploy Vercel (Alex) y testigos reales (los 24 actuales son seeds — los
   reales llegan con las APIs/CSV del socio, Plan 2.2).
+
+### Landing editorial + auth email/password 2026-07-08 ✅
+
+Landing genérica reemplazada por la **landing definitiva "precisión editorial"** (dirección
+aprobada por Alex) + **registro self-service** con email y contraseña.
+
+- **Fuente Fraunces** (`next/font/google`, variable, óptico) expuesta como `--font-fraunces`
+  → token de tema `--font-serif-display` (utilidad `font-serif-display`) para los titulares
+  editoriales. Geist sigue como fuente de UI/datos. Metadata orientada a producto.
+- **Titular nuevo (cambio de Alex)**: "Cuánto vale. **Y por qué.**" (accent en itálica serif
+  gold-deep) · ca "Quant val. I per què." · en "What it's worth. And why."
+- **Landing modular** en `app/src/components/landing/*` (server components): `LandingHeader`
+  (consciente de sesión vía `getUser`: sin sesión → Iniciar sesión/Crear cuenta; con sesión →
+  Ir al panel), `Hero`, `HeroValuationCard`, `ContourMotif`, `TrustStrip`, `PortalesSection`,
+  `Features`, `Pricing`, `Faq`, `LandingFooter`. Porta el lenguaje de la maqueta al design
+  system real (paper/petrol/gold/hairline, `label-caps`, `tabular-nums`, `shadow-ambient`).
+- **ContourMotif** determinista y SSR-safe (`app/src/lib/contour-paths.ts`, sumas de senos con
+  armónicos fijos precalculadas — nada de Math.random en render, sin hydration mismatch); la
+  animación de trazado es CSS. Un anillo marcado + nodos de cota para lectura de mapa.
+- **HeroValuationCard**: réplica de la tarjeta de resultado (275.380 €, 3.672 €/m², confianza
+  Media, ajustes renta −18% / ocupación −40% / estado 0%, 14 testigos). Barra de horquilla con
+  marcador y banda **derivados de low/value/high reales** (`app/src/lib/range-bar.ts`, puro,
+  +5 tests); ubicación en bajo contraste para que el ojo caiga en la cifra; chip que sobresale
+  sin tapar contenido.
+- **Secciones editoriales** (no 4 cards iguales de IA): franja de datos (3.646 secciones · Renta
+  INE 2023 · Catastro · Orden ECO/805/2003), portales 01/02/03 serif, features en filas con
+  divisores, pricing 3 tiers (Starter 49 · Professional 99 destacado · Agencia 199, "orientativo
+  · IVA no incluido"), FAQ y footer con disclaimer ECO/805/2003. Motion CSS de entrada escalonada
+  con `prefers-reduced-motion`. Responsive verificado a 390px sin scroll horizontal.
+- **Auth email + contraseña** (mismo lenguaje editorial, `AuthShell`/`AuthField`/`AuthMessage`):
+  `/signup` (email+contraseña+workspace opcional → `workspace_name` en `options.data` →
+  `handle_new_user`), `/login` reescrito (contraseña primaria + enlace mágico secundario en
+  `<details>`), `/forgot` y `/auth/reset`. Zod schemas puros en `app/src/lib/auth-schemas.ts`
+  (+6 tests). `app/src/proxy.ts` (middleware→proxy en Next 16) refresca la sesión de Supabase en
+  cada request (patrón updateSession de `@supabase/ssr`). Recuperación pasa por `/auth/confirm?next=/auth/reset`
+  (un Route Handler sí escribe cookies) para fijar la sesión de recuperación antes del formulario.
+- **i18n** ampliado en es/ca/en (namespaces `landing`+`common`+nuevo `auth`); todo el copy vía
+  next-intl, nada hardcodeado. Catalán central e inglés SaaS nativos.
+- **Config Supabase Auth (Management API)**: `mailer_autoconfirm: true` + `uri_allow_list` de
+  localhost. ⚠️ **PROVISIONAL**: autoconfirm hace usable el registro YA sin depender del email
+  limitado del free tier. **ANTES DEL LANZAMIENTO PÚBLICO: desactivar `mailer_autoconfirm` y
+  conectar Resend/SMTP propio** (va con Stripe, Plan 3). Con autoconfirm off, `/signup` cae al
+  estado "revisa tu correo" (ya soportado).
+- **Verde**: `tsc` limpio, suite **113/113** (102 + 5 range-bar + 6 auth-schemas), `npm run build`
+  limpio (todas las rutas ƒ, Proxy detectado).
+- **Verificación real Playwright** (dev server :3000): landing es/ca/en con el switcher (titular y
+  secciones cambian, `html lang` correcto, 0 errores de consola, sin scroll horizontal desktop+móvil);
+  header conmuta sesión↔sin-sesión; **flujo de cuenta E2E real**: `/signup` con email nuevo →
+  **/dashboard** directo (autoconfirm, workspace creado por el trigger); `/login` credenciales
+  incorrectas → error legible, correctas → **/dashboard**; `/forgot` → estado "Enlace enviado";
+  `/auth/reset` renderiza su formulario. Usuario de prueba borrado vía admin API (verificado).
+  Nota honesta: el reset completo (updateUser con sesión de recuperación) no se probó E2E porque
+  requiere recibir el email de recuperación (free tier); la UI y el flujo de cookies quedan listos.
+  Supabase rechaza el TLD `.local` en `resetPasswordForEmail` (solo afecta a emails de prueba).
