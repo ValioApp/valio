@@ -1,22 +1,46 @@
 'use server'
 
-import { z } from 'zod'
+import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
+import { emailSchema, signInSchema } from '@/lib/auth-schemas'
+import type { AuthState } from '@/lib/auth-state'
 
-const schema = z.object({ email: z.email('Email no válido') })
+const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'
 
-export async function sendMagicLink(
-  _prev: { message: string } | null,
-  formData: FormData,
-): Promise<{ message: string }> {
-  const parsed = schema.safeParse({ email: formData.get('email') })
-  if (!parsed.success) return { message: parsed.error.issues[0].message }
+/** Acceso principal: email + contraseña → /dashboard. */
+export async function signInWithPassword(_prev: AuthState, formData: FormData): Promise<AuthState> {
+  const parsed = signInSchema.safeParse({
+    email: formData.get('email'),
+    password: formData.get('password'),
+  })
+  if (!parsed.success) {
+    return { status: 'error', code: 'validation', message: parsed.error.issues[0].message }
+  }
+
+  const supabase = await createClient()
+  const { error } = await supabase.auth.signInWithPassword(parsed.data)
+  if (error) {
+    // Credenciales inválidas u otro fallo de acceso: mensaje único y legible.
+    return { status: 'error', code: 'invalid' }
+  }
+
+  redirect('/dashboard')
+}
+
+/** Acceso alternativo (discreto): enlace mágico por email. */
+export async function sendMagicLink(_prev: AuthState, formData: FormData): Promise<AuthState> {
+  const parsed = emailSchema.safeParse({ email: formData.get('email') })
+  if (!parsed.success) {
+    return { status: 'error', code: 'validation', message: parsed.error.issues[0].message }
+  }
 
   const supabase = await createClient()
   const { error } = await supabase.auth.signInWithOtp({
     email: parsed.data.email,
-    options: { emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'}/auth/confirm` },
+    options: { emailRedirectTo: `${SITE}/auth/confirm` },
   })
-  if (error) return { message: `Error: ${error.message}` }
-  return { message: 'Revisa tu correo: te hemos enviado un enlace de acceso.' }
+  if (error) {
+    return { status: 'error', code: 'generic', message: error.message }
+  }
+  return { status: 'sent' }
 }
