@@ -209,6 +209,7 @@ export default function ValorarPage() {
 
           {resolved && (
             <>
+              <input type="hidden" name="address" value={resolved.address} />
               <input type="hidden" name="lat" value={resolved.lat} />
               <input type="hidden" name="lon" value={resolved.lon} />
               <input type="hidden" name="censusSectionId" value={resolved.censusSectionId} />

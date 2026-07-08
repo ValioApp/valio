@@ -8,6 +8,9 @@ import { createClient } from '@/lib/supabase/server'
 
 const schema = z.object({
   kind: z.enum(['piso', 'casa']),
+  // Dirección real resuelta por CartoCiudad (hidden input); opcional para no romper
+  // /demo ni submits legacy → fallback al persistir.
+  address: z.string().optional(),
   builtAreaM2: z.coerce.number().min(15).max(2000),
   bedrooms: z.coerce.number().int().min(0).max(20),
   floor: z.coerce.number().int().min(0).max(40).nullable(),
@@ -32,6 +35,7 @@ export async function runValuation(
   const raw = Object.fromEntries(formData.entries())
   const parsed = schema.safeParse({
     ...raw,
+    address: raw.address === '' ? undefined : raw.address,
     floor: raw.floor === '' ? null : raw.floor,
     yearBuilt: raw.yearBuilt === '' ? null : raw.yearBuilt,
     hasElevator: raw.hasElevator === 'on',
@@ -74,7 +78,8 @@ export async function runValuation(
         .insert({
           workspace_id: member.workspace_id,
           kind: subject.kind,
-          address: '(pendiente de geocodificación — Plan 2)',
+          // Dirección real de CartoCiudad (hidden input); fallback si el submit no la trae.
+          address: parsed.data.address ?? '(sin dirección)',
           built_area_m2: subject.builtAreaM2,
           bedrooms: subject.bedrooms,
           floor: subject.floor,

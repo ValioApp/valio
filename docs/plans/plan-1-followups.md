@@ -8,6 +8,16 @@ Plan 2 (capa de ingesta) salvo indicación.
 - ✅ `valuate.ts`: filtrar comps sin `zone_stats` ANTES del corte top-20.
 - ✅ `synthesize.ts`: `low` clampado a ≥ 0 (dispersión extrema fsd > 1).
 
+## Aplicados (2026-07-08 — hardening carrusel)
+
+- ✅ **Dirección real persistida** (cerraba la deuda del placeholder
+  `'(pendiente de geocodificación — Plan 2)'`): `/valorar` ya envía la dirección
+  resuelta por CartoCiudad como `<input type="hidden" name="address">` y
+  `runValuation` la guarda en `properties.address` (schema Zod `address` opcional +
+  fallback `'(sin dirección)'`). La cartera, el CSV y el informe impreso muestran ya
+  la dirección real. **El punto de geocodificación de este followup queda resuelto**
+  (la resolución dirección→lat/lon→sección ya existía; solo faltaba persistir el texto).
+
 ## Pendientes (Plan 2 — frontera del motor / capa de datos)
 
 1. **Validación Zod en la frontera del motor**: el motor asume inputs sanos
