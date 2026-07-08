@@ -6,6 +6,35 @@
 > Reglas: nunca romper las reglas de oro del CLAUDE.md; lo del socio → placeholder +
 > PENDIENTES-SOCIO.md; producción/deploy siempre con aprobación de Alex (Fase 1).
 
+## 🚦 GATES DUROS antes de abrir al público (config de despliegue)
+
+> ⚠️ **APLICA YA si se difunde la URL.** La URL de producción de Vercel **ya es
+> pública**: cualquiera que la reciba puede registrarse. Estos gates son de
+> **configuración de despliegue** (Supabase/Vercel), no de código — los gestiona
+> Alex (el controlador), no el loop. El endurecimiento de auth en código ya está
+> hecho (revisión de seguridad 2026-07-09, ver bitácora abajo), pero **sin estos
+> gates el registro público sigue siendo inseguro/abusable**. No abrir/difundir la
+> URL hasta que **los cuatro** estén verdes:
+
+- [ ] **(a) Email real, sin autoconfirm.** Desactivar `mailer_autoconfirm` en
+  Supabase Auth **y** conectar SMTP propio (Resend). Con autoconfirm cualquiera crea
+  cuentas verificadas sin poseer el email; el free tier de email de Supabase no
+  aguanta público. Con autoconfirm off, `/signup` cae al estado "revisa tu correo"
+  (ya soportado en código).
+- [ ] **(b) CAPTCHA + rate limits.** Activar CAPTCHA (Cloudflare **Turnstile**) en
+  Supabase Auth y revisar los rate limits de signup/OTP/reset. Sin esto, los
+  endpoints de auth son abusables por bots (alta masiva, agotar el cupo de email).
+- [ ] **(c) URLs de producción.** Fijar en Supabase Auth el `site_url` y la
+  `uri_allow_list` de **producción** (no localhost), y en Vercel la env var
+  **`NEXT_PUBLIC_SITE_URL`** = URL real. El código ahora **lanza error en producción
+  si `NEXT_PUBLIC_SITE_URL` falta** (`app/src/lib/env.ts`), así que este gate es
+  obligatorio para que la app arranque bien; además, sin `site_url`/`uri_allow_list`
+  correctas los enlaces de auth por email redirigen mal o se rechazan.
+- [ ] **(d) Verificación en producción.** Comprobar en el despliegue real que:
+  **logout** cierra sesión y vuelve a `/login`; el **login con enlace mágico NO crea
+  cuentas** (`shouldCreateUser: false` — un email desconocido no debe darse de alta);
+  y que un enlace caducado aterriza en `/login?error=link_expired` con aviso legible.
+
 ## Backlog priorizado (v2 — con investigación de quejas reales 2026-07-07)
 
 Fuente: investigación de reseñas/foros verificada (informe completo en
