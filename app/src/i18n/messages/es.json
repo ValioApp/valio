@@ -1,6 +1,8 @@
 {
   "common": {
     "signIn": "Entrar",
+    "logIn": "Iniciar sesión",
+    "createAccount": "Crear cuenta",
     "goToPanel": "Ir al panel",
     "languageLabel": "Idioma",
     "es": "ES",
@@ -13,12 +15,51 @@
   "landing": {
     "hero": {
       "eyebrow": "Valoración orientativa para profesionales",
-      "title": "El precio real de cualquier inmueble.",
-      "titleAccent": "Con el porqué.",
-      "subtitle": "Valoración orientativa con testigos reales, factor de zona y ajuste por ocupación. Pensada para inversores y agencias que necesitan entender cada cifra, no solo verla.",
-      "ctaPrimary": "Prueba gratis",
-      "ctaSecondary": "Ver ejemplo",
-      "imageAlt": "Interior de vivienda reformada usada como testigo comparable en una valoración"
+      "titleLead": "Cuánto vale.",
+      "titleAccent": "Y por qué.",
+      "subtitle": "Testigos con <b>precios de cierre reales</b>, factor de renta por sección censal y ajuste por ocupación. Una valoración que <b>explica cada euro</b> — pensada para inversores y agencias.",
+      "ctaPrimary": "Crear cuenta gratis",
+      "ctaSecondary": "Ver una valoración",
+      "trustA": "Sin llamadas de ventas",
+      "trustB": "Sin vender tus datos"
+    },
+    "heroCard": {
+      "eyebrow": "Valor estimado de mercado",
+      "location": "El Raval, Barcelona",
+      "confidence": "Confianza: Media",
+      "rangeLabel": "Horquilla estimada",
+      "whyTitle": "Por qué este valor",
+      "rows": {
+        "zone": "Renta de la zona (El Raval)",
+        "occupancy": "Ajuste por ocupación",
+        "condition": "Estado del inmueble"
+      },
+      "chip": "testigos de cierre analizados"
+    },
+    "trust": {
+      "sections": { "value": "3.646", "label": "Secciones censales" },
+      "income": { "value": "Renta INE 2023", "label": "Factor de zona" },
+      "cadastre": { "value": "Datos del Catastro", "label": "Referencia oficial" },
+      "eco": { "value": "Orden ECO/805/2003", "label": "Marco de valoración" }
+    },
+    "portals": {
+      "title": "Lo que los portales",
+      "titleAccent": "no te cuentan.",
+      "kicker": "Un anuncio te dice lo que alguien pide. VALIO te dice lo que el mercado paga — y por qué.",
+      "items": {
+        "closings": {
+          "title": "Precios de cierre, no de anuncio",
+          "body": "Partimos de operaciones realmente cerradas, no del precio con el que un piso salió al escaparate. La diferencia, en según qué zonas, es de dos dígitos."
+        },
+        "why": {
+          "title": "El porqué de cada ajuste",
+          "body": "Factor de renta por sección censal, ocupación y estado: cada corrección aparece desglosada con su peso. Nada de caja negra."
+        },
+        "honesty": {
+          "title": "Honestidad ante la falta de datos",
+          "body": "Cuando los testigos escasean, lo decimos: la confianza baja y la horquilla se abre. Preferimos un «no lo sé del todo» a una cifra falsamente exacta."
+        }
+      }
     },
     "features": {
       "eyebrow": "Diseñado para la precisión",
@@ -40,24 +81,6 @@
         "profit": {
           "title": "Rentabilidad post-impuestos",
           "body": "Estima el retorno real de la operación descontando impuestos y costes, para decidir con la cifra que de verdad te llevas a casa."
-        }
-      }
-    },
-    "portals": {
-      "title": "Lo que los portales no te cuentan",
-      "subtitle": "Un precio de anuncio no es un precio de cierre. Nosotros trabajamos con lo segundo.",
-      "items": {
-        "closings": {
-          "title": "Precios de cierre, no de anuncio",
-          "body": "Nuestras métricas de calidad se miden contra transacciones reales, no contra lo que alguien pide en un portal."
-        },
-        "why": {
-          "title": "El porqué de cada ajuste",
-          "body": "Zona, estado, ocupación y superficie: cada factor aparece desglosado y trazable, no oculto en una caja negra."
-        },
-        "honesty": {
-          "title": "Honestidad ante la falta de datos",
-          "body": "Cuando no hay testigos suficientes lo decimos y degradamos a orientación de zona. Ninguna cifra falsa de relleno."
         }
       }
     },
@@ -127,6 +150,65 @@
       "brand": "VALIO Proptech",
       "disclaimer": "VALIO ofrece valoraciones orientativas de carácter técnico basadas en testigos comparables y datos públicos. No constituyen una tasación oficial ni sustituyen el informe de una sociedad de tasación homologada por el Banco de España (Orden ECO/805/2003). Los resultados son estimaciones y no tienen carácter vinculante.",
       "rights": "© 2026 VALIO Proptech. Todos los derechos reservados."
+    }
+  },
+  "auth": {
+    "signup": {
+      "title": "Crea tu cuenta",
+      "subtitle": "Empieza a valorar con testigos reales y el porqué de cada cifra.",
+      "emailLabel": "Email",
+      "emailPlaceholder": "tu@email.com",
+      "passwordLabel": "Contraseña",
+      "passwordPlaceholder": "Mínimo 8 caracteres",
+      "workspaceLabel": "Nombre de tu espacio o empresa",
+      "workspacePlaceholder": "Inmobiliaria Sol (opcional)",
+      "workspaceHint": "Opcional. Podrás cambiarlo más tarde.",
+      "submit": "Crear cuenta",
+      "submitting": "Creando cuenta…",
+      "haveAccount": "¿Ya tienes cuenta?",
+      "signInLink": "Inicia sesión",
+      "checkEmailTitle": "Revisa tu correo",
+      "checkEmailBody": "Te hemos enviado un enlace para confirmar tu cuenta. Ábrelo para empezar."
+    },
+    "login": {
+      "title": "Accede a tu cuenta",
+      "subtitle": "Entra con tu email y contraseña.",
+      "emailLabel": "Email",
+      "emailPlaceholder": "tu@email.com",
+      "passwordLabel": "Contraseña",
+      "passwordPlaceholder": "Tu contraseña",
+      "forgotLink": "¿Olvidaste tu contraseña?",
+      "submit": "Entrar",
+      "submitting": "Entrando…",
+      "invalidCredentials": "Email o contraseña incorrectos.",
+      "magicToggle": "¿Prefieres un enlace mágico?",
+      "magicSubmit": "Enviar enlace de acceso",
+      "magicSubmitting": "Enviando…",
+      "magicSent": "Revisa tu correo: te hemos enviado un enlace de acceso.",
+      "noAccount": "¿No tienes cuenta?",
+      "signupLink": "Crear cuenta"
+    },
+    "forgot": {
+      "title": "Recupera tu contraseña",
+      "subtitle": "Te enviaremos un enlace para crear una nueva.",
+      "emailLabel": "Email",
+      "emailPlaceholder": "tu@email.com",
+      "submit": "Enviar enlace",
+      "submitting": "Enviando…",
+      "sentTitle": "Enlace enviado",
+      "sentBody": "Si existe una cuenta con ese email, recibirás un enlace para restablecer la contraseña.",
+      "backToLogin": "Volver a iniciar sesión"
+    },
+    "reset": {
+      "title": "Nueva contraseña",
+      "subtitle": "Elige una contraseña para tu cuenta.",
+      "passwordLabel": "Nueva contraseña",
+      "passwordPlaceholder": "Mínimo 8 caracteres",
+      "submit": "Guardar contraseña",
+      "submitting": "Guardando…"
+    },
+    "errors": {
+      "generic": "Algo ha ido mal. Inténtalo de nuevo."
     }
   }
 }

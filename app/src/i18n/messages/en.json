@@ -1,6 +1,8 @@
 {
   "common": {
     "signIn": "Sign in",
+    "logIn": "Log in",
+    "createAccount": "Create account",
     "goToPanel": "Go to dashboard",
     "languageLabel": "Language",
     "es": "ES",
@@ -13,12 +15,51 @@
   "landing": {
     "hero": {
       "eyebrow": "Indicative valuations for professionals",
-      "title": "The real price of any property.",
-      "titleAccent": "And the why behind it.",
-      "subtitle": "Indicative valuations with real comparables, a zone factor and an occupancy adjustment. Built for investors and agencies who need to understand every figure, not just read it.",
-      "ctaPrimary": "Start free",
-      "ctaSecondary": "See an example",
-      "imageAlt": "Interior of a renovated home used as a comparable in a valuation"
+      "titleLead": "What it's worth.",
+      "titleAccent": "And why.",
+      "subtitle": "Comparables with <b>real closing prices</b>, an income factor per census tract and an occupancy adjustment. A valuation that <b>explains every euro</b> — built for investors and agencies.",
+      "ctaPrimary": "Create a free account",
+      "ctaSecondary": "See a valuation",
+      "trustA": "No sales calls",
+      "trustB": "We never sell your data"
+    },
+    "heroCard": {
+      "eyebrow": "Estimated market value",
+      "location": "El Raval, Barcelona",
+      "confidence": "Confidence: Medium",
+      "rangeLabel": "Estimated range",
+      "whyTitle": "Why this value",
+      "rows": {
+        "zone": "Area income (El Raval)",
+        "occupancy": "Occupancy adjustment",
+        "condition": "Property condition"
+      },
+      "chip": "closing comparables analysed"
+    },
+    "trust": {
+      "sections": { "value": "3,646", "label": "Census tracts" },
+      "income": { "value": "INE income 2023", "label": "Zone factor" },
+      "cadastre": { "value": "Cadastre data", "label": "Official reference" },
+      "eco": { "value": "Order ECO/805/2003", "label": "Valuation framework" }
+    },
+    "portals": {
+      "title": "What the listing portals",
+      "titleAccent": "won't tell you.",
+      "kicker": "A listing tells you what someone is asking. VALIO tells you what the market pays — and why.",
+      "items": {
+        "closings": {
+          "title": "Closing prices, not asking prices",
+          "body": "We start from deals that actually closed, not the price a flat first went to market with. In some areas that gap runs into double digits."
+        },
+        "why": {
+          "title": "The why behind every adjustment",
+          "body": "Income factor per census tract, occupancy and condition: each correction is broken down with its weight. No black box."
+        },
+        "honesty": {
+          "title": "Honest when data is thin",
+          "body": "When comparables are scarce, we say so: confidence drops and the range widens. We'd rather admit «not quite sure» than post a falsely precise figure."
+        }
+      }
     },
     "features": {
       "eyebrow": "Built for precision",
@@ -40,24 +81,6 @@
         "profit": {
           "title": "After-tax profitability",
           "body": "Estimate the real return on the deal after taxes and costs, so you decide with the figure you actually take home."
-        }
-      }
-    },
-    "portals": {
-      "title": "What the listing portals won't tell you",
-      "subtitle": "An asking price is not a closing price. We work with the latter.",
-      "items": {
-        "closings": {
-          "title": "Closing prices, not asking prices",
-          "body": "Our quality metrics are measured against real transactions, not against what someone lists on a portal."
-        },
-        "why": {
-          "title": "The why behind every adjustment",
-          "body": "Zone, condition, occupancy and floor area: every factor is broken down and traceable, never hidden in a black box."
-        },
-        "honesty": {
-          "title": "Honest when data is thin",
-          "body": "When there aren't enough comparables we say so and fall back to zone guidance. No fabricated filler figures."
         }
       }
     },
@@ -127,6 +150,65 @@
       "brand": "VALIO Proptech",
       "disclaimer": "VALIO provides indicative, technical valuations based on comparables and public data. They do not constitute an official appraisal nor replace the report of a valuation firm authorised by the Bank of Spain (Order ECO/805/2003). Results are estimates and are not binding.",
       "rights": "© 2026 VALIO Proptech. All rights reserved."
+    }
+  },
+  "auth": {
+    "signup": {
+      "title": "Create your account",
+      "subtitle": "Start valuing with real comparables and the why behind every figure.",
+      "emailLabel": "Email",
+      "emailPlaceholder": "you@email.com",
+      "passwordLabel": "Password",
+      "passwordPlaceholder": "At least 8 characters",
+      "workspaceLabel": "Your workspace or company name",
+      "workspacePlaceholder": "Sol Real Estate (optional)",
+      "workspaceHint": "Optional. You can change it later.",
+      "submit": "Create account",
+      "submitting": "Creating account…",
+      "haveAccount": "Already have an account?",
+      "signInLink": "Log in",
+      "checkEmailTitle": "Check your inbox",
+      "checkEmailBody": "We've sent you a link to confirm your account. Open it to get started."
+    },
+    "login": {
+      "title": "Log in to your account",
+      "subtitle": "Sign in with your email and password.",
+      "emailLabel": "Email",
+      "emailPlaceholder": "you@email.com",
+      "passwordLabel": "Password",
+      "passwordPlaceholder": "Your password",
+      "forgotLink": "Forgot your password?",
+      "submit": "Log in",
+      "submitting": "Logging in…",
+      "invalidCredentials": "Incorrect email or password.",
+      "magicToggle": "Prefer a magic link?",
+      "magicSubmit": "Send access link",
+      "magicSubmitting": "Sending…",
+      "magicSent": "Check your inbox: we've sent you an access link.",
+      "noAccount": "Don't have an account?",
+      "signupLink": "Create account"
+    },
+    "forgot": {
+      "title": "Reset your password",
+      "subtitle": "We'll send you a link to set a new one.",
+      "emailLabel": "Email",
+      "emailPlaceholder": "you@email.com",
+      "submit": "Send link",
+      "submitting": "Sending…",
+      "sentTitle": "Link sent",
+      "sentBody": "If an account exists for that email, you'll receive a link to reset your password.",
+      "backToLogin": "Back to log in"
+    },
+    "reset": {
+      "title": "New password",
+      "subtitle": "Choose a password for your account.",
+      "passwordLabel": "New password",
+      "passwordPlaceholder": "At least 8 characters",
+      "submit": "Save password",
+      "submitting": "Saving…"
+    },
+    "errors": {
+      "generic": "Something went wrong. Please try again."
     }
   }
 }

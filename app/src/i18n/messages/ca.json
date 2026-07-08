@@ -1,6 +1,8 @@
 {
   "common": {
     "signIn": "Entrar",
+    "logIn": "Inicia la sessió",
+    "createAccount": "Crea un compte",
     "goToPanel": "Anar al tauler",
     "languageLabel": "Idioma",
     "es": "ES",
@@ -13,12 +15,51 @@
   "landing": {
     "hero": {
       "eyebrow": "Valoració orientativa per a professionals",
-      "title": "El preu real de qualsevol immoble.",
-      "titleAccent": "Amb el perquè.",
-      "subtitle": "Valoració orientativa amb testimonis reals, factor de zona i ajust per ocupació. Pensada per a inversors i agències que necessiten entendre cada xifra, no només veure-la.",
-      "ctaPrimary": "Prova gratis",
-      "ctaSecondary": "Veure exemple",
-      "imageAlt": "Interior d'un habitatge reformat utilitzat com a testimoni comparable en una valoració"
+      "titleLead": "Quant val.",
+      "titleAccent": "I per què.",
+      "subtitle": "Testimonis amb <b>preus de tancament reals</b>, factor de renda per secció censal i ajust per ocupació. Una valoració que <b>explica cada euro</b> — pensada per a inversors i agències.",
+      "ctaPrimary": "Crea un compte gratis",
+      "ctaSecondary": "Veure una valoració",
+      "trustA": "Sense trucades de vendes",
+      "trustB": "Sense vendre les teves dades"
+    },
+    "heroCard": {
+      "eyebrow": "Valor estimat de mercat",
+      "location": "El Raval, Barcelona",
+      "confidence": "Confiança: Mitjana",
+      "rangeLabel": "Forquilla estimada",
+      "whyTitle": "Per què aquest valor",
+      "rows": {
+        "zone": "Renda de la zona (El Raval)",
+        "occupancy": "Ajust per ocupació",
+        "condition": "Estat de l'immoble"
+      },
+      "chip": "testimonis de tancament analitzats"
+    },
+    "trust": {
+      "sections": { "value": "3.646", "label": "Seccions censals" },
+      "income": { "value": "Renda INE 2023", "label": "Factor de zona" },
+      "cadastre": { "value": "Dades del Cadastre", "label": "Referència oficial" },
+      "eco": { "value": "Ordre ECO/805/2003", "label": "Marc de valoració" }
+    },
+    "portals": {
+      "title": "El que els portals",
+      "titleAccent": "no t'expliquen.",
+      "kicker": "Un anunci et diu el que algú demana. VALIO et diu el que el mercat paga — i per què.",
+      "items": {
+        "closings": {
+          "title": "Preus de tancament, no d'anunci",
+          "body": "Partim d'operacions realment tancades, no del preu amb què un pis va sortir a l'aparador. La diferència, segons quines zones, és de dos dígits."
+        },
+        "why": {
+          "title": "El perquè de cada ajust",
+          "body": "Factor de renda per secció censal, ocupació i estat: cada correcció apareix desglossada amb el seu pes. Res de caixa negra."
+        },
+        "honesty": {
+          "title": "Honestedat davant la manca de dades",
+          "body": "Quan els testimonis escassegen, ho diem: la confiança baixa i la forquilla s'obre. Preferim un «no ho sé del tot» a una xifra falsament exacta."
+        }
+      }
     },
     "features": {
       "eyebrow": "Dissenyat per a la precisió",
@@ -40,24 +81,6 @@
         "profit": {
           "title": "Rendibilitat després d'impostos",
           "body": "Estima el retorn real de l'operació descomptant impostos i costos, per decidir amb la xifra que de veritat t'endús a casa."
-        }
-      }
-    },
-    "portals": {
-      "title": "El que els portals no t'expliquen",
-      "subtitle": "Un preu d'anunci no és un preu de tancament. Nosaltres treballem amb el segon.",
-      "items": {
-        "closings": {
-          "title": "Preus de tancament, no d'anunci",
-          "body": "Les nostres mètriques de qualitat es mesuren contra transaccions reals, no contra el que algú demana en un portal."
-        },
-        "why": {
-          "title": "El perquè de cada ajust",
-          "body": "Zona, estat, ocupació i superfície: cada factor apareix desglossat i traçable, no amagat en una caixa negra."
-        },
-        "honesty": {
-          "title": "Honestedat davant la manca de dades",
-          "body": "Quan no hi ha prou testimonis ho diem i degradem a orientació de zona. Cap xifra falsa de farciment."
         }
       }
     },
@@ -127,6 +150,65 @@
       "brand": "VALIO Proptech",
       "disclaimer": "VALIO ofereix valoracions orientatives de caràcter tècnic basades en testimonis comparables i dades públiques. No constitueixen una taxació oficial ni substitueixen l'informe d'una societat de taxació homologada pel Banc d'Espanya (Ordre ECO/805/2003). Els resultats són estimacions i no tenen caràcter vinculant.",
       "rights": "© 2026 VALIO Proptech. Tots els drets reservats."
+    }
+  },
+  "auth": {
+    "signup": {
+      "title": "Crea el teu compte",
+      "subtitle": "Comença a valorar amb testimonis reals i el perquè de cada xifra.",
+      "emailLabel": "Correu electrònic",
+      "emailPlaceholder": "tu@email.com",
+      "passwordLabel": "Contrasenya",
+      "passwordPlaceholder": "Mínim 8 caràcters",
+      "workspaceLabel": "Nom del teu espai o empresa",
+      "workspacePlaceholder": "Immobiliària Sol (opcional)",
+      "workspaceHint": "Opcional. Ho podràs canviar més tard.",
+      "submit": "Crea el compte",
+      "submitting": "Creant el compte…",
+      "haveAccount": "Ja tens compte?",
+      "signInLink": "Inicia la sessió",
+      "checkEmailTitle": "Revisa el teu correu",
+      "checkEmailBody": "T'hem enviat un enllaç per confirmar el teu compte. Obre'l per començar."
+    },
+    "login": {
+      "title": "Accedeix al teu compte",
+      "subtitle": "Entra amb el teu correu i contrasenya.",
+      "emailLabel": "Correu electrònic",
+      "emailPlaceholder": "tu@email.com",
+      "passwordLabel": "Contrasenya",
+      "passwordPlaceholder": "La teva contrasenya",
+      "forgotLink": "Has oblidat la contrasenya?",
+      "submit": "Entrar",
+      "submitting": "Entrant…",
+      "invalidCredentials": "Correu o contrasenya incorrectes.",
+      "magicToggle": "Prefereixes un enllaç màgic?",
+      "magicSubmit": "Envia l'enllaç d'accés",
+      "magicSubmitting": "Enviant…",
+      "magicSent": "Revisa el teu correu: t'hem enviat un enllaç d'accés.",
+      "noAccount": "No tens compte?",
+      "signupLink": "Crea un compte"
+    },
+    "forgot": {
+      "title": "Recupera la contrasenya",
+      "subtitle": "T'enviarem un enllaç per crear-ne una de nova.",
+      "emailLabel": "Correu electrònic",
+      "emailPlaceholder": "tu@email.com",
+      "submit": "Envia l'enllaç",
+      "submitting": "Enviant…",
+      "sentTitle": "Enllaç enviat",
+      "sentBody": "Si existeix un compte amb aquest correu, rebràs un enllaç per restablir la contrasenya.",
+      "backToLogin": "Torna a iniciar la sessió"
+    },
+    "reset": {
+      "title": "Nova contrasenya",
+      "subtitle": "Tria una contrasenya per al teu compte.",
+      "passwordLabel": "Nova contrasenya",
+      "passwordPlaceholder": "Mínim 8 caràcters",
+      "submit": "Desa la contrasenya",
+      "submitting": "Desant…"
+    },
+    "errors": {
+      "generic": "Alguna cosa ha anat malament. Torna-ho a provar."
     }
   }
 }
