@@ -24,6 +24,7 @@ export function PropertyPhotos({ propertyId }: { propertyId: string }) {
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null)
   const [pending, startTransition] = useTransition()
   const inputRef = useRef<HTMLInputElement>(null)
+  const cancelDeleteRef = useRef<HTMLButtonElement>(null)
 
   useEffect(() => {
     let active = true
@@ -37,6 +38,11 @@ export function PropertyPhotos({ propertyId }: { propertyId: string }) {
       active = false
     }
   }, [propertyId])
+
+  // Al abrir el diálogo de borrado, el foco va al botón cancelar (destructivo → salida segura).
+  useEffect(() => {
+    if (confirmDeleteId) cancelDeleteRef.current?.focus()
+  }, [confirmDeleteId])
 
   const safeCurrent = photos.length === 0 ? 0 : Math.min(current, photos.length - 1)
   const canAddMore = photos.length < MAX_PHOTOS_PER_PROPERTY
@@ -101,6 +107,7 @@ export function PropertyPhotos({ propertyId }: { propertyId: string }) {
   const goNext = () => setCurrent((c) => (c + 1) % photos.length)
 
   function onKeyDown(e: React.KeyboardEvent) {
+    if (confirmDeleteId) return // con el diálogo de borrado abierto no se navega
     if (photos.length < 2) return
     if (e.key === 'ArrowLeft') {
       e.preventDefault()
@@ -186,6 +193,10 @@ export function PropertyPhotos({ propertyId }: { propertyId: string }) {
             onKeyDown={onKeyDown}
             className="rounded-card outline-none focus-visible:ring-2 focus-visible:ring-petrol/40"
           >
+            {/* Anuncio para lectores de pantalla al cambiar de foto (el contador visual es aria-hidden). */}
+            <span className="sr-only" role="status" aria-live="polite">
+              Foto {safeCurrent + 1} de {photos.length}
+            </span>
             <div className="relative overflow-hidden rounded-card bg-paper">
               <img
                 src={photos[safeCurrent].signedUrl}
@@ -214,7 +225,10 @@ export function PropertyPhotos({ propertyId }: { propertyId: string }) {
                 </>
               )}
 
-              <span className="absolute bottom-3 left-3 rounded-full bg-ink/70 px-2.5 py-1 font-display text-xs font-semibold text-white tabular-nums">
+              <span
+                aria-hidden="true"
+                className="absolute bottom-3 left-3 rounded-full bg-ink/70 px-2.5 py-1 font-display text-xs font-semibold text-white tabular-nums"
+              >
                 {safeCurrent + 1} / {photos.length}
               </span>
 
@@ -229,8 +243,19 @@ export function PropertyPhotos({ propertyId }: { propertyId: string }) {
               </button>
 
               {confirmDeleteId && (
-                <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-4 bg-ink/70 px-4 text-center backdrop-blur-sm">
-                  <p className="font-display text-sm font-semibold text-white">
+                <div
+                  role="dialog"
+                  aria-modal="true"
+                  aria-labelledby="confirm-delete-title"
+                  onKeyDown={(e) => {
+                    if (e.key === 'Escape') {
+                      e.stopPropagation()
+                      setConfirmDeleteId(null)
+                    }
+                  }}
+                  className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-4 bg-ink/70 px-4 text-center backdrop-blur-sm"
+                >
+                  <p id="confirm-delete-title" className="font-display text-sm font-semibold text-white">
                     ¿Borrar esta foto del informe?
                   </p>
                   <div className="flex gap-2">
@@ -244,6 +269,7 @@ export function PropertyPhotos({ propertyId }: { propertyId: string }) {
                       Borrar
                     </button>
                     <button
+                      ref={cancelDeleteRef}
                       type="button"
                       onClick={() => setConfirmDeleteId(null)}
                       disabled={pending}
