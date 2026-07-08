@@ -14,14 +14,14 @@
   },
   "landing": {
     "hero": {
-      "eyebrow": "Valoració orientativa per a professionals",
+      "eyebrow": "Valoració immobiliària per a professionals",
       "titleLead": "Quant val.",
       "titleAccent": "I per què.",
-      "subtitle": "Testimonis amb <b>preus de tancament reals</b>, factor de renda per secció censal i ajust per ocupació. Una valoració que <b>explica cada euro</b> — pensada per a inversors i agències.",
+      "subtitle": "Valoració orientativa basada en <b>operacions de tancament reals</b>, dades del Cadastre i el nivell de renda de cada secció censal. <b>Metodologia traçable</b> per a inversors, agències i analistes.",
       "ctaPrimary": "Crea un compte gratis",
       "ctaSecondary": "Veure una valoració",
-      "trustA": "Sense trucades de vendes",
-      "trustB": "Sense vendre les teves dades"
+      "trustA": "Sense trucades comercials",
+      "trustB": "Sense cessió de dades"
     },
     "heroCard": {
       "eyebrow": "Valor estimat de mercat",
@@ -34,7 +34,8 @@
         "condition": "Estat (reformat)",
         "floor": "Planta i ascensor"
       },
-      "chip": "testimonis de tancament analitzats"
+      "chip": "testimonis de tancament analitzats",
+      "photoAlt": "Sala d'estar lluminosa d'un pis de l'Eixample de Barcelona amb portes de balcó, parquet i llum natural"
     },
     "trust": {
       "sections": { "value": "3.646", "label": "Seccions censals" },
@@ -43,51 +44,51 @@
       "eco": { "value": "Ordre ECO/805/2003", "label": "Marc de valoració" }
     },
     "portals": {
-      "title": "El que els portals",
-      "titleAccent": "no t'expliquen.",
-      "kicker": "Un anunci et diu el que algú demana. VALIO et diu el que el mercat paga — i per què.",
+      "title": "El preu d'un anunci",
+      "titleAccent": "no és el valor.",
+      "kicker": "L'import d'un anunci reflecteix el que es demana, no el que es paga. VALIO estima el valor de mercat a partir d'operacions tancades i detalla cada ajust.",
       "items": {
         "closings": {
           "title": "Preus de tancament, no d'anunci",
-          "body": "Partim d'operacions realment tancades, no del preu amb què un pis va sortir a l'aparador. La diferència, segons quines zones, és de dos dígits."
+          "body": "Treballem amb transaccions efectivament tancades, no amb el preu de sortida. La diferència entre tots dos supera el 10 % en nombroses zones."
         },
         "why": {
-          "title": "El perquè de cada ajust",
-          "body": "Factor de renda per secció censal, ocupació i estat: cada correcció apareix desglossada amb el seu pes. Res de caixa negra."
+          "title": "Metodologia traçable",
+          "body": "Cada ajust —renda de zona, estat, ocupació— es desglossa amb el seu pes sobre el valor final. Sense caixes negres."
         },
         "honesty": {
-          "title": "Honestedat davant la manca de dades",
-          "body": "Quan els testimonis escassegen, ho diem: la confiança baixa i la forquilla s'obre. Preferim un «no ho sé del tot» a una xifra falsament exacta."
+          "title": "Fiabilitat declarada",
+          "body": "Amb comparables insuficients, la confiança baixa i la forquilla s'amplia. Si no hi ha dades fiables, el sistema no valora."
         }
       }
     },
     "features": {
-      "eyebrow": "Dissenyat per a la precisió",
-      "title": "Dades en brut convertides en decisions",
-      "subtitle": "Cada valoració arriba amb el seu desglossament: saps d'on surt el número.",
+      "eyebrow": "Metodologia",
+      "title": "De les dades a la decisió.",
+      "subtitle": "Cada valoració inclou el desglossament complet: l'origen i el pes de cada xifra.",
       "items": {
         "zone": {
-          "title": "Factor de renda de zona explicable",
-          "body": "Ajustem per la renda neta de la secció censal (INE), no per codis postals genèrics. Veuràs el percentatge exacte que la zona suma o resta al valor."
+          "title": "Factor de zona per secció censal",
+          "body": "Ajustem per la renda mitjana de cada secció censal (INE), no per codi postal. L'efecte de la ubicació, quantificat."
         },
         "occupancy": {
           "title": "Ajust per ocupació",
-          "body": "Modelem el descompte per estat d'ocupació —arrendat, amb llogater o lliure— per separar el valor de mercat del valor per comparació."
+          "body": "Estimem el descompte per estat d'ocupació —arrendat o irregular— per distingir el valor lliure del valor real."
         },
         "witnesses": {
-          "title": "Testimonis amb tancaments reals",
-          "body": "Comparables procedents de tancaments i fonts legítimes, amb una confiança explicada. Amb menys de sis testimonis el motor es nega a valorar abans que inventar."
+          "title": "Comparables d'operacions reals",
+          "body": "Testimonis procedents de tancaments i fonts verificades, amb el seu nivell de confiança. Amb menys de sis, el sistema no valora."
         },
         "profit": {
-          "title": "Rendibilitat després d'impostos",
-          "body": "Estima el retorn real de l'operació descomptant impostos i costos, per decidir amb la xifra que de veritat t'endús a casa."
+          "title": "Rendibilitat neta després d'impostos",
+          "body": "Calcula el retorn real —ITP, hipoteca, IRPF i despeses incloses— i el preu màxim de compra per al teu objectiu de rendibilitat."
         }
       }
     },
     "barrio": {
-      "eyebrow": "Barcelona real",
-      "title": "Pisos i carrers de veritat, no renders",
-      "kicker": "Façanes de l'Eixample, terrats amb la ciutat al fons i rambles de barri: el mercat que es veu per la finestra.",
+      "eyebrow": "El mercat, sobre el terreny",
+      "title": "Barcelona, carrer a carrer.",
+      "kicker": "Façanes de l'Eixample, terrats de la ciutat i rambles de barri: el mercat real que hi ha darrere de cada valoració.",
       "caption": "Fotografies reals de Barcelona (Eixample i Gràcia).",
       "alt": {
         "facadeCorner": "Edifici modernista al xamfrà de l'Eixample de Barcelona, amb cúpules i balcons de forja",
@@ -100,11 +101,11 @@
     },
     "pricing": {
       "eyebrow": "Preus públics",
-      "title": "Plans que escalen amb tu",
-      "subtitle": "Sense trucades de vendes per veure el preu. Aquí el tens.",
+      "title": "Preus públics, sense sorpreses.",
+      "subtitle": "Sense permanència ni trucades comercials per conèixer les tarifes.",
       "perMonth": "/mes",
       "mostPopular": "Més popular",
-      "note": "Preus orientatius · IVA no inclòs",
+      "note": "Tarifes sense IVA · Sense permanència",
       "cta": "Començar",
       "tiers": {
         "starter": {
@@ -144,19 +145,19 @@
       "items": {
         "official": {
           "q": "És una taxació oficial?",
-          "a": "No. VALIO ofereix una valoració orientativa de caràcter tècnic com a ajuda a la decisió. No substitueix la taxació hipotecària oficial, reservada a societats homologades pel Banc d'Espanya (Ordre ECO/805/2003)."
+          "a": "No. VALIO ofereix valoracions orientatives de caràcter tècnic. No substitueixen la taxació oficial d'una societat homologada pel Banc d'Espanya (Ordre ECO/805/2003)."
         },
         "coverage": {
-          "q": "Quines zones cobriu ara mateix?",
-          "a": "Comencem per la província de Barcelona i la seva àrea metropolitana, i ampliem zona a zona cap a la resta de Catalunya i Espanya."
+          "q": "Quines zones cobriu actualment?",
+          "a": "Barcelona i la seva província, amb ampliació progressiva a la resta de Catalunya i Espanya."
         },
         "data": {
-          "q": "D'on surten les dades?",
-          "a": "De fonts legítimes: renda per secció censal de l'INE, Cadastre, open data i tancaments reals aportats per professionals. Mai de scraping de portals."
+          "q": "D'on provenen les dades?",
+          "a": "INE (renda per secció censal), Cadastre i comparables d'operacions reals."
         },
         "leadgen": {
-          "q": "Em demaneu dades o telèfon?",
-          "a": "No. No fem captació de leads ni et perseguim amb trucades. Proves el producte i decideixes tu, sense deixar el telèfon."
+          "q": "Sol·liciteu dades personals o telèfon?",
+          "a": "No. No demanem telèfon ni cedim les teves dades a tercers."
         }
       }
     },

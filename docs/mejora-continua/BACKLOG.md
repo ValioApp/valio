@@ -377,3 +377,40 @@ Feedback directo de Alex sobre la landing editorial.
   tarjeta del héroe con "Dreta de l'Eixample" · 525.000 € · Confianza Alta · +14/+8/+3 %;
   las 6 fotos cargan (1280×… natural) con su `alt`; grid a 2 col en móvil (390px) sin
   scroll horizontal; 0 errores de consola.
+
+### Landing: foto del inmueble en la tarjeta del héroe + copy profesional 2026-07-08 ✅
+
+Feedback directo de Alex (la estructura le gusta; NO reestructurar). Dos cambios:
+
+- **Foto del inmueble en `HeroValuationCard`**: la tarjeta pasa a ficha de portal
+  premium con **banner de foto arriba** (esquinas superiores flush con la tarjeta,
+  `aspect-[16/10]`, `object-cover`, alt i18n) + los datos debajo (525.000 € · Dreta
+  de l'Eixample · 5.050 €/m² · Confianza Alta · horquilla · desglose +14/+8/+3 % ·
+  chip de testigos). Contenido compactado ligeramente (valor 2,75rem, filas `py-2`,
+  padding `p-5`) para que siga cabiendo elegante. La tarjeta NO recorta (`overflow`)
+  para no cortar el chip inferior; el clip del banner lo hace un wrapper
+  `overflow-hidden rounded-t-2xl`. Estática (marketing), no toca Supabase.
+  - **Foto**: `interior-eixample.jpg` — **Pexels** (Pexels License, uso comercial sin
+    atribución), autor Tuba Miray, foto 8837965. Salón señorial de ensanche: dos
+    puertas balconeras altas a calle con balcones de forja, molduras, parquet de
+    espiga y fachadas de piedra enfrente. **Transparencia**: Pexels la etiqueta como
+    París, pero es la estampa exacta del piso burgués decimonónico del ensanche (mismo
+    lenguaje del Eixample, sin delatores parisinos). 1ª candidata (terraza en Madrid,
+    4409370) descartada por Alex: leía a urbanización/periferia. Origen y licencia en
+    `app/public/landing/CREDITS.md`.
+- **Copy profesional/sobrio** (deck aprobado por Alex) reemplazando el tono
+  "marketing de startup" en TODO el `landing` i18n (es/ca/en, next-intl): hero
+  (eyebrow "Valoración inmobiliaria para profesionales", subtítulo con metodología
+  trazable, micro "Sin llamadas comerciales · Sin cesión de datos"), portales ("El
+  precio de un anuncio no es el valor."), método/features (eyebrow "Metodología",
+  "De los datos a la decisión.", 4 features reescritas incl. ITP/IRPF), banda de fotos
+  ("El mercado, sobre el terreno" / "Barcelona, calle a calle."), pricing ("Precios
+  públicos, sin sorpresas." / "Tarifas sin IVA · Sin permanencia") y FAQ (respuestas
+  concisas). Titular "Cuánto vale. *Y por qué.*" intacto (aprobado). Disclaimer legal
+  ECO/805/2003 intacto. Nueva clave `heroCard.photoAlt` en los 3 idiomas (paridad de
+  claves verificada).
+- **Verde**: `tsc` limpio, suite **113/113**, `npm run build` limpio. Verificación
+  Playwright (dev :3000): la tarjeta del héroe muestra la foto del interior señorial
+  (recorte 16:10 con balconeras + fachadas de piedra + molduras) sobre los datos de
+  l'Eixample; el copy nuevo aparece en ES y el switcher a CA/EN traduce hero/portales/
+  método/pricing/FAQ y el `alt` de la foto; 0 errores de consola.

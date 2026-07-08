@@ -14,14 +14,14 @@
   },
   "landing": {
     "hero": {
-      "eyebrow": "Indicative valuations for professionals",
+      "eyebrow": "Property valuation for professionals",
       "titleLead": "What it's worth.",
       "titleAccent": "And why.",
-      "subtitle": "Comparables with <b>real closing prices</b>, an income factor per census tract and an occupancy adjustment. A valuation that <b>explains every euro</b> — built for investors and agencies.",
+      "subtitle": "Indicative valuation based on <b>real closing transactions</b>, Cadastre data and the income level of each census tract. <b>Traceable methodology</b> for investors, agencies and analysts.",
       "ctaPrimary": "Create a free account",
       "ctaSecondary": "See a valuation",
       "trustA": "No sales calls",
-      "trustB": "We never sell your data"
+      "trustB": "No data sharing"
     },
     "heroCard": {
       "eyebrow": "Estimated market value",
@@ -34,7 +34,8 @@
         "condition": "Condition (renovated)",
         "floor": "Floor & lift"
       },
-      "chip": "closing comparables analysed"
+      "chip": "closing comparables analysed",
+      "photoAlt": "Bright living room of a Barcelona Eixample flat with balcony doors, parquet floor and natural light"
     },
     "trust": {
       "sections": { "value": "3,646", "label": "Census tracts" },
@@ -43,51 +44,51 @@
       "eco": { "value": "Order ECO/805/2003", "label": "Valuation framework" }
     },
     "portals": {
-      "title": "What the listing portals",
-      "titleAccent": "won't tell you.",
-      "kicker": "A listing tells you what someone is asking. VALIO tells you what the market pays — and why.",
+      "title": "A listing price",
+      "titleAccent": "is not the value.",
+      "kicker": "A listing price reflects what's being asked, not what's paid. VALIO estimates market value from closed transactions and details every adjustment.",
       "items": {
         "closings": {
           "title": "Closing prices, not asking prices",
-          "body": "We start from deals that actually closed, not the price a flat first went to market with. In some areas that gap runs into double digits."
+          "body": "We work with transactions that actually closed, not the initial asking price. The gap between the two exceeds 10% in many areas."
         },
         "why": {
-          "title": "The why behind every adjustment",
-          "body": "Income factor per census tract, occupancy and condition: each correction is broken down with its weight. No black box."
+          "title": "Traceable methodology",
+          "body": "Every adjustment —area income, condition, occupancy— is broken down with its weight on the final value. No black boxes."
         },
         "honesty": {
-          "title": "Honest when data is thin",
-          "body": "When comparables are scarce, we say so: confidence drops and the range widens. We'd rather admit «not quite sure» than post a falsely precise figure."
+          "title": "Reliability, stated",
+          "body": "With insufficient comparables, confidence drops and the range widens. Without reliable data, the system does not value."
         }
       }
     },
     "features": {
-      "eyebrow": "Built for precision",
-      "title": "Raw data turned into decisions",
-      "subtitle": "Every valuation ships with its breakdown: you know where the number comes from.",
+      "eyebrow": "Methodology",
+      "title": "From data to decision.",
+      "subtitle": "Every valuation includes the full breakdown: the source and weight of each figure.",
       "items": {
         "zone": {
-          "title": "Explainable zone income factor",
-          "body": "We adjust for net income per census tract (INE), not generic postcodes. You see the exact percentage the area adds to or subtracts from the value."
+          "title": "Zone factor by census tract",
+          "body": "We adjust for the average income of each census tract (INE), not by postcode. The effect of location, quantified."
         },
         "occupancy": {
           "title": "Occupancy adjustment",
-          "body": "We model the discount for occupancy status —leased, tenanted or vacant— to separate market value from comparison value."
+          "body": "We estimate the discount for occupancy status —leased or irregular— to distinguish vacant value from actual value."
         },
         "witnesses": {
-          "title": "Comparables from real closings",
-          "body": "Comparables sourced from actual closings and legitimate feeds, with confidence explained. With fewer than six comparables the engine refuses to value rather than invent one."
+          "title": "Comparables from real transactions",
+          "body": "Comparables sourced from closings and verified feeds, with their confidence level. With fewer than six, the system does not value."
         },
         "profit": {
-          "title": "After-tax profitability",
-          "body": "Estimate the real return on the deal after taxes and costs, so you decide with the figure you actually take home."
+          "title": "Net after-tax yield",
+          "body": "It calculates the real return —transfer tax, mortgage, income tax and costs included— and the maximum purchase price for your target yield."
         }
       }
     },
     "barrio": {
-      "eyebrow": "Real Barcelona",
-      "title": "Real flats and streets, not renders",
-      "kicker": "Eixample facades, rooftops with the city behind them and neighbourhood boulevards: the market you see out the window.",
+      "eyebrow": "The market, on the ground",
+      "title": "Barcelona, street by street.",
+      "kicker": "Eixample facades, city rooftops and neighbourhood boulevards: the real market behind every valuation.",
       "caption": "Real photographs of Barcelona (Eixample and Gràcia).",
       "alt": {
         "facadeCorner": "Modernist corner building in Barcelona's Eixample, with domes and wrought-iron balconies",
@@ -100,11 +101,11 @@
     },
     "pricing": {
       "eyebrow": "Public pricing",
-      "title": "Plans that scale with you",
-      "subtitle": "No sales call needed to see the price. Here it is.",
+      "title": "Public pricing, no surprises.",
+      "subtitle": "No lock-in and no sales calls to see the rates.",
       "perMonth": "/mo",
       "mostPopular": "Most popular",
-      "note": "Indicative prices · VAT not included",
+      "note": "Rates exclude VAT · No lock-in",
       "cta": "Get started",
       "tiers": {
         "starter": {
@@ -144,19 +145,19 @@
       "items": {
         "official": {
           "q": "Is this an official appraisal?",
-          "a": "No. VALIO provides an indicative, technical valuation to support your decisions. It does not replace the official mortgage appraisal, which is reserved to firms authorised by the Bank of Spain (Order ECO/805/2003)."
+          "a": "No. VALIO provides indicative, technical valuations. They do not replace the official appraisal of a firm authorised by the Bank of Spain (Order ECO/805/2003)."
         },
         "coverage": {
-          "q": "Which areas do you cover today?",
-          "a": "We start with the province of Barcelona and its metropolitan area, and we expand area by area across the rest of Catalonia and Spain."
+          "q": "Which areas do you currently cover?",
+          "a": "Barcelona and its province, expanding progressively across the rest of Catalonia and Spain."
         },
         "data": {
           "q": "Where does the data come from?",
-          "a": "From legitimate sources: net income per census tract from INE, the Cadastre, open data and real closings shared by professionals. Never from scraping listing portals."
+          "a": "INE (income by census tract), the Cadastre and comparables from real transactions."
         },
         "leadgen": {
-          "q": "Do you ask for my details or phone number?",
-          "a": "No. We don't run lead generation or chase you with calls. You try the product and decide for yourself, without handing over your phone."
+          "q": "Do you ask for personal details or a phone number?",
+          "a": "No. We don't ask for your phone or share your data with third parties."
         }
       }
     },

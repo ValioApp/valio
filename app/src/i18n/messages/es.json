@@ -14,14 +14,14 @@
   },
   "landing": {
     "hero": {
-      "eyebrow": "Valoración orientativa para profesionales",
+      "eyebrow": "Valoración inmobiliaria para profesionales",
       "titleLead": "Cuánto vale.",
       "titleAccent": "Y por qué.",
-      "subtitle": "Testigos con <b>precios de cierre reales</b>, factor de renta por sección censal y ajuste por ocupación. Una valoración que <b>explica cada euro</b> — pensada para inversores y agencias.",
+      "subtitle": "Valoración orientativa basada en <b>operaciones de cierre reales</b>, datos del Catastro y el nivel de renta de cada sección censal. <b>Metodología trazable</b> para inversores, agencias y analistas.",
       "ctaPrimary": "Crear cuenta gratis",
       "ctaSecondary": "Ver una valoración",
-      "trustA": "Sin llamadas de ventas",
-      "trustB": "Sin vender tus datos"
+      "trustA": "Sin llamadas comerciales",
+      "trustB": "Sin cesión de datos"
     },
     "heroCard": {
       "eyebrow": "Valor estimado de mercado",
@@ -34,7 +34,8 @@
         "condition": "Estado (reformado)",
         "floor": "Planta y ascensor"
       },
-      "chip": "testigos de cierre analizados"
+      "chip": "testigos de cierre analizados",
+      "photoAlt": "Salón luminoso de un piso del Eixample de Barcelona con puertas de balcón, parquet y luz natural"
     },
     "trust": {
       "sections": { "value": "3.646", "label": "Secciones censales" },
@@ -43,51 +44,51 @@
       "eco": { "value": "Orden ECO/805/2003", "label": "Marco de valoración" }
     },
     "portals": {
-      "title": "Lo que los portales",
-      "titleAccent": "no te cuentan.",
-      "kicker": "Un anuncio te dice lo que alguien pide. VALIO te dice lo que el mercado paga — y por qué.",
+      "title": "El precio de un anuncio",
+      "titleAccent": "no es el valor.",
+      "kicker": "El importe de un anuncio refleja lo que se pide, no lo que se paga. VALIO estima el valor de mercado a partir de operaciones cerradas y detalla cada ajuste.",
       "items": {
         "closings": {
           "title": "Precios de cierre, no de anuncio",
-          "body": "Partimos de operaciones realmente cerradas, no del precio con el que un piso salió al escaparate. La diferencia, en según qué zonas, es de dos dígitos."
+          "body": "Trabajamos con transacciones efectivamente cerradas, no con el precio de salida. La diferencia entre ambos supera el 10 % en numerosas zonas."
         },
         "why": {
-          "title": "El porqué de cada ajuste",
-          "body": "Factor de renta por sección censal, ocupación y estado: cada corrección aparece desglosada con su peso. Nada de caja negra."
+          "title": "Metodología trazable",
+          "body": "Cada ajuste —renta de zona, estado, ocupación— se desglosa con su peso sobre el valor final. Sin cajas negras."
         },
         "honesty": {
-          "title": "Honestidad ante la falta de datos",
-          "body": "Cuando los testigos escasean, lo decimos: la confianza baja y la horquilla se abre. Preferimos un «no lo sé del todo» a una cifra falsamente exacta."
+          "title": "Fiabilidad declarada",
+          "body": "Con comparables insuficientes, la confianza baja y la horquilla se amplía. Si no hay datos fiables, el sistema no valora."
         }
       }
     },
     "features": {
-      "eyebrow": "Diseñado para la precisión",
-      "title": "Datos brutos convertidos en decisiones",
-      "subtitle": "Cada valoración llega con su desglose: sabes de dónde sale el número.",
+      "eyebrow": "Metodología",
+      "title": "De los datos a la decisión.",
+      "subtitle": "Cada valoración incluye el desglose completo: el origen y el peso de cada cifra.",
       "items": {
         "zone": {
-          "title": "Factor de renta de zona explicable",
-          "body": "Ajustamos por la renta neta de la sección censal (INE), no por códigos postales genéricos. Verás el porcentaje exacto que la zona suma o resta al valor."
+          "title": "Factor de zona por sección censal",
+          "body": "Ajustamos por la renta media de cada sección censal (INE), no por código postal. El efecto de la ubicación, cuantificado."
         },
         "occupancy": {
           "title": "Ajuste por ocupación",
-          "body": "Modelamos el descuento por estado de ocupación —arrendado, con inquilino o libre— para separar el valor de mercado del valor por comparación."
+          "body": "Estimamos el descuento por estado de ocupación —arrendado o irregular— para distinguir el valor libre del valor real."
         },
         "witnesses": {
-          "title": "Testigos con cierres reales",
-          "body": "Comparables procedentes de cierres y fuentes legítimas, con una confianza explicada. Con menos de seis testigos el motor rehúsa valorar antes que inventar."
+          "title": "Comparables de operaciones reales",
+          "body": "Testigos procedentes de cierres y fuentes verificadas, con su nivel de confianza. Con menos de seis, el sistema no valora."
         },
         "profit": {
-          "title": "Rentabilidad post-impuestos",
-          "body": "Estima el retorno real de la operación descontando impuestos y costes, para decidir con la cifra que de verdad te llevas a casa."
+          "title": "Rentabilidad neta post-impuestos",
+          "body": "Calcula el retorno real —ITP, hipoteca, IRPF y gastos incluidos— y el precio máximo de compra para tu objetivo de rentabilidad."
         }
       }
     },
     "barrio": {
-      "eyebrow": "Barcelona real",
-      "title": "Pisos y calles de verdad, no renders",
-      "kicker": "Fachadas del Eixample, tejados con la ciudad al fondo y ramblas de barrio: el mercado que se ve por la ventana.",
+      "eyebrow": "El mercado, sobre el terreno",
+      "title": "Barcelona, calle a calle.",
+      "kicker": "Fachadas del Eixample, tejados de la ciudad y ramblas de barrio: el mercado real que hay detrás de cada valoración.",
       "caption": "Fotografías reales de Barcelona (Eixample y Gràcia).",
       "alt": {
         "facadeCorner": "Edificio modernista en chaflán del Eixample de Barcelona, con cúpulas y balcones de forja",
@@ -100,11 +101,11 @@
     },
     "pricing": {
       "eyebrow": "Precios públicos",
-      "title": "Planes que escalan contigo",
-      "subtitle": "Sin llamadas de ventas para ver el precio. Aquí lo tienes.",
+      "title": "Precios públicos, sin sorpresas.",
+      "subtitle": "Sin permanencia ni llamadas comerciales para conocer las tarifas.",
       "perMonth": "/mes",
       "mostPopular": "Más popular",
-      "note": "Precios orientativos · IVA no incluido",
+      "note": "Tarifas sin IVA · Sin permanencia",
       "cta": "Empezar",
       "tiers": {
         "starter": {
@@ -144,19 +145,19 @@
       "items": {
         "official": {
           "q": "¿Es una tasación oficial?",
-          "a": "No. VALIO ofrece una valoración orientativa de carácter técnico como ayuda a la decisión. No sustituye a la tasación hipotecaria oficial, reservada a sociedades homologadas por el Banco de España (Orden ECO/805/2003)."
+          "a": "No. VALIO ofrece valoraciones orientativas de carácter técnico. No sustituyen la tasación oficial de una sociedad homologada por el Banco de España (Orden ECO/805/2003)."
         },
         "coverage": {
-          "q": "¿Qué zonas cubrís hoy?",
-          "a": "Empezamos por la provincia de Barcelona y su área metropolitana, y ampliamos zona a zona hacia el resto de Cataluña y España."
+          "q": "¿Qué zonas cubrís actualmente?",
+          "a": "Barcelona y su provincia, con ampliación progresiva al resto de Cataluña y España."
         },
         "data": {
-          "q": "¿De dónde salen los datos?",
-          "a": "De fuentes legítimas: renta por sección censal del INE, Catastro, open data y cierres reales aportados por profesionales. Nunca de scraping de portales."
+          "q": "¿De dónde proceden los datos?",
+          "a": "INE (renta por sección censal), Catastro y comparables de operaciones reales."
         },
         "leadgen": {
-          "q": "¿Me pedís datos o teléfono?",
-          "a": "No. No hacemos captación de leads ni te perseguimos con llamadas. Pruebas el producto y decides tú, sin dejar tu teléfono."
+          "q": "¿Solicitáis datos personales o teléfono?",
+          "a": "No. No pedimos teléfono ni cedemos tus datos a terceros."
         }
       }
     },
