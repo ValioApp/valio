@@ -349,3 +349,31 @@ aprobada por Alex) + **registro self-service** con email y contraseña.
   Nota honesta: el reset completo (updateUser con sesión de recuperación) no se probó E2E porque
   requiere recibir el email de recuperación (free tier); la UI y el flujo de cookies quedan listos.
   Supabase rechaza el TLD `.local` en `resetPasswordForEmail` (solo afecta a emails de prueba).
+
+### Ajuste landing: ejemplo Eixample + fotos Barcelona reales 2026-07-08 ✅
+
+Feedback directo de Alex sobre la landing editorial.
+
+- **Ejemplo del héroe → Dreta de l'Eixample** (familia clase media-alta, ni Raval ni
+  casoplón): `HeroValuationCard` pasa de El Raval (275.380 € · clase baja · ajustes
+  negativos) a **525.000 € · 5.050 €/m² · 104 m² · horquilla 498k–552k · confianza
+  Alta · 18 testigos**. El desglose "por qué" ahora es **positivo** para lucir la
+  ventaja de VALIO (el factor de zona): renta l'Eixample **+14%**, estado reformado
+  **+8%**, planta y ascensor **+3%**, en color `success` en vez del rojo de penalización.
+  Barra de horquilla recalculada por `range-bar.ts` (marcador al 50 %). i18n es/ca/en
+  (location, confidence, rows zone/condition/floor). `/demo` intacta (datos seed reales).
+- **Banda "Barcelona real"** (`BarrioStrip.tsx`, tras Features): 6 fotos reales de
+  Unsplash (Unsplash License, uso comercial sin atribución) curadas ESTRICTAS —
+  fachadas del Eixample (chaflán modernista, balcones de forja), tejados de Barcelona
+  con Montjuïc/Palau Nacional y Sagrada Família al fondo, rambla de barrio con
+  plátanos, retícula aérea del Eixample. Descartadas playa/casoplones/interiores
+  genéricos. Mosaico sobrio (grid 2/3 col, `aspect-[4/5]`, `object-cover`, hairline,
+  radio 12px, `loading="lazy"`, alt descriptivo es/ca/en). Descargadas optimizadas
+  (`w=1280 q=70`, ~2,1 MB las 6) a `app/public/landing/` + `CREDITS.md` con origen y
+  licencia. Retiradas las 3 PNG IA huérfanas previas (bedroom/kitchen/living, sin uso
+  ni licencia; una parecía Nueva York, otra cocina genérica US).
+- **Verde**: `tsc` limpio, suite **113/113**, `npm run build` limpio. Verificación
+  Playwright (dev :3000, DOM — los PNG de captura no persisten en este entorno):
+  tarjeta del héroe con "Dreta de l'Eixample" · 525.000 € · Confianza Alta · +14/+8/+3 %;
+  las 6 fotos cargan (1280×… natural) con su `alt`; grid a 2 col en móvil (390px) sin
+  scroll horizontal; 0 errores de consola.
