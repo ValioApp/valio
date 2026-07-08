@@ -25,6 +25,9 @@
   /* Tipografía: Geist (títulos, labels, datos) + Inter (cuerpo) */
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  /* Fraunces (serif óptico) para titulares editoriales de landing/auth.
+     Como token --font-* genera la utilidad `font-serif-display`. */
+  --font-serif-display: var(--font-fraunces), Georgia, "Times New Roman", serif;
 
   /* Radios: 12px estándar, 6px tags, 24px sheets */
   --radius-card: 0.75rem;
@@ -66,6 +69,108 @@
     outline: none;
     border-color: var(--color-petrol);
     box-shadow: 0 0 0 2px rgba(15, 76, 92, 0.1);
+  }
+}
+
+/*
+ * ============================================================
+ *  Landing editorial — motivo cartográfico, grano de papel y
+ *  orquestación de entrada escalonada.
+ *
+ *  Todo es CSS puro (SSR-safe): las animaciones arrancan al
+ *  montar el DOM servido, sin JS ni Math.random, así que no hay
+ *  desajuste de hidratación. `prefers-reduced-motion` las anula.
+ * ============================================================
+ */
+
+@keyframes valio-rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes valio-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes valio-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Entrada escalonada de bloques de texto (delay por --reveal-delay). */
+.valio-reveal {
+  opacity: 0;
+  animation: valio-rise 0.9s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+  animation-delay: var(--reveal-delay, 0s);
+}
+
+/*
+ * Tarjeta de resultado del héroe. Se separan las transformaciones en dos
+ * capas para que la animación de entrada (opacidad + desplazamiento, en el
+ * wrapper) no bloquee el `rotate`/hover de la tarjeta (bug de la maqueta).
+ */
+.valio-card-enter {
+  opacity: 0;
+  animation: valio-rise 1.05s cubic-bezier(0.22, 0.61, 0.36, 1) 0.32s forwards;
+}
+.valio-card {
+  transform: rotate(1.4deg);
+  transition:
+    transform 0.55s cubic-bezier(0.22, 0.61, 0.36, 1),
+    box-shadow 0.55s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.valio-card:hover {
+  transform: rotate(0deg) translateY(-3px);
+  box-shadow: 0 10px 40px rgba(16, 24, 40, 0.1);
+}
+
+/* Motivo cartográfico: fundido suave + trazado progresivo de los contornos. */
+.valio-motif {
+  opacity: 0;
+  animation: valio-fade 1.6s cubic-bezier(0.22, 0.61, 0.36, 1) 0.2s forwards;
+}
+.valio-contour {
+  stroke-dasharray: var(--contour-len);
+  stroke-dashoffset: var(--contour-len);
+  animation: valio-draw 2.4s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+  animation-delay: var(--contour-delay, 0s);
+}
+
+/* Grano de papel sutil sobre el fondo "paper" (solo en la landing). */
+.valio-grain::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.5;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.035'/%3E%3C/svg%3E");
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .valio-reveal,
+  .valio-card-enter,
+  .valio-motif,
+  .valio-contour {
+    animation: none !important;
+    opacity: 1 !important;
+    stroke-dashoffset: 0 !important;
+  }
+  .valio-reveal,
+  .valio-card-enter {
+    transform: none !important;
   }
 }
 

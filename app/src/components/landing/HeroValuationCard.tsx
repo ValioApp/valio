@@ -1,0 +1,133 @@
+import { getTranslations } from 'next-intl/server'
+import { Info, MapPin, ShieldCheck } from 'lucide-react'
+import { formatEur, formatPct } from '@/lib/format'
+import { computeRangeBar } from '@/lib/range-bar'
+
+// Datos de ejemplo realistas (El Raval) — coherentes con el smoke real del motor.
+const LOW = 246000
+const VALUE = 275380
+const HIGH = 298000
+const PRICE_PER_M2 = 3672
+const WITNESSES = 14
+
+// Ajustes con su peso; la barra se dibuja proporcional a la magnitud.
+const ADJUSTMENTS = [
+  { key: 'zone', pct: -0.18 },
+  { key: 'occupancy', pct: -0.4 },
+  { key: 'condition', pct: 0 },
+] as const
+
+const MAX_BAR_PX = 52
+
+export async function HeroValuationCard() {
+  const t = await getTranslations('landing.heroCard')
+  const { bandLeftPct, bandRightPct, markerLeftPct } = computeRangeBar(LOW, VALUE, HIGH)
+
+  return (
+    <div className="valio-card-enter w-full max-w-[410px]">
+      <article className="valio-card relative rounded-2xl border border-hairline bg-white p-6 shadow-ambient">
+        {/* Cabecera: rótulo + ubicación en bajo contraste (el ojo va a la cifra) */}
+        <div className="mb-4 flex items-start justify-between gap-3">
+          <p className="max-w-[9rem] font-display text-[11px] font-semibold uppercase leading-snug tracking-wider text-muted/70">
+            {t('eyebrow')}
+          </p>
+          <span className="inline-flex items-center gap-1 whitespace-nowrap text-[11px] font-medium text-muted/60">
+            <MapPin size={11} aria-hidden="true" />
+            {t('location')}
+          </span>
+        </div>
+
+        {/* Cifra protagonista */}
+        <p
+          data-numeric
+          className="font-serif-display text-[3rem] font-semibold leading-none tracking-tight text-gold-deep tabular-nums"
+        >
+          {formatEur(VALUE)}
+        </p>
+
+        <div className="mt-3 mb-5 flex flex-wrap items-center gap-3">
+          <span data-numeric className="text-sm font-medium text-muted tabular-nums">
+            {formatEur(PRICE_PER_M2)}/m²
+          </span>
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-gold-deep/30 bg-gold/15 px-2.5 py-1 font-display text-[11px] font-semibold text-gold-deep">
+            <ShieldCheck size={12} aria-hidden="true" />
+            {t('confidence')}
+          </span>
+        </div>
+
+        {/* Barra de horquilla: marcador y banda derivados de low/value/high */}
+        <div className="mb-6">
+          <div className="relative mb-2 h-4 text-[11px] font-medium tabular-nums">
+            <span className="absolute left-0 text-muted" style={{ left: `${bandLeftPct}%` }}>
+              {formatEur(LOW)}
+            </span>
+            <span className="absolute left-1/2 -translate-x-1/2 text-muted/60">{t('rangeLabel')}</span>
+            <span className="absolute text-muted" style={{ right: `${bandRightPct}%` }}>
+              {formatEur(HIGH)}
+            </span>
+          </div>
+          <div className="relative h-1.5 rounded-full border border-hairline bg-[#f4f3ed]">
+            <div
+              className="absolute -inset-y-px rounded-full"
+              style={{
+                left: `${bandLeftPct}%`,
+                right: `${bandRightPct}%`,
+                background: 'linear-gradient(90deg, rgba(212,160,23,.28), rgba(212,160,23,.5))',
+              }}
+            />
+            <div
+              className="absolute top-1/2 h-5 w-0.5 -translate-x-1/2 -translate-y-1/2 rounded-sm bg-gold"
+              style={{ left: `${markerLeftPct}%` }}
+            >
+              <span className="absolute -top-1.5 left-1/2 h-2.5 w-2.5 -translate-x-1/2 rounded-full border-2 border-white bg-gold-deep" />
+            </div>
+          </div>
+        </div>
+
+        {/* Desglose "por qué" */}
+        <div className="mb-1 flex items-center gap-2 border-t border-hairline pt-4 font-display text-[11px] font-semibold uppercase tracking-wider text-petrol">
+          <Info size={13} aria-hidden="true" />
+          {t('whyTitle')}
+        </div>
+        <div>
+          {ADJUSTMENTS.map(({ key, pct }, i) => {
+            const barPx = Math.round((Math.abs(pct) / 0.4) * MAX_BAR_PX)
+            const isZero = pct === 0
+            return (
+              <div
+                key={key}
+                className={`flex items-center justify-between py-2.5 text-[13.5px] ${
+                  i < ADJUSTMENTS.length - 1 ? 'border-b border-dashed border-hairline' : ''
+                }`}
+              >
+                <span className="text-muted">{t(`rows.${key}`)}</span>
+                <span
+                  className={`inline-flex items-center gap-1.5 font-semibold tabular-nums ${
+                    isZero ? 'text-muted/60' : 'text-[#a24a2b]'
+                  }`}
+                >
+                  {!isZero && (
+                    <span
+                      className="inline-block h-1.5 rounded-sm bg-current opacity-35"
+                      style={{ width: `${barPx}px` }}
+                      aria-hidden="true"
+                    />
+                  )}
+                  {formatPct(pct, 0)}
+                </span>
+              </div>
+            )
+          })}
+        </div>
+
+        {/* Chip flotante: sobresale por debajo, no tapa contenido */}
+        <span className="absolute -bottom-3.5 left-4 inline-flex items-center gap-1.5 rounded-lg bg-petrol-deep px-3 py-2 text-[11px] font-medium text-white shadow-ambient">
+          <span data-numeric className="font-semibold text-gold tabular-nums">
+            {WITNESSES}
+          </span>
+          {t('chip')}
+        </span>
+      </article>
+    </div>
+  )
+}
