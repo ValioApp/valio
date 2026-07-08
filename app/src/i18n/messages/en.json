@@ -25,14 +25,14 @@
     },
     "heroCard": {
       "eyebrow": "Estimated market value",
-      "location": "El Raval, Barcelona",
-      "confidence": "Confidence: Medium",
+      "location": "Dreta de l'Eixample, Barcelona",
+      "confidence": "Confidence: High",
       "rangeLabel": "Estimated range",
       "whyTitle": "Why this value",
       "rows": {
-        "zone": "Area income (El Raval)",
-        "occupancy": "Occupancy adjustment",
-        "condition": "Property condition"
+        "zone": "Area income (l'Eixample)",
+        "condition": "Condition (renovated)",
+        "floor": "Floor & lift"
       },
       "chip": "closing comparables analysed"
     },

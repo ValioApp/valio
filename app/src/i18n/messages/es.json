@@ -25,14 +25,14 @@
     },
     "heroCard": {
       "eyebrow": "Valor estimado de mercado",
-      "location": "El Raval, Barcelona",
-      "confidence": "Confianza: Media",
+      "location": "Dreta de l'Eixample, Barcelona",
+      "confidence": "Confianza: Alta",
       "rangeLabel": "Horquilla estimada",
       "whyTitle": "Por qué este valor",
       "rows": {
-        "zone": "Renta de la zona (El Raval)",
-        "occupancy": "Ajuste por ocupación",
-        "condition": "Estado del inmueble"
+        "zone": "Renta de la zona (l'Eixample)",
+        "condition": "Estado (reformado)",
+        "floor": "Planta y ascensor"
       },
       "chip": "testigos de cierre analizados"
     },

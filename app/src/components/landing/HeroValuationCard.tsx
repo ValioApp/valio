@@ -3,21 +3,25 @@ import { Info, MapPin, ShieldCheck } from 'lucide-react'
 import { formatEur, formatPct } from '@/lib/format'
 import { computeRangeBar } from '@/lib/range-bar'
 
-// Datos de ejemplo realistas (El Raval) — coherentes con el smoke real del motor.
-const LOW = 246000
-const VALUE = 275380
-const HIGH = 298000
-const PRICE_PER_M2 = 3672
-const WITNESSES = 14
+// Datos de ejemplo realistas (Dreta de l'Eixample, Barcelona) — piso de familia
+// clase media-alta, coherente con el rango que devuelve el motor en la zona.
+const LOW = 498000
+const VALUE = 525000
+const HIGH = 552000
+const PRICE_PER_M2 = 5050
+const WITNESSES = 18
 
-// Ajustes con su peso; la barra se dibuja proporcional a la magnitud.
+// Ajustes en positivo: lucen el factor de zona, la ventaja de VALIO.
+// La barra se dibuja proporcional a la magnitud del ajuste.
 const ADJUSTMENTS = [
-  { key: 'zone', pct: -0.18 },
-  { key: 'occupancy', pct: -0.4 },
-  { key: 'condition', pct: 0 },
+  { key: 'zone', pct: 0.14 },
+  { key: 'condition', pct: 0.08 },
+  { key: 'floor', pct: 0.03 },
 ] as const
 
 const MAX_BAR_PX = 52
+// Mayor magnitud del conjunto: normaliza el ancho de las barras a ella.
+const MAX_PCT = Math.max(...ADJUSTMENTS.map(({ pct }) => Math.abs(pct)))
 
 export async function HeroValuationCard() {
   const t = await getTranslations('landing.heroCard')
@@ -91,8 +95,7 @@ export async function HeroValuationCard() {
         </div>
         <div>
           {ADJUSTMENTS.map(({ key, pct }, i) => {
-            const barPx = Math.round((Math.abs(pct) / 0.4) * MAX_BAR_PX)
-            const isZero = pct === 0
+            const barPx = Math.round((Math.abs(pct) / MAX_PCT) * MAX_BAR_PX)
             return (
               <div
                 key={key}
@@ -101,18 +104,12 @@ export async function HeroValuationCard() {
                 }`}
               >
                 <span className="text-muted">{t(`rows.${key}`)}</span>
-                <span
-                  className={`inline-flex items-center gap-1.5 font-semibold tabular-nums ${
-                    isZero ? 'text-muted/60' : 'text-[#a24a2b]'
-                  }`}
-                >
-                  {!isZero && (
-                    <span
-                      className="inline-block h-1.5 rounded-sm bg-current opacity-35"
-                      style={{ width: `${barPx}px` }}
-                      aria-hidden="true"
-                    />
-                  )}
+                <span className="inline-flex items-center gap-1.5 font-semibold tabular-nums text-success">
+                  <span
+                    className="inline-block h-1.5 rounded-sm bg-current opacity-35"
+                    style={{ width: `${barPx}px` }}
+                    aria-hidden="true"
+                  />
                   {formatPct(pct, 0)}
                 </span>
               </div>
