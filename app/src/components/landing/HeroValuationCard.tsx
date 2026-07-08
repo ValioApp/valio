@@ -36,15 +36,19 @@ export async function HeroValuationCard() {
   return (
     <div className="valio-card-enter w-full max-w-[410px]">
       <article className="valio-card relative rounded-2xl border border-hairline bg-white shadow-ambient">
-        {/* Banner: foto real del inmueble. Esquinas superiores redondeadas flush con
-            la tarjeta; la tarjeta NO recorta (overflow) para no cortar el chip inferior. */}
+        {/* Banner: fachada señorial del Eixample (el edificio del inmueble valorado),
+            foto verificada como Barcelona real. Esquinas superiores flush con la tarjeta;
+            la tarjeta NO recorta (overflow) para no cortar el chip inferior. La foto es
+            vertical (contrapicado) → banner alto 4:3 con object-position que encuadra la
+            franja más rica: cúpulas modernistas + plantas de balcones ornamentados. */}
         <div className="overflow-hidden rounded-t-2xl">
           <img
-            src="/landing/interior-eixample.jpg"
+            src="/landing/facade-eixample.jpg"
             alt={t('photoAlt')}
             loading="lazy"
             decoding="async"
-            className="aspect-[16/10] w-full object-cover"
+            className="aspect-[4/3] w-full object-cover"
+            style={{ objectPosition: '50% 18%' }}
           />
         </div>
 

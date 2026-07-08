@@ -1,26 +1,18 @@
 # Créditos de imágenes de la landing
 
-## Tarjeta del héroe — foto del inmueble (`interior-eixample.jpg`)
+## Tarjeta del héroe (`HeroValuationCard`)
 
-Foto de interior usada en la tarjeta de valoración del héroe (`HeroValuationCard`).
-Procede de **Pexels** y se usa bajo la [**Pexels License**](https://www.pexels.com/license/):
-uso comercial gratuito, **sin atribución requerida**, sin coste. Se deja constancia
-de la procedencia por transparencia.
+La tarjeta de valoración del héroe **reutiliza `facade-eixample.jpg`** (la fachada
+modernista de chaflán ya curada y creditada abajo, en la banda "Barcelona real"): es
+el edificio del inmueble que la tarjeta valora, así que mostrar su fachada es correcto
+y elimina todo riesgo de "esto es París/Madrid". Se recorta en la tarjeta a banner alto
+`aspect-[4/3]` con `object-cover` y `object-position: 50% 18%` para encuadrar las
+cúpulas y las plantas de balcones ornamentados. Origen y licencia: ver la tabla de abajo.
 
-| Archivo | Qué es | Origen (Pexels) | Autor | Licencia |
-|---|---|---|---|---|
-| `interior-eixample.jpg` | Salón señorial de ensanche: dos puertas balconeras altas a calle con balcones de forja, molduras de escayola, parquet de espiga y, al otro lado, fachadas de piedra con balcones de hierro | https://www.pexels.com/photo/a-teal-chair-inside-the-house-8837965/ | Tuba Miray | Pexels License |
-
-> Nota de curación (transparencia): Pexels etiqueta la foto como **París**, pero
-> arquitectónicamente es la estampa **exacta** del piso burgués decimonónico del
-> **ensanche** (puertas balconeras altas a calle, molduras de escayola, parquet de
-> espiga, fachadas de piedra con balcones de forja enfrente) — el mismo lenguaje del
-> Eixample de Barcelona, sin ningún delator parisino (no hay tejados de zinc con
-> mansardas). Un ojo barcelonés lo leería como "piso del Eixample/Gràcia". Se
-> descartaron explícitamente alternativas que delataban urbanización/periferia
-> (terraza con bloques de ladrillo, jardín y cipreses), chalet/adosado o resort.
-> Imagen nativa cuadrada (4023×4023); descargada a `w=1400` (JPEG, ~210 KB) y recortada
-> en la tarjeta a 16:10 con `object-cover` (banda central: balconeras + fachadas + silla).
+> Historial (transparencia): una versión previa usó un interior de stock (Pexels 8837965)
+> descartado por Alex por leer como piso **parisino de Haussmann** (boiserie Luis XV,
+> fachadas de piedra con balcón corrido) en vez de Eixample. Se sustituyó por esta
+> fachada, verificada como Barcelona real.
 
 ---
 
