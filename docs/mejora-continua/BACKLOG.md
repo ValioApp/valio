@@ -308,9 +308,45 @@ Verde: `tsc` limpio, suite **102/102**, `npm run build` limpio.
   en ES y cambio de idioma con el switcher a CA ("El preu real…/Prova gratis") y a
   EN ("The real price…/Start free") confirmando que hero, CTAs y header cambian;
   `/login`, `/demo` y `/dashboard` siguen respondiendo (dashboard 307→login sin sesión).
-- **Falta 2/3 del paquete**: i18n del RESTO de la app (dashboard, valorar, cartera,
-  resultado…) en su propio paquete de traducción. (3/3 carrusel de fotos ✅ hecho —
-  ver sección arriba.)
+- **Falta 2/3 del paquete**: ✅ **HECHO** — i18n del RESTO de la app completada
+  (2026-07-09, ver entrada "App i18n completa" abajo). (3/3 carrusel de fotos ✅ hecho
+  — ver sección arriba.)
+
+### App i18n completa (es/ca/en) — 2026-07-09 ✅ (cierra el paquete i18n, 2/3)
+
+Externalizado a next-intl **todo el copy hardcodeado del interior de la app** (lo que
+faltaba tras landing+auth): AppShell/nav, `/valorar` (form + Catastro + errores),
+resultado (`ValuationResult`, `ConfidencePill`, `Disclaimer`, `ReportHeader`,
+`PrintButton`), rentabilidad (`RentabilityCard` completa: labels, CCAA, escenarios,
+reducciones IRPF, desglose línea a línea, notas), fotos (`PropertyPhotos` + errores de
+validación), cartera, dashboard y `/demo`. Namespaces nuevos: `nav`, `property`,
+`valorar`, `result`, `confidence`, `rentability`, `photos`, `cartera`, `dashboard`,
+`demo`. **391 claves por idioma, paridad exacta es/ca/en** (catalán central nativo,
+inglés SaaS neutro; disclaimer legal en los 3 citando la Orden ECO/805/2003).
+
+- **Sin tocar lógica/motor/cálculos**: para no dejar strings en el motor/lib, se
+  refactorizaron a **tokens estructurados** (clave + params, el texto vive en el
+  catálogo): `lib/confidence.ts` (razones y hint de confianza), `engine/rentability.ts`
+  (`concept` de cada línea de desglose) y `data/photos.ts` (códigos de error de
+  validación). Tests adaptados a la nueva forma; los importes/umbrales no cambian.
+- **Formato locale-aware** (`lib/format.ts`): `formatEur`/`formatPct`/`formatReportDate`/
+  `formatShortDate` + nuevo `formatPercentPlain`, todos con locale activo. **Decisión de
+  moneda**: € siempre **pospuesto** (convención europea, producto del mercado español);
+  solo varían separadores y fechas por locale → EN muestra `163,791 €`, es/ca `272.984 €`.
+- **Server actions** (`valorar/actions.ts`, `resolve-actions.ts`, `photo-actions.ts`)
+  traducen sus mensajes de error con `getTranslations`; componentes cliente/RSC con
+  `useTranslations`/`useLocale`. Se respetan los `name=`/`value` de forms (piso/casa,
+  libre/alquilado/ocupado, a_reformar…): solo se traducen las etiquetas visibles.
+- **Verificación**: `tsc` limpio · **suite 125/125** · `npm run build` limpio ·
+  **Playwright real (dev :3000)** en **CA y EN**: `/demo` (valor, confianza, "por qué
+  este valor" + ajustes, análisis de compra ocupada, rentabilidad completa, testigos,
+  disclaimer), `/valorar` (form + opciones tipo/estado/ocupación), `cartera` y
+  `dashboard` — **cero texto español** en modo CA/EN (barrido por DOM); moneda
+  locale-aware confirmada. Usuario de prueba creado vía admin API y borrado al acabar.
+- **Sin traducir a propósito** (data/export, no UI en pantalla): contenido del CSV de
+  exportación (`lib/csv.ts`, cabeceras y valores) — el botón "Exportar CSV" sí está
+  traducido; placeholder de datos `'(sin dirección)'` en la columna address; mensajes
+  de Zod por defecto (raro, solo con submit inválido); `aria-roledescription="carrusel"`.
 
 ### Producción de datos — 2026-07-07 ✅ SMOKE E2E REAL VERDE
 - Supabase `valio` (eu-west-3) creado y migrado 0001-0004 + seed VÍA API (sin dashboard).
