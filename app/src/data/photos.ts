@@ -131,7 +131,10 @@ export async function listPropertyPhotos(
     .from('property_photos')
     .select('id, storage_path, sort_order')
     .eq('property_id', propertyId)
+    // Desempate estable por created_at: si dos fotos comparten sort_order (colisión
+    // heredada), el orden de la lista no depende del capricho del planner.
     .order('sort_order', { ascending: true })
+    .order('created_at', { ascending: true })
   if (error) throw new Error(`property_photos: ${error.message}`)
 
   const rows = (data ?? []) as PhotoRow[]
