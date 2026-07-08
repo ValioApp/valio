@@ -2,9 +2,11 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Calculator, FolderOpen, LayoutDashboard, type LucideIcon } from 'lucide-react'
+import { useTranslations } from 'next-intl'
+import { Calculator, FolderOpen, LayoutDashboard, LogOut, type LucideIcon } from 'lucide-react'
 import { ValioWordmark } from '@/components/ValioWordmark'
 import { LanguageSwitcher } from '@/components/LanguageSwitcher'
+import { logout } from '@/app/(app)/actions'
 
 interface NavItem {
   href: string
@@ -28,6 +30,7 @@ function isActive(pathname: string, href: string): boolean {
  */
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
+  const t = useTranslations('common')
 
   return (
     <div className="flex min-h-dvh w-full flex-col">
@@ -60,6 +63,15 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         </nav>
         <div className="flex flex-col gap-3 border-t border-hairline px-6 py-4">
           <LanguageSwitcher />
+          <form action={logout}>
+            <button
+              type="submit"
+              className="-mx-3 flex w-[calc(100%+1.5rem)] items-center gap-3 rounded-card px-3 py-2.5 font-display text-sm font-medium text-muted transition-colors duration-200 hover:bg-paper hover:text-ink"
+            >
+              <LogOut size={18} aria-hidden="true" />
+              {t('logout')}
+            </button>
+          </form>
           <p className="label-caps text-muted/70">VALIO Proptech</p>
         </div>
       </aside>
@@ -70,7 +82,18 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           <Link href="/dashboard" aria-label="VALIO — inicio">
             <ValioWordmark size="sm" />
           </Link>
-          <LanguageSwitcher />
+          <div className="flex items-center gap-2">
+            <LanguageSwitcher />
+            <form action={logout}>
+              <button
+                type="submit"
+                aria-label={t('logout')}
+                className="flex h-9 w-9 items-center justify-center rounded-card text-muted transition-colors duration-200 hover:bg-paper hover:text-ink"
+              >
+                <LogOut size={18} aria-hidden="true" />
+              </button>
+            </form>
+          </div>
         </div>
       </header>
 
