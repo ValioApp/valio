@@ -479,3 +479,35 @@ Feedback directo de Alex (la estructura le gusta; NO reestructurar). Dos cambios
   (recorte 16:10 con balconeras + fachadas de piedra + molduras) sobre los datos de
   l'Eixample; el copy nuevo aparece en ES y el switcher a CA/EN traduce hero/portales/
   método/pricing/FAQ y el `alt` de la foto; 0 errores de consola.
+
+### Sección Inmuebles ocupados (datos del socio) — 2026-07-09 ✅
+- **Qué**: primera sección de catálogo del SaaS (luego alquiler/compra) sobre la tabla
+  global `occupied_properties` (989 inmuebles distressed de la cartera del socio,
+  Aliseda). Montada para escalar: nueva entrada de nav "Ocupados" en el `AppShell`
+  (icono `Building2`) preparada para añadir más secciones bajo el mismo patrón.
+- **Rutas/componentes**: `app/src/data/occupied.ts` (data layer tipada:
+  `listOccupied` con filtros server-side `.eq/.ilike/.gte/.lte` + `.range` paginado 24/pág
+  + `count:'exact'`; `getOccupied`; `occupiedFacets` por dedupe en JS —sin RPC, sin DDL
+  en prod—). `app/src/lib/occupied.ts` (puro: etapas, tonos por avance, tipos de venta,
+  parseo/serialización de filtros desde searchParams; **11 tests** nuevos). Página lista
+  `(app)/ocupados/page.tsx` (server, auth, grid de tarjetas + filtros + paginación con
+  total "989 inmuebles" visible) y ficha `(app)/ocupados/[id]/page.tsx` (TODAS las columnas
+  agrupadas: identificación, ubicación, características, precio PVP en gold-deep, **estado
+  de ocupación** con etapa explicada + `ocupacion_fase_raw`, link a Aliseda, `RentabilityCard`
+  partiendo del PVP, disclaimer legal). Chip de etapa reutilizable con color por avance
+  del desalojo (verde=cerca de vacío … rojo=suspendido).
+- **Filtros**: estado en la URL (searchParams, compartible) vía `OccupiedFilters` client
+  (selects instantáneos; municipio y rangos con debounce 350 ms; provincia dependiente de
+  CCAA; botón limpiar). Namespace i18n `ocupados` con **89 claves** en es/ca/en (paridad
+  verificada) + `nav.ocupados`.
+- **Verde**: `tsc` limpio, suite **136/136**, `npm run build` limpio (rutas `/ocupados` y
+  `/ocupados/[id]` generadas). Verificación Playwright (dev :3000, usuario de prueba creado
+  vía admin API y borrado): login → nav "Ocupados" → `/ocupados` con 24 tarjetas y "989
+  inmuebles" / "Página 1 de 42"; filtro provincia=Barcelona reduce a 433 (coincide con BD);
+  ficha con las 5 secciones + estado literal "SOLICITUD LANZAMIENTO" + RentabilityCard +
+  link Aliseda (`rel=noopener noreferrer`); CCAA con UTF-8 correcto ("Cataluña (551)");
+  idiomas ES/CA/EN traducen todo (incl. `formatEur` locale-aware: "1.360 €" vs "1,360 €").
+  0 errores de consola en la sección.
+- **Pendiente (enriquecimiento posterior)**: geocodificación (`lat`/`lon` aún null) y mapa;
+  la migración de un RPC de facetas quedó descartada (el data layer resuelve las facetas sin
+  DDL) para no aplicar cambios a la BD de producción sin aprobación.
