@@ -16,15 +16,29 @@ describe('getSiteUrl', () => {
     expect(getSiteUrl()).toBe('https://valio.app')
   })
 
-  it('cae a localhost en desarrollo cuando falta la variable', () => {
+  it('cae a localhost cuando no hay ninguna variable', () => {
     vi.stubEnv('NEXT_PUBLIC_SITE_URL', '')
-    vi.stubEnv('NODE_ENV', 'development')
+    vi.stubEnv('VERCEL_PROJECT_PRODUCTION_URL', '')
+    vi.stubEnv('VERCEL_URL', '')
     expect(getSiteUrl()).toBe('http://localhost:3000')
   })
 
-  it('lanza en producción cuando falta la variable', () => {
+  it('usa el dominio de producción de Vercel si falta la explícita', () => {
     vi.stubEnv('NEXT_PUBLIC_SITE_URL', '')
-    vi.stubEnv('NODE_ENV', 'production')
-    expect(() => getSiteUrl()).toThrow(/NEXT_PUBLIC_SITE_URL/)
+    vi.stubEnv('VERCEL_PROJECT_PRODUCTION_URL', 'valio-mu.vercel.app')
+    expect(getSiteUrl()).toBe('https://valio-mu.vercel.app')
+  })
+
+  it('cae al dominio del despliegue (VERCEL_URL) si no hay dominio de producción', () => {
+    vi.stubEnv('NEXT_PUBLIC_SITE_URL', '')
+    vi.stubEnv('VERCEL_PROJECT_PRODUCTION_URL', '')
+    vi.stubEnv('VERCEL_URL', 'valio-abc123.vercel.app')
+    expect(getSiteUrl()).toBe('https://valio-abc123.vercel.app')
+  })
+
+  it('prioriza la variable explícita sobre las de Vercel', () => {
+    vi.stubEnv('NEXT_PUBLIC_SITE_URL', 'https://valio.app')
+    vi.stubEnv('VERCEL_PROJECT_PRODUCTION_URL', 'valio-mu.vercel.app')
+    expect(getSiteUrl()).toBe('https://valio.app')
   })
 })

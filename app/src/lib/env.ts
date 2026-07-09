@@ -1,28 +1,33 @@
 /**
- * Variables de entorno tipadas con fail-fast.
+ * Variables de entorno tipadas.
  *
  * `getSiteUrl()` devuelve la URL pública de la app, usada para construir los
  * enlaces de auth que viajan por email (magic link, confirmación de registro,
- * recuperación de contraseña). En PRODUCCIÓN es OBLIGATORIA: sin ella, un
- * fallback a localhost enviaría a los usuarios enlaces rotos —o peor,
- * redirigibles a un host equivocado—, así que se lanza un error explícito.
- * En desarrollo cae a http://localhost:3000.
+ * recuperación de contraseña).
  *
- * Es una función (no una constante) a propósito: la resolución ocurre en
- * runtime dentro de cada server action, nunca al importar el módulo, para que
- * `next build` (que corre con NODE_ENV=production) no falle por la ausencia de
- * la variable en el entorno de build. El fail-fast se dispara en la primera
- * request real de producción que la necesite.
+ * Orden de resolución:
+ *  1. `NEXT_PUBLIC_SITE_URL` — la fuente explícita y preferida (dominio propio).
+ *  2. `VERCEL_PROJECT_PRODUCTION_URL` — dominio estable de producción en Vercel.
+ *  3. `VERCEL_URL` — dominio del despliegue concreto (preview/producción).
+ *  4. `http://localhost:3000` — desarrollo.
+ *
+ * Así la app NUNCA revienta en producción por no tener configurada la variable:
+ * en Vercel se deduce sola de las env vars del sistema. Conviene fijar
+ * `NEXT_PUBLIC_SITE_URL` a un dominio propio antes de usar dominio final, pero
+ * su ausencia ya no rompe el registro/acceso.
+ *
+ * Es una función (no una constante) a propósito: la resolución ocurre en runtime
+ * dentro de cada server action, nunca al importar el módulo.
  */
 export function getSiteUrl(): string {
-  const fromEnv = process.env.NEXT_PUBLIC_SITE_URL?.trim()
-  if (fromEnv) return fromEnv.replace(/\/+$/, '')
+  const explicit = process.env.NEXT_PUBLIC_SITE_URL?.trim()
+  if (explicit) return explicit.replace(/\/+$/, '')
 
-  if (process.env.NODE_ENV === 'production') {
-    throw new Error(
-      'NEXT_PUBLIC_SITE_URL es obligatoria en producción: se usa para construir los enlaces de auth que se envían por email.',
-    )
-  }
+  const vercelProd = process.env.VERCEL_PROJECT_PRODUCTION_URL?.trim()
+  if (vercelProd) return `https://${vercelProd.replace(/\/+$/, '')}`
+
+  const vercelUrl = process.env.VERCEL_URL?.trim()
+  if (vercelUrl) return `https://${vercelUrl.replace(/\/+$/, '')}`
 
   return 'http://localhost:3000'
 }
