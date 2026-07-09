@@ -10,8 +10,8 @@ export function ContourMotif({ className = '' }: { className?: string }) {
   return (
     <div className={`valio-motif pointer-events-none absolute ${className}`} aria-hidden="true">
       <svg
-        viewBox="0 0 800 800"
-        preserveAspectRatio="xMidYMid meet"
+        viewBox="0 0 1600 760"
+        preserveAspectRatio="xMidYMid slice"
         className="h-full w-full overflow-visible"
       >
         {CONTOURS.map((c, i) => (

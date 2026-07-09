@@ -12,8 +12,8 @@ export async function Hero() {
 
   return (
     <section className="relative overflow-hidden">
-      <ContourMotif className="top-1/2 right-[-18%] hidden h-[760px] w-[760px] -translate-y-1/2 md:block" />
-      <ContourMotif className="bottom-[-12%] left-1/2 h-[540px] w-[540px] -translate-x-1/2 md:hidden" />
+      {/* Motivo cartográfico a sangre: cubre todo el hero (varias formaciones). */}
+      <ContourMotif className="inset-0 z-0 h-full w-full" />
 
       <div className="relative z-[2] mx-auto grid w-full max-w-6xl grid-cols-1 items-center gap-y-12 px-4 pt-14 pb-20 md:grid-cols-[1.08fr_0.92fr] md:gap-10 md:px-6 md:pt-20 md:pb-28">
         <div className="max-w-xl">
