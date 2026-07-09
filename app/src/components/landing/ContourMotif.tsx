@@ -1,10 +1,10 @@
+import type { CSSProperties } from 'react'
 import { CONTOURS, NODES } from '@/lib/contour-paths'
 
 /**
- * Motivo cartográfico decorativo del héroe: curvas de nivel de un único campo
- * topográfico (ver `@/lib/contour-paths`), coherentes y sin cruces. SVG estático
- * precalculado (determinista, SSR-safe). El conjunto se funde con `.valio-motif`.
- * `aria-hidden`.
+ * Motivo cartográfico decorativo del héroe: una sola forma de anillos de nivel
+ * anidados (ver `@/lib/contour-paths`). SVG estático precalculado, determinista
+ * y SSR-safe. El trazado progresivo lo hace CSS (`.valio-contour`). `aria-hidden`.
  */
 export function ContourMotif({ className = '' }: { className?: string }) {
   return (
@@ -22,9 +22,14 @@ export function ContourMotif({ className = '' }: { className?: string }) {
             stroke="var(--color-petrol)"
             strokeWidth={c.width}
             strokeOpacity={c.opacity}
-            strokeLinejoin="round"
-            strokeLinecap="round"
             vectorEffect="non-scaling-stroke"
+            className="valio-contour"
+            style={
+              {
+                ['--contour-len']: c.len,
+                ['--contour-delay']: `${c.delay}s`,
+              } as CSSProperties
+            }
           />
         ))}
         {NODES.map(([cx, cy], i) => (

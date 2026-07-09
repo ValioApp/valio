@@ -1,133 +1,96 @@
 /**
- * Motivo cartográfico del héroe: curvas de nivel de un ÚNICO campo topográfico.
+ * Motivo cartográfico del héroe: UNA sola forma topográfica —anillos de nivel
+ * anidados de un único relieve orgánico— que cubre todo el ancho del hero.
  *
- * En vez de dibujar varias formas concéntricas sueltas (que se cruzarían y
- * quedarían como formas superpuestas), se define un solo "relieve" continuo —la
- * suma de varias colinas gaussianas repartidas por el lienzo— y se extraen sus
- * isolíneas con marching squares. Las curvas de nivel de un campo continuo NUNCA
- * se cruzan y fluyen alrededor de todas las cimas: el resultado es un conjunto
- * armonioso, con varias elevaciones distintas que pertenecen al mismo mapa.
+ * Es un solo sistema concéntrico: cada anillo envuelve al anterior, así que las
+ * líneas NUNCA se cruzan y todo pertenece a la misma forma (justo lo que se
+ * busca). La silueta orgánica viene de una suma de senos de armónicos fijos;
+ * un ligero achatamiento vertical (KY) las hace óvalos anchos que encajan en el
+ * hero apaisado. Los anillos exteriores son grandes y llegan a los bordes.
  *
- * 100% determinista (colinas y niveles fijos, sin Math.random) → idéntico en
- * servidor y cliente, sin desajuste de hidratación. Se calcula una vez al cargar.
+ * 100% determinista (sin Math.random) → idéntico en servidor y cliente, sin
+ * desajuste de hidratación. Se calcula una vez al cargar. Trazado progresivo por
+ * CSS (`.valio-contour`).
  *
  * Lienzo de referencia: 1600 × 760 (apaisado, se sirve a sangre con slice).
  */
 
-const W = 1600
-const H = 760
-const CELL = 16
-const COLS = Math.ceil(W / CELL) // 100
-const ROWS = Math.ceil(H / CELL) // 48
-
-interface Peak {
-  x: number
-  y: number
-  amp: number
-  sigma: number
+interface Harmonic {
+  f: number
+  a: number
+  p: number
 }
 
-/** Colinas fijas: cimas distintas repartidas por todo el ancho + una base ancha
- *  que levanta suavemente todo el campo (evita esquinas planas/vacías). */
-const PEAKS: Peak[] = [
-  { x: 1210, y: 360, amp: 1.0, sigma: 250 }, // principal (derecha, tras la tarjeta)
-  { x: 300, y: 320, amp: 0.82, sigma: 210 }, // izquierda
-  { x: 1560, y: 470, amp: 0.7, sigma: 210 }, // derecha del todo (llena el margen)
-  { x: 720, y: 720, amp: 0.6, sigma: 220 }, // inferior centro
-  { x: 900, y: 60, amp: 0.46, sigma: 190 }, // superior centro
-  { x: 880, y: 380, amp: 0.3, sigma: 560 }, // base ancha (relieve de fondo)
+// Armónicos fijos → contorno orgánico reproducible (varios lóbulos suaves).
+const HARMONICS: Harmonic[] = [
+  { f: 2, a: 0.17, p: 0.7 },
+  { f: 3, a: 0.11, p: 2.1 },
+  { f: 5, a: 0.06, p: 4.4 },
+  { f: 7, a: 0.032, p: 1.2 },
 ]
 
-function field(x: number, y: number): number {
-  let v = 0
-  for (const p of PEAKS) {
-    const dx = x - p.x
-    const dy = y - p.y
-    v += p.amp * Math.exp(-(dx * dx + dy * dy) / (2 * p.sigma * p.sigma))
+const CX = 840
+const CY = 360
+const KY = 0.72 // achatamiento vertical → óvalos anchos
+const SAMPLES = 96
+const LEVELS = 25
+const BASE = 40
+const STEP = 40
+
+function radiusAt(theta: number, base: number): number {
+  let r = base
+  for (const h of HARMONICS) r += base * h.a * Math.sin(h.f * theta + h.p)
+  return r
+}
+
+/** Anillo cerrado y suave (Catmull-Rom → Bézier) para un radio base dado. */
+function ringPath(base: number): string {
+  const pts: Array<[number, number]> = []
+  for (let i = 0; i < SAMPLES; i++) {
+    const t = (i / SAMPLES) * Math.PI * 2
+    const r = radiusAt(t, base)
+    pts.push([CX + r * Math.cos(t), CY + r * KY * Math.sin(t)])
   }
-  return v
-}
-
-// Rejilla de valores del campo (esquinas de celda).
-const GRID: number[][] = []
-for (let i = 0; i <= COLS; i++) {
-  const col: number[] = []
-  for (let j = 0; j <= ROWS; j++) col.push(field(i * CELL, j * CELL))
-  GRID.push(col)
-}
-
-/** Interpola el punto de cruce del nivel L en una arista entre dos esquinas. */
-function lerp(
-  ax: number,
-  ay: number,
-  av: number,
-  bx: number,
-  by: number,
-  bv: number,
-  L: number,
-): [number, number] {
-  const t = (L - av) / (bv - av)
-  return [ax + t * (bx - ax), ay + t * (by - ay)]
-}
-
-/** Segmentos de la isolínea de nivel L (marching squares sobre GRID). */
-function segmentsAt(L: number): Array<[[number, number], [number, number]]> {
-  const segs: Array<[[number, number], [number, number]]> = []
-  for (let i = 0; i < COLS; i++) {
-    for (let j = 0; j < ROWS; j++) {
-      const x0 = i * CELL
-      const y0 = j * CELL
-      const x1 = x0 + CELL
-      const y1 = y0 + CELL
-      const tl = GRID[i][j]
-      const tr = GRID[i + 1][j]
-      const br = GRID[i + 1][j + 1]
-      const bl = GRID[i][j + 1]
-      const idx = (tl >= L ? 1 : 0) | (tr >= L ? 2 : 0) | (br >= L ? 4 : 0) | (bl >= L ? 8 : 0)
-      if (idx === 0 || idx === 15) continue
-      const T = () => lerp(x0, y0, tl, x1, y0, tr, L) // arista superior
-      const R = () => lerp(x1, y0, tr, x1, y1, br, L) // arista derecha
-      const B = () => lerp(x0, y1, bl, x1, y1, br, L) // arista inferior
-      const Lf = () => lerp(x0, y0, tl, x0, y1, bl, L) // arista izquierda
-      switch (idx) {
-        case 1: case 14: segs.push([Lf(), T()]); break
-        case 2: case 13: segs.push([T(), R()]); break
-        case 3: case 12: segs.push([Lf(), R()]); break
-        case 4: case 11: segs.push([R(), B()]); break
-        case 6: case 9: segs.push([T(), B()]); break
-        case 7: case 8: segs.push([Lf(), B()]); break
-        case 5: segs.push([Lf(), T()]); segs.push([R(), B()]); break // silla
-        case 10: segs.push([T(), R()]); segs.push([Lf(), B()]); break // silla
-      }
-    }
+  let d = ''
+  for (let j = 0; j < pts.length; j++) {
+    const p0 = pts[(j - 1 + pts.length) % pts.length]
+    const p1 = pts[j]
+    const p2 = pts[(j + 1) % pts.length]
+    const p3 = pts[(j + 2) % pts.length]
+    if (j === 0) d += `M${p1[0].toFixed(1)} ${p1[1].toFixed(1)}`
+    const c1x = p1[0] + (p2[0] - p0[0]) / 6
+    const c1y = p1[1] + (p2[1] - p0[1]) / 6
+    const c2x = p2[0] - (p3[0] - p1[0]) / 6
+    const c2y = p2[1] - (p3[1] - p1[1]) / 6
+    d += `C${c1x.toFixed(1)} ${c1y.toFixed(1)} ${c2x.toFixed(1)} ${c2y.toFixed(1)} ${p2[0].toFixed(1)} ${p2[1].toFixed(1)}`
   }
-  return segs
+  return `${d}Z`
 }
 
 export interface Contour {
   d: string
   opacity: number
   width: number
+  len: number
+  delay: number
 }
 
-// Niveles fijos: los bajos envuelven todas las colinas (tejido conectivo del
-// mapa); los altos son anillos pequeños en cada cima. Uno de cada tres se marca
-// un pelín más, como cota principal.
-const LEVELS = [0.05, 0.09, 0.14, 0.2, 0.27, 0.35, 0.44, 0.54, 0.65, 0.77, 0.9]
-
-export const CONTOURS: Contour[] = LEVELS.map((L, k) => {
-  const segs = segmentsAt(L)
-  let d = ''
-  for (const [a, b] of segs) {
-    d += `M${a[0].toFixed(1)} ${a[1].toFixed(1)}L${b[0].toFixed(1)} ${b[1].toFixed(1)}`
-  }
-  const major = k % 3 === 0
+export const CONTOURS: Contour[] = Array.from({ length: LEVELS }, (_, k) => {
+  const base = BASE + k * STEP
+  const major = k % 5 === 0
+  const meanR = base * (1 + KY) * 0.5
   return {
-    d,
-    opacity: major ? 0.11 : 0.06,
-    width: major ? 1 : 0.8,
+    d: ringPath(base),
+    opacity: major ? 0.12 : Math.max(0.035, 0.095 - k * 0.0028),
+    width: major ? 1.1 : 0.8,
+    len: Math.round(2 * Math.PI * meanR * 1.05),
+    delay: Number((0.12 + k * 0.045).toFixed(2)),
   }
 })
 
-/** Puntos de cota en las cimas (menos la base ancha), como detalle de mapa. */
-export const NODES: Array<[number, number]> = PEAKS.slice(0, 5).map((p) => [p.x, p.y])
+/** Un par de puntos de cota sutiles sobre anillos intermedios (detalle de mapa). */
+export const NODES: Array<[number, number]> = [
+  [CX + 250, CY - 120],
+  [CX - 470, CY + 90],
+  [CX + 40, CY + 300],
+]
