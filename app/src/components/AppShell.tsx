@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useTranslations } from 'next-intl'
-import { Calculator, FolderOpen, LayoutDashboard, LogOut, type LucideIcon } from 'lucide-react'
+import { Building2, Calculator, FolderOpen, LayoutDashboard, LogOut, type LucideIcon } from 'lucide-react'
 import { ValioWordmark } from '@/components/ValioWordmark'
 import { LanguageSwitcher } from '@/components/LanguageSwitcher'
 import { logout } from '@/app/(app)/actions'
@@ -11,14 +11,18 @@ import { logout } from '@/app/(app)/actions'
 interface NavItem {
   href: string
   /** Clave i18n en el namespace `nav`. */
-  labelKey: 'dashboard' | 'valorar' | 'cartera'
+  labelKey: 'dashboard' | 'valorar' | 'cartera' | 'ocupados'
   icon: LucideIcon
 }
 
+// Orden pensado para escalar: primero las herramientas propias (dashboard,
+// valorar, cartera) y luego las secciones de catálogo del socio. "Inmuebles
+// ocupados" es la primera; alquiler/compra se añadirán aquí bajo el mismo patrón.
 const NAV_ITEMS: NavItem[] = [
   { href: '/dashboard', labelKey: 'dashboard', icon: LayoutDashboard },
   { href: '/valorar', labelKey: 'valorar', icon: Calculator },
   { href: '/cartera', labelKey: 'cartera', icon: FolderOpen },
+  { href: '/ocupados', labelKey: 'ocupados', icon: Building2 },
 ]
 
 function isActive(pathname: string, href: string): boolean {

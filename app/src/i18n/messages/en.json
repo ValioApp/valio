@@ -39,10 +39,22 @@
       "photoAlt": "Grand modernist building in Barcelona's Eixample, with a chamfered corner, domes and wrought-iron balconies"
     },
     "trust": {
-      "sections": { "value": "3,646", "label": "Census tracts" },
-      "income": { "value": "INE income 2023", "label": "Zone factor" },
-      "cadastre": { "value": "Cadastre data", "label": "Official reference" },
-      "eco": { "value": "Order ECO/805/2003", "label": "Valuation framework" }
+      "sections": {
+        "value": "3,646",
+        "label": "Census tracts"
+      },
+      "income": {
+        "value": "INE income 2023",
+        "label": "Zone factor"
+      },
+      "cadastre": {
+        "value": "Cadastre data",
+        "label": "Official reference"
+      },
+      "eco": {
+        "value": "Order ECO/805/2003",
+        "label": "Valuation framework"
+      }
     },
     "portals": {
       "title": "A listing price",
@@ -236,7 +248,8 @@
     "mainNav": "Main navigation",
     "dashboard": "Dashboard",
     "valorar": "Value",
-    "cartera": "Portfolio"
+    "cartera": "Portfolio",
+    "ocupados": "Occupied"
   },
   "property": {
     "kindPiso": "Apartment",
@@ -510,5 +523,104 @@
     "occLibre": "Vacant",
     "occAlquilado": "Rented",
     "occOcupado": "Occupied"
+  },
+  "ocupados": {
+    "eyebrow": "Partner catalogue",
+    "title": "Occupied properties",
+    "subtitle": "Portfolio of occupied and special-situation properties, with the status of their eviction procedure. Prices already adjusted for occupancy.",
+    "resultCount": "{count, plural, one {# property} other {# properties}}",
+    "filtersTitle": "Filters",
+    "ccaa": "Region",
+    "ccaaAll": "All",
+    "provincia": "Province",
+    "provinciaAll": "All",
+    "municipio": "Municipality",
+    "municipioPlaceholder": "Search municipality…",
+    "tipoVenta": "Sale type",
+    "tipoVentaAll": "All",
+    "etapaFilter": "Occupancy status",
+    "etapaAll": "All",
+    "pvpMin": "Min. price",
+    "pvpMax": "Max. price",
+    "supMin": "Min. area",
+    "supMax": "Max. area",
+    "orderByLabel": "Sort by",
+    "clear": "Clear filters",
+    "order": {
+      "pvp_asc": "Price: low to high",
+      "pvp_desc": "Price: high to low",
+      "eur_m2_asc": "€/m²: low to high",
+      "eur_m2_desc": "€/m²: high to low",
+      "sup_asc": "Area: small to large",
+      "sup_desc": "Area: large to small"
+    },
+    "tipo": {
+      "exDeudores": "Ex-borrowers",
+      "okupado": "Squatted",
+      "exInquilinos": "Ex-tenants",
+      "unknown": "Other"
+    },
+    "etapa": {
+      "demanda": "Claim filed",
+      "tramite_previo": "Pre-hearing",
+      "sentencia_vista": "Ruling / hearing",
+      "lanzamiento": "Eviction set",
+      "adjudicacion_posesion": "Award / possession",
+      "suspendido_archivo": "Suspended / closed",
+      "otros": "Other",
+      "sin_dato": "No data"
+    },
+    "etapaInfo": {
+      "demanda": "The eviction claim has been filed; the procedure has just begun.",
+      "tramite_previo": "Pre-hearing steps under way; the process is moving but still far from eviction.",
+      "sentencia_vista": "A hearing is scheduled or a ruling issued; eviction is getting closer.",
+      "lanzamiento": "Eviction scheduled or in progress: an advanced stage.",
+      "adjudicacion_posesion": "Award and taking of possession: the property is very close to being vacant.",
+      "suspendido_archivo": "Procedure suspended or closed: the eviction is on hold.",
+      "otros": "Situation not classified in the standard stages.",
+      "sin_dato": "No information on the status of the procedure."
+    },
+    "perM2Unit": "/m²",
+    "bathShort": "bath",
+    "viewDetail": "View details",
+    "emptyTitle": "No results",
+    "emptyBody": "No properties match these filters. Try widening them.",
+    "prev": "Previous",
+    "next": "Next",
+    "pageStatus": "Page {page} of {total}",
+    "back": "Back to catalogue",
+    "notFoundTitle": "Property not found",
+    "notFoundBody": "This property does not exist or is no longer available in the portfolio.",
+    "notFoundCta": "View catalogue",
+    "secId": "Identification",
+    "secLocation": "Location",
+    "secFeatures": "Features",
+    "secPrice": "Price",
+    "secOccupancy": "Occupancy status",
+    "secInvestment": "Investment analysis",
+    "fId": "Reference",
+    "fTipoVenta": "Sale type",
+    "fFinca": "Land registry",
+    "fRefCatastral": "Cadastral ref.",
+    "fDireccion": "Address",
+    "fMunicipio": "Municipality",
+    "fProvincia": "Province",
+    "fCcaa": "Region",
+    "fCp": "Postcode",
+    "fSuperficie": "Area",
+    "fDormitorios": "Bedrooms",
+    "fBanos": "Bathrooms",
+    "fEurM2": "Price per m²",
+    "fPvp": "Sale price (PVP)",
+    "pvpNote": "Partner's indicative price, already discounted for the occupancy status.",
+    "occStageTitle": "Procedure stage",
+    "occRawTitle": "Literal status",
+    "occRawNone": "No procedure detail.",
+    "occInvestorNote": "The further along the procedure, the sooner you can take the property vacant.",
+    "alisedaLink": "View listing on Aliseda",
+    "noData": "No data",
+    "investmentSubtitle": "Simulate the deal starting from the sale price (PVP).",
+    "disclaimerTitle": "Legal notice",
+    "disclaimerBody": "<b>Indicative</b> data from the partner's portfolio (Aliseda). It is not an offer, an official appraisal or advice; verify the registry, cadastral and occupancy status before any transaction."
   }
 }

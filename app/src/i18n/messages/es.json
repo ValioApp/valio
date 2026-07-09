@@ -39,10 +39,22 @@
       "photoAlt": "Edificio señorial modernista del Eixample de Barcelona, con chaflán, cúpulas y balcones de forja"
     },
     "trust": {
-      "sections": { "value": "3.646", "label": "Secciones censales" },
-      "income": { "value": "Renta INE 2023", "label": "Factor de zona" },
-      "cadastre": { "value": "Datos del Catastro", "label": "Referencia oficial" },
-      "eco": { "value": "Orden ECO/805/2003", "label": "Marco de valoración" }
+      "sections": {
+        "value": "3.646",
+        "label": "Secciones censales"
+      },
+      "income": {
+        "value": "Renta INE 2023",
+        "label": "Factor de zona"
+      },
+      "cadastre": {
+        "value": "Datos del Catastro",
+        "label": "Referencia oficial"
+      },
+      "eco": {
+        "value": "Orden ECO/805/2003",
+        "label": "Marco de valoración"
+      }
     },
     "portals": {
       "title": "El precio de un anuncio",
@@ -236,7 +248,8 @@
     "mainNav": "Navegación principal",
     "dashboard": "Dashboard",
     "valorar": "Valorar",
-    "cartera": "Cartera"
+    "cartera": "Cartera",
+    "ocupados": "Ocupados"
   },
   "property": {
     "kindPiso": "Piso",
@@ -510,5 +523,104 @@
     "occLibre": "Libre",
     "occAlquilado": "Alquilado",
     "occOcupado": "Ocupado"
+  },
+  "ocupados": {
+    "eyebrow": "Catálogo del socio",
+    "title": "Inmuebles ocupados",
+    "subtitle": "Cartera de inmuebles ocupados y en situación especial, con el estado de su procedimiento de desocupación. Precios ya ajustados por ocupación.",
+    "resultCount": "{count, plural, one {# inmueble} other {# inmuebles}}",
+    "filtersTitle": "Filtros",
+    "ccaa": "Comunidad autónoma",
+    "ccaaAll": "Todas",
+    "provincia": "Provincia",
+    "provinciaAll": "Todas",
+    "municipio": "Municipio",
+    "municipioPlaceholder": "Buscar municipio…",
+    "tipoVenta": "Tipo de venta",
+    "tipoVentaAll": "Todos",
+    "etapaFilter": "Estado de ocupación",
+    "etapaAll": "Todos",
+    "pvpMin": "Precio mín.",
+    "pvpMax": "Precio máx.",
+    "supMin": "Sup. mín.",
+    "supMax": "Sup. máx.",
+    "orderByLabel": "Ordenar por",
+    "clear": "Limpiar filtros",
+    "order": {
+      "pvp_asc": "Precio: menor primero",
+      "pvp_desc": "Precio: mayor primero",
+      "eur_m2_asc": "€/m²: menor primero",
+      "eur_m2_desc": "€/m²: mayor primero",
+      "sup_asc": "Superficie: menor primero",
+      "sup_desc": "Superficie: mayor primero"
+    },
+    "tipo": {
+      "exDeudores": "Ex-deudores",
+      "okupado": "Okupado",
+      "exInquilinos": "Ex-inquilinos",
+      "unknown": "Otro"
+    },
+    "etapa": {
+      "demanda": "Demanda",
+      "tramite_previo": "Trámite previo",
+      "sentencia_vista": "Sentencia / vista",
+      "lanzamiento": "Lanzamiento",
+      "adjudicacion_posesion": "Adjudicación / posesión",
+      "suspendido_archivo": "Suspendido / archivado",
+      "otros": "Otros",
+      "sin_dato": "Sin dato"
+    },
+    "etapaInfo": {
+      "demanda": "Se ha presentado la demanda de desahucio; el procedimiento acaba de empezar.",
+      "tramite_previo": "Trámites previos a la vista; el proceso está en marcha pero aún lejos del desalojo.",
+      "sentencia_vista": "Hay vista señalada o sentencia; el desalojo se acerca.",
+      "lanzamiento": "Lanzamiento (desalojo) señalado o en curso: fase avanzada.",
+      "adjudicacion_posesion": "Adjudicación y toma de posesión: el inmueble está muy cerca de quedar libre.",
+      "suspendido_archivo": "Procedimiento suspendido o archivado: el desalojo está parado.",
+      "otros": "Situación no clasificada en las etapas estándar.",
+      "sin_dato": "Sin información sobre el estado del procedimiento."
+    },
+    "perM2Unit": "/m²",
+    "bathShort": "baños",
+    "viewDetail": "Ver ficha",
+    "emptyTitle": "Sin resultados",
+    "emptyBody": "No hay inmuebles que coincidan con estos filtros. Prueba a ampliarlos.",
+    "prev": "Anterior",
+    "next": "Siguiente",
+    "pageStatus": "Página {page} de {total}",
+    "back": "Volver al catálogo",
+    "notFoundTitle": "Inmueble no encontrado",
+    "notFoundBody": "Este inmueble no existe o ya no está disponible en la cartera.",
+    "notFoundCta": "Ver catálogo",
+    "secId": "Identificación",
+    "secLocation": "Ubicación",
+    "secFeatures": "Características",
+    "secPrice": "Precio",
+    "secOccupancy": "Estado de ocupación",
+    "secInvestment": "Análisis de inversión",
+    "fId": "Referencia",
+    "fTipoVenta": "Tipo de venta",
+    "fFinca": "Finca registral",
+    "fRefCatastral": "Ref. catastral",
+    "fDireccion": "Dirección",
+    "fMunicipio": "Municipio",
+    "fProvincia": "Provincia",
+    "fCcaa": "Comunidad autónoma",
+    "fCp": "Código postal",
+    "fSuperficie": "Superficie",
+    "fDormitorios": "Dormitorios",
+    "fBanos": "Baños",
+    "fEurM2": "Precio por m²",
+    "fPvp": "Precio de venta (PVP)",
+    "pvpNote": "Precio orientativo del socio, ya descontado por el estado de ocupación.",
+    "occStageTitle": "Fase del procedimiento",
+    "occRawTitle": "Estado literal",
+    "occRawNone": "Sin detalle del procedimiento.",
+    "occInvestorNote": "Cuanto más avanzado el procedimiento, antes podrás disponer del inmueble libre.",
+    "alisedaLink": "Ver ficha en Aliseda",
+    "noData": "Sin dato",
+    "investmentSubtitle": "Simula la operación partiendo del precio de venta (PVP).",
+    "disclaimerTitle": "Aviso legal",
+    "disclaimerBody": "Datos <b>orientativos</b> procedentes de la cartera del socio (Aliseda). No constituyen oferta, tasación oficial ni asesoramiento; verifica el estado registral, catastral y de ocupación antes de cualquier operación."
   }
 }

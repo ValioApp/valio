@@ -39,10 +39,22 @@
       "photoAlt": "Edifici senyorial modernista de l'Eixample de Barcelona, amb xamfrà, cúpules i balcons de forja"
     },
     "trust": {
-      "sections": { "value": "3.646", "label": "Seccions censals" },
-      "income": { "value": "Renda INE 2023", "label": "Factor de zona" },
-      "cadastre": { "value": "Dades del Cadastre", "label": "Referència oficial" },
-      "eco": { "value": "Ordre ECO/805/2003", "label": "Marc de valoració" }
+      "sections": {
+        "value": "3.646",
+        "label": "Seccions censals"
+      },
+      "income": {
+        "value": "Renda INE 2023",
+        "label": "Factor de zona"
+      },
+      "cadastre": {
+        "value": "Dades del Cadastre",
+        "label": "Referència oficial"
+      },
+      "eco": {
+        "value": "Ordre ECO/805/2003",
+        "label": "Marc de valoració"
+      }
     },
     "portals": {
       "title": "El preu d'un anunci",
@@ -236,7 +248,8 @@
     "mainNav": "Navegació principal",
     "dashboard": "Tauler",
     "valorar": "Valorar",
-    "cartera": "Cartera"
+    "cartera": "Cartera",
+    "ocupados": "Ocupats"
   },
   "property": {
     "kindPiso": "Pis",
@@ -510,5 +523,104 @@
     "occLibre": "Lliure",
     "occAlquilado": "Llogat",
     "occOcupado": "Ocupat"
+  },
+  "ocupados": {
+    "eyebrow": "Catàleg del soci",
+    "title": "Immobles ocupats",
+    "subtitle": "Cartera d'immobles ocupats i en situació especial, amb l'estat del seu procediment de desocupació. Preus ja ajustats per ocupació.",
+    "resultCount": "{count, plural, one {# immoble} other {# immobles}}",
+    "filtersTitle": "Filtres",
+    "ccaa": "Comunitat autònoma",
+    "ccaaAll": "Totes",
+    "provincia": "Província",
+    "provinciaAll": "Totes",
+    "municipio": "Municipi",
+    "municipioPlaceholder": "Cerca municipi…",
+    "tipoVenta": "Tipus de venda",
+    "tipoVentaAll": "Tots",
+    "etapaFilter": "Estat d'ocupació",
+    "etapaAll": "Tots",
+    "pvpMin": "Preu mín.",
+    "pvpMax": "Preu màx.",
+    "supMin": "Sup. mín.",
+    "supMax": "Sup. màx.",
+    "orderByLabel": "Ordena per",
+    "clear": "Neteja filtres",
+    "order": {
+      "pvp_asc": "Preu: menor primer",
+      "pvp_desc": "Preu: major primer",
+      "eur_m2_asc": "€/m²: menor primer",
+      "eur_m2_desc": "€/m²: major primer",
+      "sup_asc": "Superfície: menor primer",
+      "sup_desc": "Superfície: major primer"
+    },
+    "tipo": {
+      "exDeudores": "Ex-deutors",
+      "okupado": "Okupat",
+      "exInquilinos": "Ex-llogaters",
+      "unknown": "Altre"
+    },
+    "etapa": {
+      "demanda": "Demanda",
+      "tramite_previo": "Tràmit previ",
+      "sentencia_vista": "Sentència / vista",
+      "lanzamiento": "Llançament",
+      "adjudicacion_posesion": "Adjudicació / possessió",
+      "suspendido_archivo": "Suspès / arxivat",
+      "otros": "Altres",
+      "sin_dato": "Sense dada"
+    },
+    "etapaInfo": {
+      "demanda": "S'ha presentat la demanda de desnonament; el procediment tot just comença.",
+      "tramite_previo": "Tràmits previs a la vista; el procés està en marxa però encara lluny del desallotjament.",
+      "sentencia_vista": "Hi ha vista assenyalada o sentència; el desallotjament s'acosta.",
+      "lanzamiento": "Llançament (desallotjament) assenyalat o en curs: fase avançada.",
+      "adjudicacion_posesion": "Adjudicació i presa de possessió: l'immoble és molt a prop de quedar lliure.",
+      "suspendido_archivo": "Procediment suspès o arxivat: el desallotjament està aturat.",
+      "otros": "Situació no classificada en les etapes estàndard.",
+      "sin_dato": "Sense informació sobre l'estat del procediment."
+    },
+    "perM2Unit": "/m²",
+    "bathShort": "banys",
+    "viewDetail": "Veure fitxa",
+    "emptyTitle": "Sense resultats",
+    "emptyBody": "No hi ha immobles que coincideixin amb aquests filtres. Prova d'ampliar-los.",
+    "prev": "Anterior",
+    "next": "Següent",
+    "pageStatus": "Pàgina {page} de {total}",
+    "back": "Torna al catàleg",
+    "notFoundTitle": "Immoble no trobat",
+    "notFoundBody": "Aquest immoble no existeix o ja no està disponible a la cartera.",
+    "notFoundCta": "Veure catàleg",
+    "secId": "Identificació",
+    "secLocation": "Ubicació",
+    "secFeatures": "Característiques",
+    "secPrice": "Preu",
+    "secOccupancy": "Estat d'ocupació",
+    "secInvestment": "Anàlisi d'inversió",
+    "fId": "Referència",
+    "fTipoVenta": "Tipus de venda",
+    "fFinca": "Finca registral",
+    "fRefCatastral": "Ref. cadastral",
+    "fDireccion": "Adreça",
+    "fMunicipio": "Municipi",
+    "fProvincia": "Província",
+    "fCcaa": "Comunitat autònoma",
+    "fCp": "Codi postal",
+    "fSuperficie": "Superfície",
+    "fDormitorios": "Dormitoris",
+    "fBanos": "Banys",
+    "fEurM2": "Preu per m²",
+    "fPvp": "Preu de venda (PVP)",
+    "pvpNote": "Preu orientatiu del soci, ja descomptat per l'estat d'ocupació.",
+    "occStageTitle": "Fase del procediment",
+    "occRawTitle": "Estat literal",
+    "occRawNone": "Sense detall del procediment.",
+    "occInvestorNote": "Com més avançat el procediment, abans podràs disposar de l'immoble lliure.",
+    "alisedaLink": "Veure fitxa a Aliseda",
+    "noData": "Sense dada",
+    "investmentSubtitle": "Simula l'operació partint del preu de venda (PVP).",
+    "disclaimerTitle": "Avís legal",
+    "disclaimerBody": "Dades <b>orientatives</b> procedents de la cartera del soci (Aliseda). No constitueixen oferta, taxació oficial ni assessorament; verifica l'estat registral, cadastral i d'ocupació abans de qualsevol operació."
   }
 }
