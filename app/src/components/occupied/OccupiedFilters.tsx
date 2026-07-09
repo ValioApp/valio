@@ -12,6 +12,7 @@ import {
   type OccupiedFilters as Filters,
   type OccupiedOrderKey,
 } from '@/lib/occupied'
+import { formatCCAA, formatProvincia } from '@/lib/place-names'
 import type { OccupiedFacets } from '@/data/occupied'
 
 const CONTROL =
@@ -118,7 +119,7 @@ export function OccupiedFilters({ facets, filters }: { facets: OccupiedFacets; f
             <option value="">{t('ccaaAll')}</option>
             {facets.ccaas.map((c) => (
               <option key={c.name} value={c.name}>
-                {c.name} ({c.count})
+                {formatCCAA(c.name)} ({c.count})
               </option>
             ))}
           </select>
@@ -138,7 +139,7 @@ export function OccupiedFilters({ facets, filters }: { facets: OccupiedFacets; f
             <option value="">{t('provinciaAll')}</option>
             {provincias.map((p) => (
               <option key={p.name} value={p.name}>
-                {p.name} ({p.count})
+                {formatProvincia(p.name)} ({p.count})
               </option>
             ))}
           </select>

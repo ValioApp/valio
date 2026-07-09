@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useLocale, useTranslations } from 'next-intl'
 import { BedDouble, Bath, MapPin, Ruler } from 'lucide-react'
 import { formatEur } from '@/lib/format'
+import { formatMunicipio, formatProvincia } from '@/lib/place-names'
 import { tipoVentaKey } from '@/lib/occupied'
 import type { OccupiedProperty } from '@/data/occupied'
 import { EtapaChip } from './EtapaChip'
@@ -27,9 +28,9 @@ export function OccupiedCard({ property: p }: { property: OccupiedProperty }) {
         <div className="min-w-0">
           <p className="flex items-center gap-1.5 font-display text-base font-semibold text-ink">
             <MapPin size={15} className="shrink-0 text-petrol" aria-hidden="true" />
-            <span className="truncate">{p.municipio}</span>
+            <span className="truncate">{formatMunicipio(p.municipio)}</span>
           </p>
-          <p className="mt-0.5 truncate text-sm text-muted">{p.provincia}</p>
+          <p className="mt-0.5 truncate text-sm text-muted">{formatProvincia(p.provincia)}</p>
         </div>
         <EtapaChip etapa={p.ocupacionEtapa} />
       </div>

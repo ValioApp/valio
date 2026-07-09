@@ -6,6 +6,7 @@ import { createClient } from '@/lib/supabase/server'
 import { getOccupied } from '@/data/occupied'
 import { tipoVentaKey } from '@/lib/occupied'
 import { formatEur } from '@/lib/format'
+import { formatCCAA, formatMunicipio, formatProvincia } from '@/lib/place-names'
 import { EtapaChip } from '@/components/occupied/EtapaChip'
 import { RentabilityCard } from '@/components/RentabilityCard'
 
@@ -56,9 +57,9 @@ export default async function OcupadoDetailPage({ params }: { params: Params }) 
       {/* Cabecera */}
       <header className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <p className="label-caps text-petrol">{p.provincia}</p>
+          <p className="label-caps text-petrol">{formatProvincia(p.provincia)}</p>
           <h1 className="mt-1 font-display text-3xl font-semibold tracking-tight text-ink">
-            {p.municipio}
+            {formatMunicipio(p.municipio)}
           </h1>
           <p className="mt-2 max-w-xl text-base text-muted">{p.direccion}</p>
         </div>
@@ -94,9 +95,9 @@ export default async function OcupadoDetailPage({ params }: { params: Params }) 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         <Section title={t('secLocation')}>
           <Row label={t('fDireccion')} value={p.direccion} />
-          <Row label={t('fMunicipio')} value={p.municipio} />
-          <Row label={t('fProvincia')} value={p.provincia} />
-          <Row label={t('fCcaa')} value={p.ccaa} />
+          <Row label={t('fMunicipio')} value={formatMunicipio(p.municipio)} />
+          <Row label={t('fProvincia')} value={formatProvincia(p.provincia)} />
+          <Row label={t('fCcaa')} value={formatCCAA(p.ccaa)} />
           <Row label={t('fCp')} value={p.cp} />
         </Section>
 
