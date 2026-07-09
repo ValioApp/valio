@@ -109,6 +109,8 @@ const FORMATIONS: FormationSpec[] = [
   { cx: 640, cy: 720, baseStart: 36, step: 25, levels: 8, rot: 2.1, phase: 3.2, amp: 0.9, fade: 0.7, emphasize: -1, delay: 0.5 },
   // Superior centro — pequeña y muy tenue, arriba.
   { cx: 900, cy: 70, baseStart: 30, step: 22, levels: 6, rot: 1.35, phase: 0.5, amp: 1.06, fade: 0.6, emphasize: -1, delay: 0.6 },
+  // Derecha del todo — sangra por el borde para llenar el margen derecho.
+  { cx: 1560, cy: 430, baseStart: 34, step: 27, levels: 10, rot: 1.6, phase: 2.4, amp: 1.12, fade: 0.78, emphasize: 5, delay: 0.5 },
 ]
 
 function buildFormation(s: FormationSpec): Contour[] {
